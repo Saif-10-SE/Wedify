@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getFeaturedMarquees, formatPrice, getAreas, marquees, realVenuePhotos } from '@/data/marquees';
 import { getFeaturedVendors, getVendorCategories } from '@/data/vendors';
@@ -68,75 +67,73 @@ export default function Home() {
           aria-hidden
         />
 
-        <div className="absolute inset-0 z-[2] pointer-events-none opacity-95" aria-hidden>
-          <div className="absolute -left-6 top-20 w-[28vw] max-w-[400px] h-[52vh] min-h-[280px] rounded-[1.75rem] overflow-hidden shadow-2xl rotate-[-5deg]">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[0] || heroImage}')` }} />
-          </div>
-          <div className="absolute left-[22%] bottom-10 w-[25vw] min-w-[220px] h-[30vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[5deg] border-4 border-white/80">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[1] || heroImage}')` }} />
-          </div>
-          <div className="absolute right-[8%] top-20 w-[28vw] min-w-[240px] h-[34vh] rounded-[1.5rem] overflow-hidden shadow-2xl rotate-[7deg] border-4 border-white/70">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[2] || heroImage}')` }} />
-          </div>
-          <div className="absolute right-[3%] bottom-14 w-[22vw] min-w-[200px] h-[26vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[-4deg] border-4 border-white/75">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[3] || heroImage}')` }} />
-          </div>
-        </div>
-
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="relative z-[1] inline-flex flex-col items-center gap-1 px-6 py-3 bg-white/75 backdrop-blur-md rounded-full text-gray-800 text-sm mb-6 animate-fadeIn shadow-lg border border-white/80">
-            <span className="font-medium">Pakistan's first wedding planning platform</span>
-          </div>
-
-          <h1 className="relative z-[1] text-5xl md:text-7xl font-serif text-[#2b1f1a] mb-4 leading-tight animate-fadeIn">
-            <span className="sr-only">Wedify</span>
-            <Image
-              src="/images/wedify-logo.svg"
-              alt="Wedify"
-              width={520}
-              height={180}
-              priority
-              className="mx-auto w-[min(92vw,26rem)] h-auto drop-shadow-[0_6px_18px_rgba(43,31,26,0.12)]"
-            />
-            <span className="text-3xl font-light mt-2 block">Pakistan's first wedding planning platform</span>
-          </h1>
-          <p className="text-lg md:text-xl text-[#5f5148] mb-8 font-medium animate-slideUp max-w-2xl mx-auto">
-            Discover venues, compare options, and plan your wedding effortlessly with Wedify.
-          </p>
-          
-          {/* Wedding Date Countdown */}
-          {weddingDate && (
-            <div className="mb-8 animate-fadeIn">
-              <CountdownTimer />
+        <div className="relative z-10 mx-auto grid h-full w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-24 pb-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+          <div className="text-center lg:text-left">
+            <div className="relative z-[1] mb-6 inline-flex flex-col items-center gap-1 rounded-full border border-white/35 bg-white/15 px-6 py-3 text-sm text-white shadow-lg backdrop-blur-md lg:items-start">
+              <span className="font-medium tracking-wide">Pakistan's first wedding planning platform</span>
             </div>
-          )}
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slideUp">
-            <Link 
-              href="/marquees"
-              className="px-8 py-4 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-lg inline-flex items-center justify-center group"
-            >
-              Explore Marquees
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link 
-              href="/calculator"
-              className="px-8 py-4 bg-white/60 hover:bg-white/75 text-[#2b1f1a] font-semibold rounded-lg backdrop-blur-sm border border-white/60 transition-all inline-flex items-center justify-center shadow-md"
-            >
-              <Calculator className="w-5 h-5 mr-2" />
-              Budget Calculator
-            </Link>
+
+            <h1 className="relative z-[1] mb-5 font-serif text-[2.15rem] font-semibold leading-[1.1] text-white animate-fadeIn sm:text-5xl md:text-6xl lg:text-[4.1rem]">
+              Plan Your Dream Wedding
+              <span className="mt-3 block font-sans text-base font-medium uppercase tracking-[0.22em] text-white/85 sm:text-lg">
+                Elegance. Simplicity. Complete Control.
+              </span>
+            </h1>
+            <p className="mb-8 max-w-2xl font-sans text-base font-medium leading-relaxed text-white/90 animate-slideUp sm:text-lg md:text-xl lg:max-w-xl">
+              Discover venues, compare options, and plan your wedding effortlessly with Wedify.
+            </p>
+            
+            {/* Wedding Date Countdown */}
+            {weddingDate && (
+              <div className="mb-8 animate-fadeIn lg:max-w-md">
+                <CountdownTimer />
+              </div>
+            )}
+            
+            <div className="flex flex-col gap-4 animate-slideUp sm:flex-row lg:justify-start">
+              <Link 
+                href="/marquees"
+                className="inline-flex items-center justify-center rounded-xl bg-gold-500 px-8 py-4 font-semibold text-white shadow-xl shadow-gold-200/50 transition-all hover:scale-105 hover:bg-gold-600 group"
+              >
+                Explore Marquees
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link 
+                href="/calculator"
+                className="inline-flex items-center justify-center rounded-xl border border-white/70 bg-white/70 px-8 py-4 font-semibold text-[#2b1f1a] shadow-md backdrop-blur-sm transition-all hover:bg-white/85"
+              >
+                <Calculator className="mr-2 h-5 w-5" />
+                Budget Calculator
+              </Link>
+            </div>
+            
+            {!weddingDate && (
+              <button
+                onClick={() => setShowDateModal(true)}
+                className="mt-6 inline-flex items-center gap-2 px-1 py-2 text-white/85 transition-colors hover:text-white"
+              >
+                <Calendar className="h-5 w-5" />
+                Set Your Wedding Date
+              </button>
+            )}
           </div>
-          
-          {!weddingDate && (
-            <button
-              onClick={() => setShowDateModal(true)}
-              className="mt-6 px-6 py-3 text-[#6b5a4f] hover:text-[#2b1f1a] transition-colors inline-flex items-center gap-2"
-            >
-              <Calendar className="w-5 h-5" />
-              Set Your Wedding Date
-            </button>
-          )}
+
+          <div className="relative hidden h-[68vh] min-h-[420px] w-full lg:block">
+            <div className="grid h-full grid-cols-2 gap-5 pt-6">
+              <div className="relative overflow-hidden rounded-[1.7rem] border-4 border-white/80 shadow-[0_18px_45px_rgba(43,31,26,0.2)]">
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 hover:scale-105" style={{ backgroundImage: `url('${heroImages[0] || heroImage}')` }} />
+              </div>
+              <div className="relative mt-10 overflow-hidden rounded-[1.7rem] border-4 border-white/75 shadow-[0_18px_42px_rgba(43,31,26,0.2)]">
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 hover:scale-105" style={{ backgroundImage: `url('${heroImages[1] || heroImage}')` }} />
+              </div>
+              <div className="relative -mt-3 overflow-hidden rounded-[1.7rem] border-4 border-white/75 shadow-[0_18px_42px_rgba(43,31,26,0.2)]">
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 hover:scale-105" style={{ backgroundImage: `url('${heroImages[2] || heroImage}')` }} />
+              </div>
+              <div className="relative mt-7 overflow-hidden rounded-[1.7rem] border-4 border-white/80 shadow-[0_18px_45px_rgba(43,31,26,0.2)]">
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 hover:scale-105" style={{ backgroundImage: `url('${heroImages[3] || heroImage}')` }} />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Scroll Indicator */}
