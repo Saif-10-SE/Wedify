@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { marquees, additionalServices, formatPrice, getMarqueeBySlug } from '@/data/marquees';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Camera, Music2, Car, Mail } from 'lucide-react';
 
 export default function Calculator() {
   const router = useRouter();
@@ -289,7 +290,7 @@ export default function Calculator() {
 
                 {/* Photography */}
                 <div className="mb-6">
-                  <h3 className="font-medium text-gray-700 mb-3">📸 Photography & Videography</h3>
+                  <h3 className="font-medium text-gray-700 mb-3 flex items-center gap-2"><Camera className="w-4 h-4 text-gold-600" />Photography & Videography</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {additionalServices.photography.map((pkg, index) => (
                       <div
@@ -310,7 +311,7 @@ export default function Calculator() {
 
                 {/* Entertainment */}
                 <div className="mb-6">
-                  <h3 className="font-medium text-gray-700 mb-3">🎵 Entertainment</h3>
+                  <h3 className="font-medium text-gray-700 mb-3 flex items-center gap-2"><Music2 className="w-4 h-4 text-gold-600" />Entertainment</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {additionalServices.entertainment.map((pkg, index) => (
                       <div
@@ -331,7 +332,7 @@ export default function Calculator() {
 
                 {/* Transport */}
                 <div className="mb-6">
-                  <h3 className="font-medium text-gray-700 mb-3">🚗 Bridal Transport</h3>
+                  <h3 className="font-medium text-gray-700 mb-3 flex items-center gap-2"><Car className="w-4 h-4 text-gold-600" />Bridal Transport</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {additionalServices.transport.map((pkg, index) => (
                       <div
@@ -352,7 +353,7 @@ export default function Calculator() {
 
                 {/* Invitations */}
                 <div>
-                  <h3 className="font-medium text-gray-700 mb-3">💌 Wedding Invitations</h3>
+                  <h3 className="font-medium text-gray-700 mb-3 flex items-center gap-2"><Mail className="w-4 h-4 text-gold-600" />Wedding Invitations</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {additionalServices.invitations.map((pkg, index) => (
                       <div

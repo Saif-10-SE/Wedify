@@ -6,7 +6,26 @@ import Footer from '@/components/Footer';
 import { useWedding } from '@/context/WeddingContext';
 import CountdownTimer from '@/components/CountdownTimer';
 import WeddingDateModal from '@/components/WeddingDateModal';
-import { CheckCircle, Circle, Calendar, ChevronDown, ChevronUp, Download, Share2, Sparkles, Clock } from 'lucide-react';
+import { CheckCircle, Circle, Calendar, ChevronDown, ChevronUp, Download, Share2, Sparkles, Clock, Target, Church, Star, PartyPopper, MoonStar, Wallet, ClipboardList, Handshake, Camera, Smile } from 'lucide-react';
+
+const periodIcons = {
+  calendar: Calendar,
+  target: Target,
+  sparkles: Sparkles,
+  church: Church,
+  star: Star,
+  'party-popper': PartyPopper,
+  'moon-star': MoonStar,
+};
+
+const planningTips = [
+  { icon: Calendar, title: 'Start Early', tip: 'Begin planning at least 12 months before for popular venues and vendors.' },
+  { icon: Wallet, title: 'Budget First', tip: 'Set your budget before making any bookings to avoid overspending.' },
+  { icon: ClipboardList, title: 'Stay Organized', tip: 'Use this checklist and keep all contracts and receipts in one place.' },
+  { icon: Handshake, title: 'Delegate Tasks', tip: "Don't try to do everything yourself. Involve family and consider a planner." },
+  { icon: Camera, title: 'Book Photographers Early', tip: 'Top photographers get booked 6-12 months in advance.' },
+  { icon: Smile, title: 'Enjoy the Process', tip: "Remember to enjoy your engagement! Don't let stress take over." },
+];
 
 export default function Checklist() {
   const { weddingDate, setWeddingDate, getDaysUntilWedding } = useWedding();
@@ -221,7 +240,10 @@ export default function Checklist() {
                     className="w-full px-6 py-5 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="text-3xl">{data.icon}</span>
+                      {(() => {
+                        const Icon = periodIcons[data.icon] || Sparkles;
+                        return <Icon className="w-7 h-7" />;
+                      })()}
                       <div className="text-left">
                         <h3 className="text-xl font-serif font-semibold text-gray-800">{data.title}</h3>
                         <p className="text-sm text-gray-500">{periodCompleted} of {periodTotal} completed</p>
@@ -307,16 +329,9 @@ export default function Checklist() {
             Planning <span className="text-gold-600">Tips</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: '📅', title: 'Start Early', tip: 'Begin planning at least 12 months before for popular venues and vendors.' },
-              { icon: '💰', title: 'Budget First', tip: 'Set your budget before making any bookings to avoid overspending.' },
-              { icon: '📋', title: 'Stay Organized', tip: 'Use this checklist and keep all contracts and receipts in one place.' },
-              { icon: '🤝', title: 'Delegate Tasks', tip: "Don't try to do everything yourself. Involve family and consider a planner." },
-              { icon: '📸', title: 'Book Photographers Early', tip: 'Top photographers get booked 6-12 months in advance.' },
-              { icon: '😌', title: 'Enjoy the Process', tip: "Remember to enjoy your engagement! Don't let stress take over." }
-            ].map((tip, index) => (
+            {planningTips.map((tip, index) => (
               <div key={index} className="bg-gray-50 rounded-xl p-6">
-                <span className="text-3xl mb-3 block">{tip.icon}</span>
+                <tip.icon className="w-8 h-8 mb-3 text-gold-600" />
                 <h3 className="font-semibold text-gray-800 mb-2">{tip.title}</h3>
                 <p className="text-gray-600 text-sm">{tip.tip}</p>
               </div>

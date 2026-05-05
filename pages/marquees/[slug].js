@@ -167,8 +167,9 @@ export default function MarqueeDetail() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 {marquee.featured && (
-                  <span className="px-3 py-1 bg-gold-500 text-white text-sm font-semibold rounded-full animate-pulse">
-                    ⭐ Featured Venue
+                  <span className="px-3 py-1 bg-gold-500 text-white text-sm font-semibold rounded-full animate-pulse inline-flex items-center gap-1.5">
+                    <Star className="w-4 h-4 fill-white" />
+                    Featured Venue
                   </span>
                 )}
                 <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">

@@ -2,7 +2,7 @@
 export const weddingChecklist = {
   '12-months': {
     title: '12 Months Before',
-    icon: '📅',
+    icon: 'calendar',
     tasks: [
       { id: '12-1', task: 'Set wedding date', description: 'Consider weather, venue availability, and guest schedules' },
       { id: '12-2', task: 'Set overall budget', description: 'Determine total budget and allocate to categories' },
@@ -15,7 +15,7 @@ export const weddingChecklist = {
   },
   '9-months': {
     title: '9 Months Before',
-    icon: '🎯',
+    icon: 'target',
     tasks: [
       { id: '9-1', task: 'Book caterer', description: 'Taste test and finalize menu packages' },
       { id: '9-2', task: 'Book decorator', description: 'Discuss themes, colors, and concepts' },
@@ -27,7 +27,7 @@ export const weddingChecklist = {
   },
   '6-months': {
     title: '6 Months Before',
-    icon: '✨',
+    icon: 'sparkles',
     tasks: [
       { id: '6-1', task: 'Order wedding invitations', description: 'Design and print invitations' },
       { id: '6-2', task: 'Book honeymoon', description: 'Research destinations and book travel' },
@@ -39,7 +39,7 @@ export const weddingChecklist = {
   },
   '3-months': {
     title: '3 Months Before',
-    icon: '💒',
+    icon: 'church',
     tasks: [
       { id: '3-1', task: 'Send invitations', description: 'Distribute or mail all wedding cards' },
       { id: '3-2', task: 'Final menu tasting', description: 'Confirm all dishes with caterer' },
@@ -52,7 +52,7 @@ export const weddingChecklist = {
   },
   '1-month': {
     title: '1 Month Before',
-    icon: '🌟',
+    icon: 'star',
     tasks: [
       { id: '1-1', task: 'Final guest count', description: 'Confirm RSVPs and inform venue' },
       { id: '1-2', task: 'Final payments', description: 'Clear all vendor payments' },
@@ -65,7 +65,7 @@ export const weddingChecklist = {
   },
   '1-week': {
     title: '1 Week Before',
-    icon: '🎊',
+    icon: 'party-popper',
     tasks: [
       { id: 'w-1', task: 'Confirm all vendors', description: 'Final confirmation calls' },
       { id: 'w-2', task: 'Pack honeymoon bags', description: 'Prepare travel essentials' },
@@ -77,7 +77,7 @@ export const weddingChecklist = {
   },
   'day-before': {
     title: 'Day Before',
-    icon: '💫',
+    icon: 'moon-star',
     tasks: [
       { id: 'd-1', task: 'Venue walkthrough', description: 'Visit and inspect the venue' },
       { id: 'd-2', task: 'Rest and relax', description: 'Get good sleep, stay hydrated' },

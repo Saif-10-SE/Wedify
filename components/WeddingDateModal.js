@@ -77,7 +77,7 @@ export default function WeddingDateModal({ isOpen, onClose }) {
             <div className="bg-gold-50 border border-gold-200 rounded-xl p-4 mb-6 text-center">
               <p className="text-gold-800">
                 <span className="font-bold text-2xl">{daysLeft}</span> days until your wedding! 
-                {daysLeft < 30 && " 🎉 So exciting!"}
+                {daysLeft < 30 && " Final month excitement!"}
                 {daysLeft > 365 && " Plenty of time to plan!"}
               </p>
             </div>

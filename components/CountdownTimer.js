@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { PartyPopper } from 'lucide-react';
 
 export default function CountdownTimer({ targetDate, className = '' }) {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -30,7 +31,7 @@ export default function CountdownTimer({ targetDate, className = '' }) {
   if (timeLeft.expired) {
     return (
       <div className={`text-center ${className}`}>
-        <p className="text-2xl font-serif text-gold-500">🎉 Congratulations! 🎉</p>
+        <p className="text-2xl font-serif text-gold-500 inline-flex items-center gap-2 justify-center"><PartyPopper className="w-6 h-6" />Congratulations!<PartyPopper className="w-6 h-6" /></p>
         <p className="text-gray-600">Your special day has arrived!</p>
       </div>
     );

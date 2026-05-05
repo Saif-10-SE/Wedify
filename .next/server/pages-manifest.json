@@ -4,5 +4,8 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/calculator": "pages/calculator.js",
-  "/testimonials": "pages/testimonials.js"
+  "/compare": "pages/compare.js",
+  "/marquees": "pages/marquees.js",
+  "/vendors": "pages/vendors.js",
+  "/gallery": "pages/gallery.js"
 }

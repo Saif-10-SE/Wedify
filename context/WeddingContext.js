@@ -89,7 +89,7 @@ export function WeddingProvider({ children }) {
         showNotification('Removed from favorites');
         return prev.filter(s => s !== slug);
       } else {
-        showNotification('Added to favorites ❤️');
+        showNotification('Added to favorites');
         return [...prev, slug];
       }
     });
@@ -165,7 +165,7 @@ export function WeddingProvider({ children }) {
         showNotification('Already in inquiry list');
         return prev;
       }
-      showNotification('Added to inquiry list 📋');
+      showNotification('Added to inquiry list');
       return [...prev, { slug, details, addedAt: new Date().toISOString() }];
     });
   };

@@ -10,7 +10,7 @@ export default function Footer() {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (email) {
-      showNotification('Thank you for subscribing! 💌', 'success');
+      showNotification('Thank you for subscribing!', 'success');
       setEmail('');
     }
   };

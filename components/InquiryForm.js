@@ -26,7 +26,7 @@ export default function InquiryForm({ venue, onSuccess }) {
 
     setIsSubmitting(false);
     setIsSubmitted(true);
-    showNotification('Inquiry sent successfully! 📩');
+    showNotification('Inquiry sent successfully!');
     
     if (onSuccess) {
       onSuccess(formData);

@@ -5,7 +5,19 @@ import { formatPrice } from '@/data/marquees';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import VendorCard from '@/components/VendorCard';
-import { Star, Search, Filter, Grid, List } from 'lucide-react';
+import { Star, Search, Filter, Grid, List, Camera, Palette, UtensilsCrossed, Sparkles, Music2, Building2, Mail, Gem, Hand } from 'lucide-react';
+
+const categoryIcons = {
+  camera: Camera,
+  palette: Palette,
+  'utensils-crossed': UtensilsCrossed,
+  sparkles: Sparkles,
+  'music-2': Music2,
+  'building-2': Building2,
+  mail: Mail,
+  gem: Gem,
+  hand: Hand,
+};
 
 export default function Vendors() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -105,7 +117,10 @@ export default function Vendors() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <span>{category.icon}</span>
+                {(() => {
+                  const Icon = categoryIcons[category.icon] || Sparkles;
+                  return <Icon className="w-4 h-4" />;
+                })()}
                 {category.name}
               </button>
             ))}

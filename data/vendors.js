@@ -359,13 +359,13 @@ export const getVendorBySlug = (slug) => {
 
 // Get vendor categories
 export const getVendorCategories = () => [
-  { id: 'photography', name: 'Photography', icon: '📸' },
-  { id: 'decoration', name: 'Decoration', icon: '🎨' },
-  { id: 'catering', name: 'Catering', icon: '🍽️' },
-  { id: 'makeup', name: 'Makeup', icon: '💄' },
-  { id: 'entertainment', name: 'Entertainment', icon: '🎵' },
-  { id: 'venue', name: 'Venues', icon: '🏛️' },
-  { id: 'invitations', name: 'Invitations', icon: '💌' },
-  { id: 'jewelry', name: 'Jewelry', icon: '💍' },
-  { id: 'mehndi', name: 'Mehndi', icon: '✋' }
+  { id: 'photography', name: 'Photography', icon: 'camera' },
+  { id: 'decoration', name: 'Decoration', icon: 'palette' },
+  { id: 'catering', name: 'Catering', icon: 'utensils-crossed' },
+  { id: 'makeup', name: 'Makeup', icon: 'sparkles' },
+  { id: 'entertainment', name: 'Entertainment', icon: 'music-2' },
+  { id: 'venue', name: 'Venues', icon: 'building-2' },
+  { id: 'invitations', name: 'Invitations', icon: 'mail' },
+  { id: 'jewelry', name: 'Jewelry', icon: 'gem' },
+  { id: 'mehndi', name: 'Mehndi', icon: 'hand' }
 ];
