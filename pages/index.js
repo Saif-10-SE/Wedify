@@ -54,36 +54,41 @@ export default function Home() {
 
       <Navbar />
 
-      {/* Hero Section with layered venue photography */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#fef9f1]">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,250,240,0.92),rgba(255,246,235,0.82)_40%,rgba(255,241,230,0.95)_100%)]" />
-          <div className="absolute inset-0 opacity-95">
-            <div className="absolute -left-10 top-12 w-[42vw] max-w-[620px] h-[72vh] rounded-[2rem] overflow-hidden shadow-2xl rotate-[-6deg] scale-95">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[0] || heroImage}')` }} />
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#5a3d2b]/25 via-transparent to-transparent" />
-            </div>
-            <div className="absolute left-[22%] bottom-10 w-[25vw] min-w-[220px] h-[30vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[5deg] border-4 border-white/80">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[1] || heroImage}')` }} />
-            </div>
-            <div className="absolute right-[8%] top-20 w-[28vw] min-w-[240px] h-[34vh] rounded-[1.5rem] overflow-hidden shadow-2xl rotate-[7deg] border-4 border-white/70">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[2] || heroImage}')` }} />
-            </div>
-            <div className="absolute right-[3%] bottom-14 w-[22vw] min-w-[200px] h-[26vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[-4deg] border-4 border-white/75">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[3] || heroImage}')` }} />
-            </div>
-          </div>
+      {/* Hero stack: bg → top haze → collage → copy (foremost) */}
+      <section className="relative isolate h-screen flex items-center justify-center overflow-hidden bg-[#fef9f1]">
+        <div
+          className="absolute inset-0 z-0 bg-cover bg-bottom bg-no-repeat"
+          style={{ backgroundImage: "url('/images/header-bg.jpg')" }}
+          aria-hidden
+        />
 
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(255,250,240,0.55)] via-[rgba(255,248,240,0.35)] to-[rgba(255,246,237,0.78)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.55)_0%,rgba(255,255,255,0.18)_24%,transparent_58%)]" />
+        {/* Soft top veil: pulls chroma down so the hero reads calm under the nav / headline */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[min(52vh,480px)] bg-gradient-to-b from-[#fef9f1]/92 via-[#fef9f1]/55 to-transparent"
+          aria-hidden
+        />
+
+        <div className="absolute inset-0 z-[2] pointer-events-none opacity-95" aria-hidden>
+          <div className="absolute -left-6 top-20 w-[28vw] max-w-[400px] h-[52vh] min-h-[280px] rounded-[1.75rem] overflow-hidden shadow-2xl rotate-[-5deg]">
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[0] || heroImage}')` }} />
+          </div>
+          <div className="absolute left-[22%] bottom-10 w-[25vw] min-w-[220px] h-[30vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[5deg] border-4 border-white/80">
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[1] || heroImage}')` }} />
+          </div>
+          <div className="absolute right-[8%] top-20 w-[28vw] min-w-[240px] h-[34vh] rounded-[1.5rem] overflow-hidden shadow-2xl rotate-[7deg] border-4 border-white/70">
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[2] || heroImage}')` }} />
+          </div>
+          <div className="absolute right-[3%] bottom-14 w-[22vw] min-w-[200px] h-[26vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[-4deg] border-4 border-white/75">
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[3] || heroImage}')` }} />
+          </div>
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="inline-flex flex-col items-center gap-1 px-6 py-3 bg-white/70 backdrop-blur-md rounded-full text-gray-800 text-sm mb-6 animate-fadeIn shadow-lg border border-white/70">
+          <div className="relative z-[1] inline-flex flex-col items-center gap-1 px-6 py-3 bg-white/75 backdrop-blur-md rounded-full text-gray-800 text-sm mb-6 animate-fadeIn shadow-lg border border-white/80">
             <span className="font-medium">Pakistan's first wedding planning platform</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-serif text-[#2b1f1a] mb-4 leading-tight animate-fadeIn">
+          <h1 className="relative z-[1] text-5xl md:text-7xl font-serif text-[#2b1f1a] mb-4 leading-tight animate-fadeIn">
             <span className="sr-only">Wedify</span>
             <Image
               src="/images/wedify-logo.svg"
@@ -135,7 +140,7 @@ export default function Home() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-8 left-1/2 z-20 transform -translate-x-1/2 animate-bounce pointer-events-none">
           <svg className="w-6 h-6 text-[#6b5a4f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
