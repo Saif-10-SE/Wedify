@@ -1,0 +1,1726 @@
+﻿[2] Wedify: Wedding Planner and Venue Comparison Web Application
+[14] Submitted By
+[15] Sherana Farooq (S2023332005), Saifullah (S2023332009), Hafiz Inam (S2023332026)
+[17] Session
+[18] Session: 2023-2027
+[22] Project Supervisor
+[23] Sir Daniyal Adeeb
+[25] Department Name
+[26] School of Systems and Technology
+[27] University of Management and Technology
+[28] C-II Johar Town Lahore Pakistan
+[30] Dedication
+[31] This project is dedicated to our parents, teachers, and mentors for their guidance and support.
+[32] We gratefully acknowledge our supervisor, Sir Daniyal Adeeb, for his valuable mentorship.
+[55] Final Approval
+[56] Wedify: Wedding Planner and Venue Comparison Web Application
+[59] Panel of Examiners
+[61] Head of Department______________________
+[62] Department of Software Engineering
+[63] University of Management and Technology
+[64] Lahore
+[69] Program Director ( Final Year Projects)______________________
+[70] Department of Software Engineering
+[71] University of Management and Technology
+[72] Lahore
+[77] Supervisor Sir Daniyal Adeeb
+[78] Department of Software Engineering
+[79] University of Management and Technology
+[80] Lahore
+[85] Co-Supervisor N/A
+[86] (If any)
+[92] Documentation Evaluator______________________
+[95] Acknowledgment
+[96] We thank Allah Almighty for granting us the strength to complete this final year project.
+[97] We sincerely thank our respected supervisor, Sir Daniyal Adeeb, for continuous guidance and support.
+[98] We also thank the Department of Software Engineering, UMT, for providing an enabling learning environment.
+[99] Finally, we are grateful to our families and classmates for their encouragement throughout the project.
+[108] Project Title: Wedify
+[109] Objective: Centralized platform for venue discovery, budget estimation, vendor browsing, and wedding planning in Lahore
+[111] Undertaken by: Sherana Farooq (S2023332005), Saifullah (S2023332009), Hafiz Inam (S2023332026)
+[113] Supervised by: Sir Daniyal Adeeb
+[114] Starting Date: September 2025
+[116] Completion Date: April 2026
+[118] Tools Used: Next.js, React, Tailwind CSS, JavaScript, Lucide React, GitHub, VS Code
+[119] Operating System: Windows
+[120] Documentation: Final Report, Backlog, Architecture Diagrams, Traceability Matrix, Test Evidence
+[129] Plagiarism and Pledge Report
+[130] Turnitin similarity report will be attached in final submission.
+[131] Pledge: We declare this report and implementation are our own original academic work.
+[132] All references and sources have been properly acknowledged where applicable.
+[133] Student Signatures: Sherana Farooq | Saifullah | Hafiz Inam
+[162] Declaration Form
+[167] I have carefully examined the documentation of the Final Year Project titled 'Wedify: Wedding Planner and Venue Comparison Web Application'; and I endorse that this documentation complies with undergraduate-level FYP report standards.
+[168] The document has been checked for plagiarism through Turnitin software available in UMT Library. The similarities of the document are within acceptable range.
+[169] Moreover, the accompanying CDs contain PDF of the documentation, as well as the source code and binaries with user manual and installation guide.
+[177] FYP Supervisor Name: Sir Daniyal Adeeb
+[180] Signature: __________________ Date: __________________
+[187] Abstract
+[188] Wedify is a web-based platform that helps users discover and compare wedding venues in Lahore.
+[189] The system provides budget calculation, vendor discovery, favorites management, and wedding checklist tracking.
+[190] It is developed using Next.js, React, and Tailwind CSS with a component-based and maintainable architecture.
+[191] The project improves planning efficiency, budget transparency, and decision-making for wedding clients.
+[192] Revision Chart
+[193] This chart contains a history of this documentâ€™s revisions. The entries below are provided solely for illustration purposes. Those entries should be deleted until the revision/s they refer to have actually been created.
+[194] The document itself should be stored in revision control, and a brief description of each version should be entered in the Revision Control System. A brief description can be repeated in this section. Revisions need not be described elsewhere in the document, unless they explain the document.
+[196] Version
+[197] Primary Author(s)
+[198] Description of Version
+[199] Date Completed
+[200] Draft
+[201] Project Team
+[202] Initial draft created for distribution and review comments
+[203] 10-Apr-2026
+[204] Preliminary
+[205] Project Team
+[206] Second draft incorporating initial review comments, distributed for final review
+[207] 18-Apr-2026
+[208] Final
+[209] Project Team
+[210] First complete draft, which is placed under change control
+[211] 27-Apr-2026
+[212] Revision 1
+[213] TBD
+[214] Revised draft, revised according to the change control process and maintained under change control
+[215] TBD
+[216] Revision 2
+[217] TBD
+[218] Revised draft, revised according to the change control process and maintained under change control
+[219] TBD
+[220] Etc.
+[221] TBD
+[222] TBD
+[223] TBD
+[229] Table of Contents
+[230] New paragraphs formatted as Heading 1, Heading 2, and Heading 3 will be added to the table automatically. To update this table of contents in Microsoft Word, put the cursor anywhere in the table and press F9. If you want the table to be easy to maintain, do not change it manually.
+[231] Table of Contents1
+[232] Definitions and Acronyms4
+[233] List of Figures5
+[234] List of Tables7
+[235] 1.Introduction8
+[236] 1.1Problem Statement9
+[237] 1.2Objectives9
+[238] 1.3Scope of the Project9
+[239] 1.4Significance of the Project10
+[240] 1.5Artiificial Intelligence features10
+[241] 1.6Project Deliverables10
+[242] 2.Domain Analysis11
+[243] 2.1Customer11
+[244] 2.2Stakeholders11
+[245] 2.3Affected Groups with social or economic impact12
+[246] 2.4Dependencies/ External Systems13
+[247] 2.5Related Projects with feature comparision14
+[248] 2.5.1Related Projects14
+[249] 2.5.2Feature Comparison15
+[250] 2.6Context Diagram16
+[251] 2.7Data Flow Diagram Level 017
+[252] 3.Requirements analysis19
+[253] 3.1List of Actors19
+[254] 3.2Product Backlog19
+[255] 3.2.1Venue Discovery
+[256] 3.2.2Account and Preferences
+[257] 3.2.3Budget Planner
+[258] 3.2.4Comparison and Favorites
+[259] 3.2.5Vendor Marketplace
+[260] 3.2.6Checklist and Timeline
+[261] 3.2.7Testimonials and Reviews
+[262] 3.2.8Non-Functional Requirements
+[263] 3.2.9Forms30
+[264] 3.2.10Announcements31
+[265] 3.2.11Quizzes31
+[266] 3.2.12Non-Functional Requirements33
+[267] 3.2.13Affiliates33
+[268] 3.2.14Comments34
+[269] 3.2.15venue Evaluation34
+[270] 3.2.16Reporting35
+[271] 3.3Figma UI/UX Designs37
+[272] 4.Project Planning and Execution using Sprints53
+[273] 4.1Jira53
+[274] 4.2Slack53
+[275] 4.3Github Repository53
+[276] 4.4Sprint 153
+[277] 4.4.1Sprint 1 Planning Meeting Minutes53
+[278] 4.4.2Sprint 1 Backlog55
+[279] 4.4.3Sprint 1 Design Class Diagram58
+[280] 4.4.4Sprint 1 Sequence Diagram59
+[281] 4.4.5Sprint 1 Decision Table60
+[282] 4.4.6Sprint 1 Extended Test Cases61
+[283] 4.4.7Sprint 1 Review Meeting62
+[284] 4.4.8Sprint 1 Retrospective Meeting64
+[285] 5.System Architecture66
+[286] 5.1System context Diagram66
+[287] 5.2System Container Diagram67
+[288] 5.3Component Diagram68
+[289] 5.4Code Diagrams69
+[290] 5.5ERD70
+[291] 5.6Data Dictionary72
+[292] 6.Implementation details73
+[293] 6.1Development Setup73
+[294] 6.2Deployment setup73
+[295] 6.3Algorithms73
+[296] 6.4Constraints73
+[297] 6.4.1Assumptions73
+[298] 6.4.2System constraints73
+[299] 6.4.3Restrictions73
+[300] 6.4.4Limitations73
+[301] 7.Project Monitoring, control and traceability74
+[302] 7.1Traceability Matrix74
+[303] 7.1.1Requirements vs Prototype (PB-ID vs PID)74
+[304] 7.1.2Requirements vs Test Cases (PB-ID vs TID)75
+[305] 8.Results/Output/Statistics77
+[306] 8.1%completion77
+[307] 8.2%accuracy77
+[308] 8.3%correctness77
+[309] 9.Conclusion78
+[310] 10.Future work79
+[311] 11.Bibliography80
+[312] 11.1Books80
+[313] 11.2Journals80
+[314] 11.3Articles80
+[315] 11.4Research papers80
+[316] 11.5Other References80
+[317] 12.Appendix81
+[318] 12.1Glossary of terms81
+[319] 12.2Pre-requisites81
+[322] Definitions and Acronyms
+[323] Provide definitions or references to all the definitions of the special terms and acronyms used within this document
+[326] Table 1 : List of acronyms and definitions
+[327] Acronym
+[328] Definition
+[329] UMT
+[330] University of Management and Technology
+[331] CTS
+[332] Wedify Wedding Planning System
+[333] List of Figures
+[334] New figures that are given captions will be added to the table automatically.
+[335] Insert caption:
+[336] select picture
+[337] right click
+[338] select â€œinsert captionâ€
+[339] under â€œoptionsâ€,  choose label as â€œfigureâ€
+[340] Under â€œcaptionâ€, an automatic insertion of â€œfigure noâ€ will appear. Give your figure an appropriate caption
+[341] Update list of figures:To update this list in Microsoft Word, put the cursor anywhere in the table and press F9.
+[342] Note:  If you want the table to be easy to maintain, do not change it manually.
+[344] Figure 1: Context Diagram - Wedify Wedding Planning System [1]16
+[345] Figure 2: Data Flow Diagram - Wedify Wedding Planning System[1]17
+[346] Figure 3: Epic vs User Story in Product Backlog [1]19
+[347] Figure 4: Prototype - PID1- Sign Up Page UI37
+[348] Figure 5: Prototype - PID2- Sign In Page UI38
+[349] Figure 6: Prototype - PID3- Home Page UI  Partial39
+[350] Figure 7: Prototype - PID4- venue Listing Page40
+[351] Figure 8: Prototype - PID5- venue Details Page41
+[352] Figure 9: Prototype - PID6- Cart Page42
+[353] Figure 10: Prototype - PID7- Checkout Page43
+[354] Figure 11: Prototype - PID8- user Registration Page44
+[355] Figure 12: Prototype - PID9- user Listing Page45
+[356] Figure 13: Prototype - PID10- user Detail Page46
+[357] Figure 14: Prototype - PID11- Student Registration Page47
+[358] Figure 15: Prototype - PID12- Pricing Page48
+[359] Figure 16: Prototype - PID13- Event Listing Page49
+[360] Figure 17: Prototype - PID14- Event Detail Page50
+[361] Figure 18: Prototype - PID14- 404 Page51
+[362] Figure 19: Prototype - PID14- FAQs Page52
+[363] Figure 20: Class diagram of Sprint 1 features [4]58
+[364] Figure 21: Sample Sprint 1 Sequence diagram POS 1 [2]59
+[365] Figure 22: Sample Sprint 1 Sequence diagram POS [2]60
+[366] Figure 23: Sample Sprint 1 Decision Table Wedify Wedding Planning System60
+[367] Figure 24: System context Diagram [5]66
+[368] Figure 25: System container Diagram [5]67
+[369] Figure 26: Component Diagram [5]68
+[370] Figure 27: Component Diagram [5]69
+[371] Figure 28: ER Diagram for University Scenario [3]71
+[372] Figure 29: Data Dictionary of Wedify Wedding Planning System [1]72
+[374] List of Tables
+[375] New Tables that are given captions will be added to the table automatically.
+[376] Insert caption:
+[377] select table
+[378] right click
+[379] select â€œinsert captionâ€
+[380] under â€œoptionsâ€,  choose label as â€œtableâ€
+[381] Under â€œcaptionâ€, an automatic insertion of â€œtable noâ€ will appear. Give your table an appropriate caption
+[382] Update table: To update this table of contents in Microsoft Word, put the cursor anywhere in the table and press F9.
+[383] Note:  If you want the table to be easy to maintain, do not change it manually.
+[385] Table 1 : List of acronyms and definitions4
+[386] Table 2: List of Stakeholders11
+[387] Table 3: Feature comparison of our product with competitors15
+[388] Table 4: Selected Features of Product Backlog53
+[389] Table 5: Team Capacity Sprint 155
+[390] Table 6: Sprint 1 Backlog55
+[391] Table 7: Sprint 1 Exteneded Test Case61
+[392] Table 8: Status of Sprint 1 Backlog62
+[395] Introduction
+[396] Wedify is a software engineering project in the event-planning domain, focused on helping users plan weddings through one integrated web platform.
+[397] Project Context
+[398] In Lahore, wedding planning information is usually fragmented across social media pages, WhatsApp groups, and informal referrals.
+[399] Users often cannot compare venues and vendors objectively, and they struggle to estimate a realistic event budget early in planning.
+[400] Wedify addresses this gap by offering venue discovery, vendor exploration, budget calculation, and checklist tracking in one system.
+[401] The platform supports browsing, comparing, and shortlisting options while improving planning speed and confidence for families.
+[402] It also supports better decision-making through structured data such as location, capacity, price ranges, and ratings.
+[403] This makes Wedify a practical local decision-support solution for wedding planning in Lahore.
+[404] Problem Statement
+[405] Wedding planning decisions are often made without centralized, verified, and comparable data.
+[406] As a result, users face delays, mismatched budgets, and difficulty coordinating vendors and tasks.
+[407] The project solves this by digitizing key planning steps in a structured and user-friendly workflow.
+[408] Problem Summary
+[409] Currently, there is no integrated local platform that combines venue comparison, vendor discovery, and budget planning specifically for Lahore weddings.
+[411] Objectives
+[412] The main goals of Wedify are listed below.
+[413] These include both functional planning support and usability-focused goals.
+[414] Objectives
+[415] Primary objectives of this project are:
+[416] - Build a centralized wedding venue and vendor exploration platform for Lahore.
+[417] - Provide transparent budget estimation through an interactive calculator.
+[418] - Enable favorites, comparison, and shortlist management for users.
+[419] - Provide a checklist and planning support features for better execution.
+[421] Scope of the Project
+[422] This section defines what Wedify includes and excludes in the current release.
+[423] It clarifies technical and business boundaries of the project.
+[424] Scope
+[425] Included in Scope:
+[426] - Venue listing, filters, details, and side-by-side comparison.
+[427] - Vendor directory with categories and profile information.
+[428] - Budget calculator and planning checklist modules.
+[429] - Favorites, recently viewed, and testimonial pages.
+[430] - Basic API endpoint for live price snapshot.
+[431] Out of Scope:
+[432] - Direct booking and secure online payments in current release.
+[433] - Vendor-side authenticated dashboards and CRM integration.
+[434] - Full multilingual support and native mobile app version.
+[435] Significance of the Project
+[436] Wedify contributes practical value by reducing planning uncertainty and improving transparency in vendor and venue selection.
+[437] Academically, it demonstrates software engineering practices including requirements analysis, sprint planning, architecture, and traceability.
+[438] Project Importance
+[439] The solution benefits users by saving time, reducing budget surprises, and improving final decision quality.
+[440] Artiificial Intelligence features
+[441] This section highlights AI-enhancement opportunities for future versions of Wedify.
+[442] AI Scenarios
+[443] AI can be integrated to improve personalization and prediction quality in the platform.
+[444] Key scenarios include recommendation, cost forecasting, and intelligent planning assistants.
+[445] Predictive Budget Estimation: models can forecast budget ranges from user preferences, guest count, and historical venue pricing.
+[446] Personalized Recommendation Engine: AI can suggest venues and vendors based on area, budget, and event style preferences.
+[447] Smart Planning Assistant: NLP can guide users through checklist milestones and auto-suggest task priorities.
+[448] Project Deliverables
+[449] Expected outputs of Wedify are listed below.
+[451] Deliverables
+[452] - Functional web-based Wedify application.
+[453] - Source code repository with modular components.
+[454] - Test artifacts, backlog, and traceability matrix.
+[455] - Final documentation report and presentation material.
+[456] - User guide for running and exploring the project locally.
+[458] Domain Analysis
+[459] Customer
+[460] Primary customers are engaged couples and families planning wedding events in Lahore.
+[461] They need trusted venue and vendor information, transparent pricing cues, and planning support.
+[462] Wedify serves these users with a single platform for discovery, comparison, and planning.
+[463] Stakeholders
+[464] Key stakeholders and their responsibilities are listed below.
+[466] Table 2: List of Stakeholders
+[467] Stakeholder
+[468] Role in System
+[469] Bride/Groom and Families
+[470] Browse venues, compare options, and finalize shortlists.
+[471] Estimate budget and monitor planning tasks.
+[472] Use filters and reviews for informed decisions.
+[473] Save favorites and manage alternatives.
+[474] Provide feedback through testimonials and usage patterns.
+[475] Venue Owners/Managers
+[476] Provide venue information such as capacity, location, and package ranges.
+[477] Keep listing details updated through future admin workflow.
+[478] Respond to inquiry leads generated by the platform.
+[479] Improve service visibility across local users.
+[480] Vendors
+[481] Offer wedding services such as decor, photography, and catering.
+[482] Present service ranges and contact channels.
+[483] Receive qualified interest from users.
+[484] Support users in package and timeline planning.
+[485] Project Team
+[486] Design, implement, test, and maintain the Wedify application.
+[487] Prepare documentation and sprint evidence.
+[488] Validate requirements against implementation outcomes.
+[489] Ensure software quality and project completeness.
+[490] Supervisor
+[491] Provide guidance on scope, methodology, and report quality.
+[492] Review architecture and evaluate progress milestones.
+[493] Validate project deliverables and academic compliance.
+[494] University Evaluators
+[495] Assess report quality and implementation completeness.
+[496] Evaluate software engineering process evidence.
+[497] Provide grading feedback based on project outcomes.
+[500] Affected Groups with social or economic impact
+[501] The groups impacted by Wedify and their social/economic effects are summarized below.
+[502] Impact Summary
+[503] Wedding Clients
+[504] Reduced planning effort and better budget control through transparent options.
+[505] Improved decision confidence using comparisons and structured planning tools.
+[507] Local Wedding Market
+[508] Economic Impact: Better demand visibility for venues and vendors.
+[509] Social Impact: Easier access to verified service information for families.
+[510] Vendors and Venue Operators
+[511] Economic Impact: Increased digital exposure and lead generation opportunities.
+[512] Social Impact: Stronger trust through better service presentation.
+[513] Students and Academic Community
+[514] Economic Impact: Not direct; contributes through skill development and industry readiness.
+[515] Social Impact: Demonstrates practical software engineering for local problems.
+[516] Event Planning Ecosystem
+[517] Social Impact: Promotes data-driven planning rather than informal guesswork.
+[518] Economic Impact: Reduces inefficiencies caused by poor vendor-venue matching.
+[519] General Public
+[520] Social Impact: Better informed users and improved event planning experience.
+[521] Economic Impact: Lower planning waste through better budget allocation.
+[523] Platform Growth Stakeholders
+[524] Economic Impact: Scalable opportunity for future marketplace features.
+[525] Social Impact: Digital transformation of traditional planning processes.
+[527] Dependencies/ External Systems
+[528] Wedify relies on the following external systems and dependencies.
+[529] Dependencies
+[530] Node.js and npm
+[531] Next.js Runtime and Build System
+[532] Purpose: Routing, rendering, and build tooling for the web application.
+[533] Interaction: Executes pages, API routes, and optimized build outputs.
+[535] Image/CDN Providers
+[536] Purpose: Host media assets for galleries and cards.
+[537] Interaction: Frontend loads optimized external image resources.
+[539] Browser Local Storage
+[540] Purpose: Persist favorites, checklist progress, and user preferences.
+[541] Interaction: Read/write lightweight client-side planning state.
+[543] GitHub Repository
+[544] Purpose: Version control and collaboration history.
+[545] Interaction: Tracks commits, review changes, and release snapshots.
+[547] Deployment Platform (Optional)
+[548] Purpose: Production hosting for the Next.js application.
+[549] Interaction: Deploy build artifacts and serve to public users.
+[551] Analytics/Monitoring (Future)
+[552] Purpose: Capture usage insights and reliability metrics.
+[553] Interaction: Provide behavior data for iterative feature improvement.
+[555] Financial/Payment Integration (Future)
+[556] Purpose: Support secure checkout and package booking workflows.
+[557] Interaction: Not integrated in current project scope.
+[558] Related Projects with feature comparison
+[559] This section compares Wedify with existing wedding discovery platforms.
+[560] Related Projects
+[561] References considered for concept and feature benchmarking.
+[563] WeddingWire
+[564] Purpose: Global wedding vendor and planning directory.
+[565] Examples: Venue search, vendor discovery, and checklist tools.
+[566] Relevance: Similar concept, but not localized for Lahore-specific packages and context.
+[568] The Knot
+[569] Purpose: Wedding planning platform with registry, vendors, and inspiration content.
+[570] Examples: LabWare, LabCollector, QBench.
+[571] Relevance: LIMS are tailored for laboratory environments, offering functionalities like sample tracking and experiment data management.
+[573] Warehouse Management Systems (WMS)
+[574] Purpose: Oversee warehouse operations, including inventory tracking and order fulfillment.
+[575] Examples: Fishbowl, NetSuite WMS, Manhattan Associates.
+[576] Relevance: WMS focus on the physical movement and storage of goods but may not provide detailed chemical compliance features.
+[578] Chemical Inventory Management Software
+[579] Purpose: Specifically designed to track chemical inventories, ensure safety compliance, and manage hazardous materials.
+[580] Examples: Chemical Safety's EMS, Quartzy, ChemInventory.
+[581] Relevance: These systems offer specialized features like Safety Data Sheet (SDS) management, regulatory reporting, and hazard classification.
+[584] Feature Comparison
+[586] Table 3: Feature comparison of our product with competitors
+[587] Feature / System
+[588] ERP Systems
+[589] LIMS
+[590] WMS
+[591] Chemical Inventory Software
+[592] Primary Focus
+[593] Business Processes
+[594] Laboratory Workflows
+[595] Warehouse Operations
+[596] Chemical Compliance & Tracking
+[597] Chemical Tracking
+[598] Limited
+[599] Moderate
+[600] Limited
+[601] Extensive
+[602] Safety Data Sheet (SDS) Management
+[603] No
+[604] Partial
+[605] No
+[606] Yes
+[607] Regulatory Compliance Reporting
+[608] Limited
+[609] Partial
+[610] No
+[611] Yes
+[612] Hazard Classification
+[613] No
+[614] Partial
+[615] No
+[616] Yes
+[617] Integration with Procurement Systems
+[618] Yes
+[619] Partial
+[620] Yes
+[621] Partial
+[622] Sample Management
+[623] No
+[624] Yes
+[625] No
+[626] No
+[627] Inventory Optimization
+[628] Yes
+[629] No
+[630] Yes
+[631] Partial
+[632] User Training Management
+[633] No
+[634] Partial
+[635] No
+[636] Partial
+[637] Cost
+[638] High
+[639] Moderate to High
+[640] Moderate
+[641] Moderate
+[645] Context Diagram
+[646] The scope [1] description establishes the boundary and connections between the system youâ€™re developing and everything else in the universe. The context diagram visually illustrates this boundary. It identifies external entities (also called terminators) outside the system that interface to it in some way, as well as data, control, and material flows between the terminators and the system. The context diagram is the top level in a data flow diagram developed according to the principles of structured analysis.
+[647] Figure below illustrates a portion of the context diagram for the Wedify Wedding Planning System. The entire system is depicted as a single circle; the context diagram deliberately provides no visibility into the systemâ€™s internal objects, processes, or data. The â€œsystemâ€ inside the circle could encompass any combination of software, hardware, and human components. Therefore, it could include manual operations as part of the entire system. The external entities in the rectangles can represent user classes (Chemist, Buyer), organizations (Health and Safety Department), other systems (Training Database), or hardware devices (Bar Code Reader). The arrows on the diagram represent the flow of data (such as a request for a chemical) or physical items (such as a chemical container) between the system and its external entities.1
+[651] Figure 1: Context Diagram - Wedify Wedding Planning System[1]
+[652] Data Flow Diagram Level 0
+[653] Identifies actual data flows and data stores
+[654] DFDs[1] provide a big-picture view of how data moves through a system, which other models donâ€™t show well. Various people and systems execute processes that use, manipulate, and produce data. Other diagram canâ€™t show you the full life cycle of a piece of data. Multiple pieces of data might be pulled together and transformed by a process (for example, shopping cart contents plus shipping information plus billing information are transformed into an order object).
+[655] You areexplaining the context diagram into a level 0 DFD which partitions the system into its major processes. Following Figure shows a partial level 0 DFD for the Wedify Wedding Planning System.1
+[657] Figure 2: Data Flow Diagram - Chemical Tracking System[1]
+[659] The single circle that represented the entire Wedify Wedding Planning System on the context diagram has been subdivided into six major processes (the process bubbles). As with the context diagram, the external entities are shown in rectangles. All data flows (arrows) from the context diagram also appear on the level 0 DFD. In addition, the level 0 diagram contains several data stores, depicted as a pair of parallel horizontal lines, which are internal to the system and therefore do not appear on the context diagram. A flow from a bubble to a store indicates that data is being placed into the store, a flow out of the store shows a read operation, and a bidirectional arrow between a store and a bubble indicates an update operation.
+[660] Each process that appears as a separate bubble on the level 0 diagram can be further expanded into a separate DFD to reveal more detail about its functioning
+[661] Requirements analysis
+[662] List of Actors
+[663] Actors are defined according to Wedify system boundaries and user interactions.
+[664] Each actor listed here maps to stakeholder roles and corresponding user stories.
+[665] Actors
+[666] User/Family Planner: explores venues, compares options, and plans budget.
+[667] Client: saves favorites, tracks checklist, and views recommendations.
+[668] Visitor: browses basic listings and project content without deep planning actions.
+[669] Admin (future): maintains listings, validates content, and updates live pricing data.
+[670] Search Engine: indexes public pages for discoverability.
+[671] Partner Vendors: provide service data and receive leads through listing visibility.
+[672] Product Backlog
+[673] The Wedify product backlog was derived from core wedding planning user journeys.
+[674] It includes discovery, planning, comparison, and decision-support features.
+[675] Backlog Concepts
+[678] Figure 3: Epic vs User Story in Product Backlog [1]
+[681] Sprint:
+[682] In Agile project management, a sprint is a fixed-length period during which a team works to complete a set of tasks and deliver a potentially shippable increment of product. Sprints are typically one to four weeks long, but two to three weeks is a common duration.
+[683] Epic:
+[684] An epic is a user story that is too large to fully implement in a single iteration. Its a multi-sprint project goal or a broad area of functionality that requires significant development effort.  Because epics span iterations, they must be split into sets of smaller stories. Sometimes epics are large enough that they must be subdivided into multiple epics, each of which is then split into multiple stories until each resulting story can be reliably estimated and then implemented and tested within a single iteration. Breaking epics down into smaller epics and then into user stories is often referred to as story decomposition
+[685] Scope:
+[686] Covers multiple releases or iterations and often spans across several teams.
+[687] Purpose:
+[688] Provides a high-level overview of the project and helps in prioritizing and planning the release.
+[689] Example:
+[690] Example: Implement venue discovery and budget planning functionality.
+[691] Feature:
+[692] A specific piece of functionality or a deliverable within an Epic that provides value to the user.
+[693] Scope:
+[694] Smaller than an Epic and can be developed and released in a single iteration.
+[695] Purpose:
+[696] Breaks down the Epic into manageable chunks and guides the development process.
+[697] Example:
+[698] Example: Venue listing page, vendor page, calculator page, and comparison page.
+[699] User Story:
+[700] A user story is a â€œshort, simple description of a feature told from the perspective of the person who desires the new capability, usually a user or customer of the systemâ€. User stories are sized so as to be fully implementable in a single iteration. Each completed user story iteratively builds the feature. User stories often are written according to the following template, although other styles also are used:
+[701] As a <type of user>, I want <some goal> so that <some reason OR Benefit>.
+[702] Scope:
+[703] The smallest unit of work that can be delivered within a sprint.
+[704] Purpose:
+[705] Captures the requirements of a feature in a way that is easy for developers to understand and implement.
+[706] Example:
+[707] Example: As a user, I want to compare venues so that I can choose the best option for my event.
+[710] Acceptance Criteria
+[711] A set of conditions or rules that a user story must satisfy to be considered "done" and accepted by the product owner.
+[712] Purpose:
+[713] To define what success looks like for a user story.
+[714] Written by:
+[715] Usually written by the product owner, sometimes with input from QA and developers.
+[716] Format:
+[717] Often in plain language or BDD style (Given-When-Then).
+[718] Example:
+[719] User Story: As a user, I want to save favorite venues so I can revisit them quickly.
+[720] Acceptance Criteria:
+[721] The user can add a venue to favorites from listing and details pages.
+[722] Favorites persist after page refresh using local storage.
+[723] The favorites list supports remove action and updates instantly.
+[724] The favorites page displays all selected items with key details.
+[726] Story Point:
+[727] In Agile, story points are a relative unit of measurement used to estimate the effort required to complete a user story or other piece of work. They are not time-based but rather represent the complexity and effort relative to other items on the backlog.
+[728] Key aspects of story points range in Agile:
+[729] Relative, not absolute:
+[730] Story points are assigned relative to other tasks, meaning a story with 2 points is roughly twice as complex as a story with 1 point.
+[731] No specific time value:
+[732] Story points don't directly equate to hours or days; they represent a degree of effort or complexity.
+[733] Common scales:
+[734] Teams often use scales like Fibonacci (1, 2, 3, 5, 8, 13...)
+[735] Benefits:
+[736] Story points help teams estimate work, plan sprints, and manage expectations, rather than focusing on individual time estimates.
+[738] Backlog grooming:
+[739] It is a process where the product owner and development team collaboratively review and refine the product backlog. It is a crucial practice in Agile project management that involves regularly updating and refining the product backlog. It focuses on ensuring the backlog is well-defined, prioritized, and ready for upcoming sprint cycles, ultimately contributing to a more efficient and effective development process.
+[740] This includes activities like:
+[741] Refining user stories: Making sure they are clear, concise, and easy to understand.
+[742] Breaking down large items: Dividing complex tasks into smaller, more manageable units.
+[743] Estimating effort: Assessing how much work each item will require.
+[744] Prioritizing items: Determining which tasks should be tackled first.
+[745] Adding new items: Incorporating newly discovered requirements or features.
+[746] Removing outdated items: Eliminating items that are no longer relevant.
+[747] Why it's important:
+[748] Improves sprint planning:
+[749] A well-groomed backlog allows the team to effectively plan and execute sprints.
+[750] Enhances collaboration:
+[751] The process promotes communication and collaboration between the product owner and development team.
+[752] Increases predictability:
+[753] By refining the backlog, the team can better predict the scope and effort required for upcoming sprints.
+[754] Keeps the backlog up-to-date:
+[755] Ensures the backlog reflects the latest needs and priorities of the product.
+[756] Benefits:
+[757] Increased velocity:
+[758] By optimizing the backlog, the team can work more efficiently and deliver more value.
+[759] Reduced risk:
+[760] A well-defined backlog helps to minimize the risk of scope creep and delays.
+[761] Improved team morale:
+[762] When the team understands what they are working on and why, they are more motivated and engaged
+[764] Sub-sections below represent Wedify epics with representative user stories.
+[765] Venue Discovery
+[766] PB-ID
+[767] User Story
+[768] Priority
+[769] Acceptance Criteria
+[770] Story Points
+[771] Status
+[772] VD-01
+[773] As a user, I can browse venues by area so that I can shortlist nearby options.
+[774] High
+[775] - Area filter updates venue cards correctly and quickly.
+[776] 3
+[777] Pending
+[778] VD-02
+[779] As a user, I can open a venue detail page so that I can evaluate amenities and pricing.
+[780] Medium
+[781] - Detail page shows capacity, ratings, amenities, and package ranges.
+[782] 2
+[783] Pending
+[784] VD-03
+[785] As a user, I can search venues by name so that I can find options quickly.
+[786] High
+[787] - Search returns relevant results for typed keywords.
+[788] 3
+[789] Pending
+[790] VD-04
+[791] As a user, I can sort venues by price, rating, or capacity so that I can prioritize options.
+[792] High
+[793] - Sorting controls reorder the listing accurately.
+[794] 5
+[795] Pending
+[796] VD-05
+[797] As a user, I can view featured venues on home page so that I can quickly discover top picks.
+[798] Medium
+[799] - Featured section renders curated venue cards with working links.
+[800] 3
+[801] Pending
+[803] Account and Preferences
+[804] ID
+[805] User Story
+[806] Priority
+[807] Acceptance Criteria
+[808] Story Points
+[809] Status
+[810] AP-01
+[811] As a user, I can save favorite venues so that I can review them later.
+[812] High
+[813] - Favorite toggle works and persists data in local storage.
+[814] 3
+[815] Pending
+[816] AP-02
+[817] As a user, I can maintain a comparison shortlist so that I can evaluate options side by side.
+[818] Medium
+[819] - Compare list add/remove actions are reflected on comparison page.
+[820] 2
+[821] Pending
+[822] AP-03
+[823] As a user, I can set my wedding date so that I can track countdown and planning urgency.
+[824] High
+[825] - Date modal stores selected date and shows countdown widget.
+[826] 3
+[827] Pending
+[828] AP-04
+[829] As a user, I can view recently viewed venues so that I can revisit my exploration history.
+[830] High
+[831] - Recently viewed list updates and remains available in context state.
+[832] 5
+[833] Pending
+[834] AP-05
+[835] As a user, I can receive in-app notifications so that I can track actions and confirmations.
+[836] Medium
+[837] - Notification toast appears on key actions.
+[838] 3
+[839] Pending
+[840] AP-06
+[841] As a user, I can access favorites page directly so that I can finalize shortlists efficiently.
+[842] Medium
+[843] Favorites page displays all saved venues.
+[844] 3
+[845] Pending
+[848] Budget Planning
+[849] ID
+[850] User Story
+[851] Priority
+[852] Acceptance Criteria
+[853] Story Points
+[854] Status
+[855] BP-01
+[856] As a user, I can enter guest count and event preferences so that I can estimate total cost.
+[857] High
+[858] - Calculator updates category totals and grand total in real time.
+[859] 5
+[860] Pending
+[861] BP-02
+[862] As a user, I can choose decor and service packages so that I can align budget with style.
+[863] Medium
+[864] - Selected packages are reflected in cost breakdown.
+[865] 3
+[866] Pending
+[867] BP-03
+[868] As a user, I can view per-head estimates so that I can compare affordability across options.
+[869] Medium
+[870] - Per-head value is calculated and displayed accurately.
+[871] 3
+[872] Pending
+[873] BP-04
+[874] As a user, I can include contingency and tax assumptions so that estimates are realistic.
+[875] Medium
+[876] - Extra cost percentages are configurable and included in totals.
+[877] 3
+[878] Pending
+[880] Comparison and Favorites
+[881] ID
+[882] User Story
+[883] Priority
+[884] Acceptance Criteria
+[885] Story Points
+[886] Status
+[887] CF-01
+[888] As a user, I can compare selected venues side by side so that I can make final decisions faster.
+[889] High
+[890] - Compare page shows key attributes for each selected venue.
+[891] 3
+[892] Pending
+[893] CF-02
+[894] As a user, I can remove items from compare list so that I can keep only relevant options.
+[895] High
+[896] - Remove action updates compare list and UI immediately.
+[897] 8
+[898] Pending
+[899] CF-03
+[900] As a user, I can inspect live price snapshots so that I can make timely budget decisions.
+[901] Medium
+[902] - Live price API endpoint responds with structured price data.
+[903] 5
+[904] Pending
+[905] CF-04
+[906] As a user, I can keep favorites and comparison aligned so that shortlisting remains consistent.
+[907] High
+[908] - Favorite and compare controls operate independently without state conflicts.
+[909] 3
+[910] Pending
+[911] CF-05
+[912] As a user, I can revisit shortlisted items from dedicated pages so that finalization is easier.
+[913] High
+[914] - Dedicated pages render complete shortlist data.
+[915] 5
+[916] Pending
+[917] CF-06
+[918] As a family planner, I can share shortlisted options with stakeholders for group decision-making.
+[919] High
+[920] - Shortlist view supports clear visual comparison.
+[921] 5
+[922] Pending
+[923] CF-07
+[924] As a user, I can combine filters with comparison actions for efficient decision workflows.
+[925] High
+[926] - Filtered selection can be added to compare without UI errors.
+[927] 5
+[928] Pending
+[929] Vendor Marketplace
+[930] ID
+[931] User Story
+[932] Priority
+[933] Acceptance Criteria
+[934] Story Points
+[935] Status
+[936] VM-01
+[937] As a user, I can browse vendor categories so that I can find required services quickly.
+[938] High
+[939] - Vendors are grouped into meaningful categories.
+[940] 3
+[941] Pending
+[942] VM-02
+[943] As a user, I can view vendor profiles so that I can evaluate offerings and contact details.
+[944] Medium
+[945] - Profile cards show services, ratings, and contact channels.
+[946] 4
+[947] Pending
+[948] VM-03
+[949] As a user, I can compare vendor options by category so that I can choose suitable partners.
+[950] Medium
+[951] - Vendor list supports category-level exploration and filtering.
+[952] 5
+[953] Pending
+[956] Checklist and Timeline
+[957] ID
+[958] User Story
+[959] Priority
+[960] Acceptance Criteria
+[961] Story Points
+[962] Status
+[963] CT-01
+[964] As a user, I can mark checklist items complete so that I can track progress.
+[965] High
+[966] - Checklist item states update and persist correctly.
+[967] 3
+[968] Pending
+[969] CT-02
+[970] As a user, I can review pending tasks so that I can prioritize upcoming work.
+[971] Medium
+[972] - Pending and completed states are clearly differentiated.
+[973] 2
+[974] Pending
+[975] CT-03
+[976] As a user, I can open planning tools from home page shortcuts so that I can navigate quickly.
+[977] Medium
+[978] - Quick access links route correctly to checklist and related pages.
+[979] 3
+[980] Pending
+[981] VC-04
+[982] As a client, I can set a mode on the videos so that one begins as the previous one finishes so that I can watch without having to touch my keyboard, mouse or screen.
+[983] Medium
+[984] - Auto-play feature is available.- Users can enable/disable auto-play.
+[985] 3
+[986] Pending
+[988] Testimonials and Reviews
+[989] ID
+[990] User Story
+[991] Priority
+[992] Acceptance Criteria
+[993] Story Points
+[994] Status
+[995] CP-01
+[996] As a client, I can earn a certificate of completion by finishing a venue so that I have proof that I completed a venue.
+[997] High
+[998] - Certificates are auto-generated.- Users can download or share certificates.
+[999] 5
+[1000] Pending
+[1001] CP-02
+[1002] As a client, I can earn a badge showing that I completed a venue so that I can display that badge on my own website.
+[1003] Medium
+[1004] - Badge is displayed upon completion.- Users can embed the badge externally.
+[1005] 3
+[1006] Pending
+[1007] Miscellaneous
+[1008] ID
+[1009] User Story
+[1010] Priority
+[1011] Acceptance Criteria
+[1012] Story Points
+[1013] Status
+[1014] MS-01
+[1015] As a site visitor, I can read an FAQ so that all my questions are answered.
+[1016] Low
+[1017] - FAQ page is accessible.- Common questions and answers are listed.
+[1018] 2
+[1019] Pending
+[1020] MS-02
+[1021] As a search engine, I can view a site map so that all pages are indexed.
+[1022] Low
+[1023] - Site map is dynamically generated.- Search engines can crawl the site.
+[1024] 2
+[1025] Pending
+[1026] MS-03
+[1027] As a site visitor, I can sign up for a newsletter so that I get announcements about new venues and other information.
+[1028] Medium
+[1029] - Users can subscribe/unsubscribe.- Emails are sent on schedule.
+[1030] 3
+[1031] Pending
+[1032] MS-07
+[1033] As a client, I want the site to save my progress in a quiz or video in case I lose connection so that I donâ€™t have to start over.
+[1034] High
+[1035] - Progress is saved every few minutes.- Users can resume quizzes or videos from where they left off.
+[1036] 4
+[1037] Pending
+[1038] MS-08
+[1039] As a site visitor, I can access a help center with guides and FAQs so that I can quickly resolve common issues.
+[1040] Medium
+[1041] - Help center includes guides, FAQs, and contact support.- Users can search for help topics.
+[1042] 3
+[1043] Pending
+[1045] Forms
+[1046] ID
+[1047] User Story
+[1048] Priority
+[1049] Acceptance Criteria
+[1050] Story Points
+[1051] Status
+[1052] FO-01
+[1053] As a client, I can participate in a forum for a venue so that I can discuss questions and topics with the user and other clients.
+[1054] Medium
+[1055] - Forums are enabled per venue.- clients and users can post and reply.
+[1056] 4
+[1057] Pending
+[1060] Announcements
+[1061] ID
+[1062] User Story
+[1063] Priority
+[1064] Acceptance Criteria
+[1065] Story Points
+[1066] Status
+[1067] AN-01
+[1068] As an user, I can post announcements to a project 'home page' for a Scheduled venue so that I can tell clients about important things such as 'Iâ€™m delayed in posting chapter 7.'
+[1069] Medium
+[1070] - users can create and edit announcements.- Announcements are displayed to clients.
+[1071] 3
+[1072] Pending
+[1073] AN-02
+[1074] As a client, I can read announcements from an user for a Scheduled venue so that I can keep up to date on news.
+[1075] Medium
+[1076] - clients can view announcements.- Announcements are clearly visible on the venue home page.
+[1077] 2
+[1078] Pending
+[1080] Quizzes
+[1081] ID
+[1082] User Story
+[1083] Priority
+[1084] Acceptance Criteria
+[1085] Story Points
+[1086] Status
+[1087] QZ-01
+[1088] As an user, I can create quizzes so that clients can assess their learning.
+[1089] High
+[1090] - user can add/edit quizzes.- clients can take quizzes and get scores.
+[1091] 5
+[1092] Pending
+[1093] QZ-02
+[1094] As a client, I can take a quiz as part of a venue so that I can get feedback on how well I learned material in the previous video(s).
+[1095] High
+[1096] - Quiz submission and auto-scoring work.- Feedback is displayed upon completion.
+[1097] 5
+[1098] Pending
+[1099] QZ-05
+[1100] As a client, I can navigate a quiz by submitting an answer or by pressing skip (forward) or back so that I can answer questions in a different order if Iâ€™d like.
+[1101] Medium
+[1102] - Users can navigate back and forth in quizzes.- Answer progress is saved.
+[1103] 3
+[1104] Pending
+[1105] QZ-06
+[1106] As a client, I can get answers via video rather than text so that I watch rather than read an answer.
+[1107] Medium
+[1108] - Video explanations are available for quiz answers.- Users can choose between text or video explanations.
+[1109] 4
+[1110] Pending
+[1111] QZ-07
+[1112] As a client, I want quiz responses stored in the database so that I can see how people are doing at various questions, perhaps so I can fix one that is worded poorly.
+[1113] Medium
+[1114] - Quiz responses are stored and retrievable.- users can analyze response trends.
+[1115] 3
+[1116] Pending
+[1117] QZ-08
+[1118] As a client, I can navigate a quiz by submitting an answer or by pressing skip (forward) or back so that I can answer questions in a different order if Iâ€™d like.
+[1119] Medium
+[1120] - Users can skip or go back to previous questions.- Answered questions remain saved.
+[1121] 3
+[1122] Pending
+[1124] Non-Functional Requirements
+[1125] ID
+[1126] User Story
+[1127] Priority
+[1128] Acceptance Criteria
+[1129] Story Points
+[1130] Status
+[1131] NFR-01
+[1132] As a visitor, I want to be able to view the site and videos in any reasonable browser so that I can use what Iâ€™m accustomed to.
+[1133] High
+[1134] - The site is compatible with major browsers.- Videos play correctly across devices.
+[1135] 5
+[1136] Pending
+[1139] Affiliates
+[1140] ID
+[1141] User Story
+[1142] Priority
+[1143] Acceptance Criteria
+[1144] Story Points
+[1145] Status
+[1146] AF-01
+[1147] As a partner company, I would like to provide links to https://livex.tech and get paid for referring people to the site so that I can become part of the 1%.
+[1148] Medium
+[1149] - Affiliate tracking system is functional.- Payments are correctly processed.
+[1150] 3
+[1151] Pending
+[1152] AF-02
+[1153] As a partner company, I can embed https://livex.tech/ (free ones only) on my site so that people can enjoy those videos on my site, , possibly giving me affiliate revenue but possibly just being about putting good content on my site.
+[1154] Medium
+[1155] - Embedded video support for affiliates.- Free content is available for sharing.
+[1156] 3
+[1157] Pending
+[1160] Comments
+[1161] ID
+[1162] User Story
+[1163] Priority
+[1164] Acceptance Criteria
+[1165] Story Points
+[1166] Status
+[1167] CM-01
+[1168] As a client, I can leave a comment about a venue so that I can tell the world what I think of it.
+[1169] Medium
+[1170] - clients can post comments.- Comments are moderated and displayed correctly.
+[1171] 3
+[1172] Pending
+[1173] CM-02
+[1174] As an user, I can leave a comment about a sample video or the venue so that I can respond to other comments.
+[1175] Medium
+[1176] - users can reply to comments.- Comments are visible and properly threaded.
+[1177] 3
+[1178] Pending
+[1182] venue Evaluation
+[1183] ID
+[1184] User Story
+[1185] Priority
+[1186] Acceptance Criteria
+[1187] Story Points
+[1188] Status
+[1189] CE-01
+[1190] As a client, I am shown an evaluation form after completing a venue so that I can tell https://livex.tech/ what I think of their classes and their trainers.
+[1191] Medium
+[1192] - Evaluation form appears after venue completion.- Users can submit feedback and ratings.
+[1193] 3
+[1194] Pending
+[1195] CE-02
+[1196] As an user, I can view all feedback for a venue when logged in so that I can see historical or aggregate data on my venues.
+[1197] Medium
+[1198] - users can access feedback reports.- Data is aggregated for trend analysis.
+[1199] 3
+[1200] Pending
+[1201] CE-03
+[1202] As an user, I can opt into receiving an email of every venue evaluation as it is completed by a client so that I get real-time feedback on my venues.
+[1203] Medium
+[1204] - users receive email notifications of evaluations.- Emails contain full evaluation details.
+[1205] 3
+[1206] Pending
+[1207] CE-04
+[1208] As an user, I can export all feedback for a venue to a CSV file so that I can perform more in-depth analysis.
+[1209] Medium
+[1210] - Feedback export feature is available.- CSV file contains all evaluation data.
+[1211] 3
+[1212] Pending
+[1214] Reporting
+[1215] ID
+[1216] User Story
+[1217] Priority
+[1218] Acceptance Criteria
+[1219] Story Points
+[1220] Status
+[1221] RP-01
+[1222] As a site owner, I receive a periodic email summarizing registrations for the day, week, and month to date so that I know how weâ€™re doing.
+[1223] Medium
+[1224] - Summary email includes registration statistics.- Admin can configure email frequency.
+[1225] 3
+[1226] Pending
+[1227] RP-02
+[1228] As a trainer, I receive a periodic sales summary at the frequencies I select so that I know how my venues are doing.
+[1229] Medium
+[1230] - Trainers receive periodic reports.- Report frequency is configurable.
+[1231] 3
+[1232] Pending
+[1233] RP-06
+[1234] As a trainer, I can generate reports on client progress so that I can monitor their learning outcomes.
+[1235] Medium
+[1236] - Reports include client scores and completion status.- Trainers can filter reports by date or venue.
+[1237] 4
+[1238] Pending
+[1239] RP-03
+[1240] As a sys admin, I can run any report a trainer can run so that I can see overall information for any trainer on the site.
+[1241] Medium
+[1242] - Sys admins have report access.- Data is exportable and properly formatted.
+[1243] 3
+[1244] Pending
+[1247] Figma UI/UX Designs
+[1248] Initial mockup screens will be inserted here. Each screen will be given an appropriate prototype id.e.g.
+[1249] Link of Figma Designs:
+[1250] The original Figma designs can be see at the following link. You need to share your Figma link as well like this one.
+[1251] https://www.figma.com/community/file/1404410418143924515/venuehub-university-online-venues-school-education-figma-template
+[1253] Figure 4: Prototype - PID1- Sign Up Page UI
+[1255] Figure 5: Prototype - PID2- Sign In Page UI
+[1258] Figure 6: Prototype - PID3- Home Page UI  Partial
+[1261] Figure 7: Prototype - PID4- venue Listing Page
+[1264] Figure 8: Prototype - PID5- venue Details Page
+[1266] Figure 9: Prototype - PID6- Cart Page
+[1270] Figure 10: Prototype - PID7- Checkout Page
+[1272] Figure 11: Prototype - PID8- user Registration Page
+[1274] Figure 12: Prototype - PID9- user Listing Page
+[1278] Figure 13: Prototype - PID10- user Detail Page
+[1280] Figure 14: Prototype - PID11- Student Registration Page
+[1283] Figure 15: Prototype - PID12- Pricing Page
+[1286] Figure 16: Prototype - PID13- Event Listing Page
+[1289] Figure 17: Prototype - PID14- Event Detail Page
+[1293] Figure 18: Prototype - PID14- 404 Page
+[1296] Figure 19: Prototype - PID14- FAQs Page
+[1298] Project Planning and Execution using Sprints
+[1299] Jira
+[1300] Students would provide the link and credentials of their Jira project management credentials where they are managing their epics, stories and tasks
+[1301] Slack
+[1302] Students would provide the linkand credentials of their slack communication management where they would be managing their project communication.
+[1303] Github Repository
+[1304] Students would provide the linkand credentials of their Github repo where they would be maintaining their code Baselines.
+[1305] Sprint 1
+[1306] The goal of the first Sprint is to implement core functionalities including user authentication, dashboard, and profile management.
+[1308] Sprint 1 Planning Meeting Minutes
+[1309] Project Name: LIVEX UMT
+[1310] Sprint Name: Sprint 1 â€“ Initial Setup & Core Architecture
+[1311] Sprint Duration: April 25, 2024 â€“ May 25, 2024 (4 weeks)
+[1312] Meeting Date: April 24, 2024
+[1313] Facilitated by: FYP Supervisor. Product Owner
+[1314] Attendees: Asif, Zainab, Ambreen, Suleiman
+[1316] Backlog Items with high priority, high risk and Architecturaly Significant:The following features are extracted from Product Backlog
+[1317] Table 4: Selected Features of Product Backlog
+[1318] PB-ID
+[1319] User Story
+[1320] Priority
+[1321] Acceptance Criteria
+[1322] Story Points
+[1323] Status
+[1324] AM-01
+[1325] As an user, I can create a description of a venue so that prospective clients can learn about it.
+[1326] High
+[1327] - user can add/edit a venue description.- venue description is saved and displayed correctly.
+[1328] 3
+[1329] Pending
+[1330] AM-02
+[1331] As an user, I can sign, login and maintain a bio about myself so that it is used on any venue listing for which Iâ€™m the user.
+[1332] Medium
+[1333] - user can add/update bio.- Bio appears on all relevant venue pages.
+[1334] 2
+[1335] Pending
+[1336] AM-03
+[1337] As a site visitor, I can view a detailed page about each venue so that I can learn all about it.
+[1338] High
+[1339] - venue page displays venue title, description, user bio, and related venues.- Videos and syllabus are visible.
+[1340] 3
+[1341] Pending
+[1342] AM-04
+[1343] As a site visitor, I can browse a catalog of all venues available so that I can pick the right one for me.
+[1344] High
+[1345] - Venue Discovery lists all available venues.- Filter and search functionality work correctly.
+[1346] 5
+[1347] Pending
+[1348] AM-05
+[1349] As a site visitor, I can see a list of other related venues when viewing a venue so that I can see other venues I might be interested in.
+[1350] Medium
+[1351] - Related venues are displayed based on category, user, or tags.
+[1352] 3
+[1353] Pending
+[1354] AM-06
+[1355] As a student, I can Sign up, login into the system and see my registered venues (if any).
+[1356] Medium
+[1357] venues are displayed
+[1358] 3
+[1359] Pending
+[1362] Team Capacity:
+[1363] Following are the team members and their capacity
+[1365] Table 5: Team Capacity Sprint 1
+[1366] Member
+[1367] Days Available
+[1368] Hours/Day
+[1369] Total Hours
+[1370] Asif
+[1371] 10
+[1372] 6
+[1373] 60
+[1374] Zainab
+[1375] 10
+[1376] 6
+[1377] 60
+[1378] Ambreen
+[1379] 9
+[1380] 5
+[1381] 45
+[1382] Suleiman
+[1383] 8
+[1384] 6
+[1385] 48
+[1387] Action Items before Sprint Starts:
+[1388] Confirm GitHub repo setup â€“ Zainab
+[1389] Share Figma design templates â€“ Ambreen
+[1390] Create and Assign Jira tasks â€“ Asif
+[1391] Share staging server credentials â€“ Suleiman
+[1393] Sprint 1 Backlog
+[1394] The following tasks are extracted from Product Backlog features.
+[1396] Table 6: Sprint 1 Backlog
+[1397] SP-ID
+[1398] Task Name
+[1399] Related Product Backlog ID
+[1400] Assigned To
+[1401] Status
+[1402] Estimated Effort (Hours)
+[1403] Actual Effort (Hours)
+[1404] Comments
+[1405] S1-1
+[1406] Design login page
+[1407] AM-01
+[1408] Asif
+[1409] In Progress
+[1410] 5
+[1411] 1
+[1412] Started it and UI mockup complete,
+[1413] S1-2
+[1414] Implement login API
+[1415] AM-01
+[1416] Zainab
+[1417] In Progress
+[1418] 8
+[1419] 3
+[1420] Testing API on Postman
+[1421] S1-3
+[1422] Develop dashboard UI
+[1423] AM-02
+[1424] Suleiman
+[1425] In Progress
+[1426] 10
+[1427] 4
+[1428] Working on React component
+[1429] S1-4
+[1430] Integrate backend with dashboard
+[1431] AM-02
+[1432] Ambreen
+[1433] In Progress
+[1434] 8
+[1435] 4
+[1436] Half work done
+[1437] S1-5
+[1438] Develop profile update feature
+[1439] AM-03
+[1440] Zainab
+[1441] In Progress
+[1442] 6
+[1443] 1
+[1444] Just started on profile update feature
+[1445] S1-6
+[1446] Test profile management module
+[1447] AM-03
+[1448] Zainab
+[1449] Pending
+[1450] 4
+[1451] 1
+[1452] Designing UI, rest depends on update profile
+[1453] S1-7
+[1454] Create notification templates
+[1455] AM-04
+[1456] Asif
+[1457] In Progress
+[1458] 5
+[1459] 3
+[1460] 7 out of 10 templates created
+[1461] S1-8
+[1462] Develop notification service
+[1463] AM-04
+[1464] Asif
+[1465] Pending
+[1466] 7
+[1467] 2
+[1468] Notification mechanism done but rest Depends upon profile management module
+[1469] S1-9
+[1470] Implement file upload feature
+[1471] AM-05
+[1472] Suleiman
+[1473] Pending
+[1474] 8
+[1475] 3
+[1476] Mechanism working but now working on making it secure
+[1477] S1-10
+[1478] Test file upload functionality
+[1479] AM-05
+[1480] Ambreen
+[1481] Pending
+[1482] 5
+[1483] 0
+[1484] Depends upon feature development completion
+[1485] S1-11
+[1486] Set up development environment
+[1487] N/A
+[1488] Asif
+[1489] Complete
+[1490] 2
+[1491] 2
+[1492] Set up is done
+[1493] S1-12
+[1494] Design DB schema for users/venues
+[1495] AM-06, AM-01
+[1496] Zainab
+[1497] In Progress
+[1498] 8
+[1499] 4
+[1500] Almost half tables created
+[1501] S1-13
+[1502] Create static landing page for login and sign up Figma to code Web
+[1503] AM-06, AM-01
+[1504] Suleiman
+[1505] In Progress
+[1506] 4
+[1507] 3
+[1508] Page is almost done.
+[1509] S1-14
+[1510] Draft Budget Planning Figma to code UI
+[1511] AM-01
+[1512] Ambreen
+[1513] In Progress
+[1514] 4
+[1515] 3
+[1516] Figma is almost completed
+[1517] S1-15
+[1518] Setup Git repo and CI pipeline
+[1519] AM-06
+[1520] Zainab
+[1521] In Progress
+[1522] 8
+[1523] 3
+[1524] Working on CI Pipeline is
+[1527] Sprint 1 Design Class Diagram
+[1529] You need to make a class diagram of the features selected from the product backlog and task division mentioned in Sprint Backlog. Following is the sample class diagram of few user stories that were covered in s single sprint. [4]
+[1532] Figure 20: Class diagram of Sprint 1 features[4]
+[1534] Sprint 1 Sequence Diagram
+[1536] You need to give sequence diagrams of all the user stories involved in this sprint. Such as this following is is sample sequence diagram of Point of Sale system [2]user story of making Sales. Its partial diagram showing part of the functionality that is done in this sprint from process sale user story. Sample JAVA code is also given for your reference when we convert this design into code. You donâ€™t need to give code here. Its mentioned here for your reference.[2]
+[1539] Figure 21: Sample Sprint 1Sequence diagram POS 1 [2]
+[1541] public class Sale
+[1542] {
+[1543] private Payment payment;
+[1544] public void makePayment( Money cashTendered )
+[1545] {
+[1546] payment = new Payment( cashTendered );
+[1547] //â€¦
+[1548] }
+[1549] // â€¦
+[1550] }
+[1552] The Order object asks each Order Line object to calculate itsown Price. The Order Line object itself further hands off the calculation to the Product project;note how we show the passing of a parameter. Similarly, to calculate the discount,the Order object invokes a method on the Customer object. Because it needs informationfrom the Order to do this, the Customer makes a reentrant call (getBaseVal ue)to the Order to get the data.
+[1554] Figure 22: Sample Sprint 1Sequence diagram POS[2]
+[1555] Sprint 1 Decision Table
+[1556] A software system is often governed by complex logic, with various combinations of conditions leading to different system behaviors. In such kind of user stories, it is advisable to create decision table in order to better understand possible combinations. Tesers are also advised to develop a separate test case for each possible combinations that check whether system is working fine in all those complex possible combinationss of input and outputs.
+[1557] A sample Figure below shows a decision table for the logic that governs whether the Wedify Wedding Planning System should accept or reject each request for a new chemical. Four factors influence this decision:
+[1558] Whether the user who is creating the request is authorized to request chemicals
+[1559] Whether the chemical is available either in the chemical stockroom or from a vendor
+[1560] Whether the chemical is on the list of hazardous chemicals that require special training in safe handling
+[1561] Whether the user who is creating the request has been trained in handling this type of hazardous chemical.
+[1563] Figure 23: Sample Sprint 1 Decision TableWedify Wedding Planning System
+[1565] Sprint 1 Extended Test Cases
+[1566] Separate Test cases should be made against each user story to test the functionality.
+[1568] Table 7: Sprint 1 Exteneded Test Case
+[1569] Test Case ID: TID1
+[1570] Test Designed By: Ambreen
+[1571] Epic Name and Backlog ID: Account and Preferences AM-06
+[1572] Test Design Date: 17/05/2024
+[1573] Test Priority: High
+[1574] Test Executed by: - Zainab
+[1575] Test Title: Verify Account Creation with Valid Data
+[1576] Test Executed Date: -21/05/2024
+[1577] Description:Make sure a student is easily able to register an account with correct details.
+[1578] Â
+[1579] SeleniumWeb Driver Test created: Yes/No
+[1580] Dependencies: None
+[1581] Step
+[1582] Test Step
+[1583] Test Data
+[1584] Expected Result
+[1585] Actual Result
+[1586] Status
+[1587] 1
+[1588] Select the option to register account.
+[1589] Â
+[1590] The location of the registration form is shown next.
+[1591] It should be noted that these fields shall be filled during testing.
+[1593] Pass
+[1594] 2
+[1595] Enter valid data in the username field, i.e no space, tab, next line or special character allowed
+[1596] Username: Muhammad Usman
+[1600] The username is correct meaning that it is properly typed.
+[1601] Same as the expected result
+[1603] 3
+[1604] Enter valid data in the Email field
+[1605] Email:  usman@gmail.com
+[1607] The valid email address field is being filled appropriately.
+[1608] Same as the expected result
+[1610] 4
+[1611] Enter valid data in the password field, Valid password must be at least 12 characters with at least one capital, one small letter, one number, one special character
+[1612] Password: v$6xTOh1hEk&
+[1613] The password is typed accurately.
+[1614] Same as the expected result
+[1616] 5
+[1617] Click the â€œRegisterâ€ button.
+[1619] The registration information is accepted and processed by the system and a message is shown to the user. System displays the message that a link has been sent on the given email for verification.
+[1620] System displays the message that a link has been sent on the given email for verification.
+[1622] 6
+[1623] Student checks inbox and click on the link provided to Activate the account.
+[1625] The student is redirected to the login page with message shown that account has been activated successfully.
+[1626] The student is redirected to the login page with message shown that account has been activated successfully.
+[1628] Post Condition:
+[1629] A new account is created to be used by a new student.
+[1630] Using the registered e-mail address and password, the student can log in.
+[1634] Sprint 1 Review Meeting
+[1636] Sprint: Sprint 1 â€“ Initial Setup & Core Architecture
+[1637] Review Date: May 25, 2024
+[1638] Duration: 1 hour
+[1639] Facilitator: Product Owner / FYP Supervisor
+[1640] Attendees: Asif, Zainab, Ambreen, Suleiman
+[1642] The following table shows the status of tasks assigned to team members in the Sprint planning meeting.
+[1644] Table 8: Status of Sprint 1 Backlog
+[1645] ID
+[1646] Task Name
+[1647] Related Product Backlog ID
+[1648] Owner
+[1649] Status
+[1650] Notes
+[1651] S1-1
+[1652] Design login page
+[1653] AM-01
+[1654] Asif
+[1655] Completed
+[1656] UI mockup complete,
+[1657] S1-2
+[1658] Implement login API
+[1659] AM-01
+[1660] Zainab
+[1661] Completed
+[1662] Tested API on Postman
+[1663] S1-3
+[1664] Develop dashboard UI
+[1665] AM-02
+[1666] Suleiman
+[1667] Completed
+[1668] React component completed
+[1669] S1-4
+[1670] Integrate backend with dashboard
+[1671] AM-02
+[1672] Ambreen
+[1673] Completed
+[1674] Integration done and tested
+[1675] S1-5
+[1676] Develop profile update feature
+[1677] AM-03
+[1678] Zainab
+[1679] Completed
+[1680] Profile update feature completed
+[1681] S1-6
+[1682] Test profile management module
+[1683] AM-03
+[1684] Zainab
+[1685] Completed
+[1686] Profile management completed
+[1687] S1-7
+[1688] Create notification templates
+[1689] AM-04
+[1690] Asif
+[1691] Completed
+[1692] All 10 templates created
+[1693] S1-8
+[1694] Develop notification service
+[1695] AM-04
+[1696] Asif
+[1697] Completed
+[1698] Notification mechanism done.
+[1699] S1-9
+[1700] Implement file upload feature
+[1701] AM-05
+[1702] Suleiman
+[1703] Completed
+[1704] Mechanism working and secure
+[1705] S1-10
+[1706] Test file upload functionality
+[1707] AM-05
+[1708] Ambreen
+[1709] Completed
+[1710] Tested and working fine.
+[1711] S1-11
+[1712] Set up development environment
+[1713] N/A
+[1714] Asif
+[1715] Completed
+[1716] Environment set up is done and working fine.
+[1717] S1-12
+[1718] Design DB schema for users/venues
+[1719] AM-06, AM-01
+[1720] Zainab
+[1721] Completed
+[1722] DB created with all needed tables.
+[1723] S1-13
+[1724] Create static landing page for login and sign up Figma to code Web
+[1725] AM-06, AM-01
+[1726] Suleiman
+[1727] Completed
+[1728] Page created and delivered
+[1729] S1-14
+[1730] Draft Budget Planning Figma to code UI
+[1731] AM-01
+[1732] Ambreen
+[1733] Completed
+[1734] Pages done and delivered
+[1735] S1-15
+[1736] Setup Git repo and CI pipeline
+[1737] AM-06
+[1738] Zainab
+[1739] Completed
+[1740] Repo is set up and working fine
+[1742] Demo Highlights:
+[1743] User Authentication: Live demo by Asif showing signup/login flow with JWT.
+[1744] CI/CD: Zainab walks through the automated pipeline on GitHub.
+[1745] Landing Page: Ambreen shows the mobile-responsive homepage mockup.
+[1747] Sprint Goal Achievement:
+[1748] All core objectives were completed on time, reviewed, and meet the definition of done.
+[1750] Feedback from Stakeholders:
+[1752] Feedback Source
+[1753] Comments
+[1754] Internal QA (Ambreen)
+[1755] Registration form could use better validation
+[1756] Product Owner (Team consensus)
+[1757] DB schema is clean and extendable
+[1758] Team Feedback
+[1759] CI pipeline documentation was helpful
+[1762] Metrics Overview:
+[1764] Metric
+[1765] Value
+[1766] Committed Story Points
+[1767] 21
+[1768] Completed Story Points
+[1769] 21
+[1770] Carryover Items
+[1771] 0
+[1772] Bugs Reported / Resolved
+[1773] 2 / 2
+[1776] What Went Well:
+[1777] Team collaboration and communication
+[1778] Early setup of CI/CD saved time later
+[1779] Daily standups were effective and focused
+[1781] What Could Be Improved:
+[1782] Need clearer guidelines for UI consistency
+[1783] More thorough test coverage for backend APIs
+[1787] Action Items / Next Steps:
+[1789] Action Item
+[1790] Owner
+[1791] Due Date
+[1792] Implement frontend form validation
+[1793] Ambreen
+[1794] May 30, 2024
+[1795] Add Swagger API docs to backend
+[1796] Asif
+[1797] May 30, 2024
+[1798] Create new UI component styles
+[1799] Zainab
+[1800] May 30, 2024
+[1802] Wrap-up
+[1803] Team to move into Sprint 2 focused on venue Management features.
+[1804] Next planning meeting scheduled for May26, 2024.
+[1806] Sprint 1 Retrospective Meeting
+[1808] Sprint: Sprint 1 â€“ Initial Setup & Core Architecture
+[1809] Retrospective Date: May 25, 2024
+[1810] Duration: 1 hour
+[1811] Facilitator: Product Owner /FYP Supervisor
+[1812] Attendees: Asif, Zainab, Ambreen, Suleiman
+[1814] Sprint Overview
+[1815] Goal: Establish the foundational architecture of the MOOC platform and implement user authentication module.
+[1816] Sprint Duration:April 25, 2024 â€“ May 25, 2024 (4 weeks)
+[1818] What Went Well
+[1819] Successful implementation of authentication with JWT
+[1820] CI/CD pipeline setup early and was stable
+[1821] Team was responsive and collaborative during standups
+[1822] Clean database schema laid a strong foundation
+[1824] What Didnâ€™t Go Well
+[1826] UI validation rules were inconsistent across components
+[1827] Test coverage was minimal due to time constraints
+[1828] Ambiguity in acceptance criteria for some stories
+[1830] Suggestions for Improvement
+[1832] Create a shared UI component style guide
+[1833] Include test case planning in story grooming sessions
+[1834] Improve story definitions and add clearer acceptance criteria
+[1835] Use pair programming for complex backend logic
+[1839] Action Items:
+[1841] Action Item
+[1842] Owner
+[1843] Due Date
+[1844] Draft UI component style guide
+[1845] Zainab
+[1846] May 30, 2024
+[1847] Add test planning checklist to grooming doc
+[1848] Ambreen
+[1849] May 30, 2024
+[1850] Refine story templates with clearer definitions
+[1851] Suleiman
+[1852] May 30, 2024
+[1855] Team Health Check:
+[1857] Team morale:  Good
+[1858] Communication: Effective
+[1859] Tools and resources: Sufficient but can improve in UI design guidance
+[1861] Wrap-up:
+[1862] Team expressed overall satisfaction with the sprint outcomes and is aligned on areas of improvement. Looking forward to Sprint 2.
+[1864] System Architecture
+[1865] The Wedify architecture follows a modular web application model aligned with C4 principles.
+[1866] System Context Diagram
+[1867] The context diagram places Wedify between end users, vendor data sources, and optional deployment/monitoring systems.
+[1868] At this level, focus is on actors and external systems rather than low-level protocols.
+[1869] Reference: https://c4model.com/
+[1872] Figure 24: Wedify System Context Diagram
+[1874] System Container Diagram
+[1876] Wedify containers include Next.js frontend, API route layer, data modules, and browser local storage.
+[1878] The container view explains responsibilities, technology choices, and communication paths.
+[1879] Reference: https://c4model.com/
+[1881] Figure 25: Wedify Container Diagram
+[1885] Component Diagram
+[1887] Major components include Navbar, MarqueeCard, VendorCard, CompareButton, FavoriteButton, and calculator modules.
+[1888] Component interactions are coordinated through page composition and context-based state management.
+[1889] Reference: https://c4model.com/
+[1893] Figure 26: Wedify Component Diagram
+[1897] Code Diagrams
+[1898] Code-level structure is represented through page routing, reusable components, and context/provider flow.
+[1899] The focus is on maintainability, low coupling, and reusable UI modules.
+[1900] Reference: https://c4model.com/
+[1903] Figure 27: Wedify Code-Level Structure
+[1908] ERD
+[1909] Wedify conceptual entities include Venue, Vendor, Testimonial, UserPreference, and ChecklistItem.
+[1910] Venue stores name, area, capacity, rating, and pricing ranges.
+[1911] Vendor stores category, services, rating, and contact information.
+[1912] UserPreference stores favorites, compare list, and selected planning options.
+[1913] ChecklistItem tracks planning tasks and completion status.
+[1914] Relationships are designed to support discovery, planning, and decision workflows.
+[1916] Figure 28: Wedify ER Diagram
+[1917] Uniqueness is maintained using IDs and slugs for deterministic routing and retrieval.
+[1918] Venue slugs remain unique across the application.
+[1919] Vendor entries are category-grouped with unique IDs.
+[1920] Checklist items carry unique identifiers for reliable update operations.
+[1921] Data Dictionary
+[1922] The data dictionary defines fields, value types, and usage constraints for all entities used by Wedify.
+[1923] The following data dictionary artifacts correspond to Wedify modules and datasets.
+[1926] Figure 29: Wedify Data Dictionary
+[1928] Implementation details
+[1929] Development Setup
+[1930] Tools: Next.js 14, React 18, Tailwind CSS, Lucide React, JavaScript, VS Code, GitHub.
+[1931] Deployment setup
+[1932] The application runs locally on Node.js using npm scripts and can be deployed to a Node-compatible hosting platform.
+[1933] Algorithms
+[1934] Key algorithms include multi-filter venue search, budget aggregation logic, and local state persistence routines.
+[1935] Constraints
+[1936] Assumptions
+[1937] Assumption: Users access the platform through modern browsers with JavaScript enabled.
+[1938] Assumption: Data modules are periodically maintained with updated local market values.
+[1939] Assumption: Initial release targets Lahore market requirements only.
+[1940] Assumption: User personalization is managed client-side in current scope.
+[1941] Assumption: Booking/payment integrations are deferred to future versions.
+[1942] System constraints
+[1943] Constraints include static/semi-static data sources, no authentication module, and no live booking workflow in V1.
+[1944] Restrictions
+[1945] Restrictions are defined by timeline, available APIs, and academic project boundaries.
+[1946] Limitations
+[1947] Limitations include absence of real-time vendor availability and advanced analytics in the current release.
+[1948] Project Monitoring, control and traceability
+[1950] Traceability Matrix
+[1951] Requirements vs Prototype (PB-ID vs PID)
+[1952] PB-ID mapped to implemented prototype modules
+[1953] PID1
+[1954] PID2
+[1955] PID3
+[1956] PID4
+[1957] PID5
+[1958] PID6
+[1959] PID7
+[1960] PID8
+[1961] PID9
+[1962] PID10
+[1963] PID11
+[1964] PID12
+[1965] PID13
+[1966] PID14
+[1967] PID15
+[1968] PID16
+[1969] PID17
+[1970] PID18
+[1971] PID19
+[1972] PID20
+[1973] CC01
+[1994] CC02
+[2015] CC03
+[2036] CC04
+[2057] CC05
+[2078] CC06
+[2099] CC07
+[2120] CC08
+[2141] CC09
+[2162] BC-01
+[2183] BC-02
+[2204] BC-03
+[2225] BC-04
+[2246] BC-05
+[2267] BC-06
+[2288] BC-07
+[2309] BC-08
+[2330] BC-09
+[2351] BC-10
+[2372] LA-01
+[2393] LA-02
+[2415] Requirements vs Test Cases (PB-ID vs TID)
+[2417] PB-ID vsTID
+[2418] TID1
+[2419] TID2
+[2420] TID3
+[2421] TID4
+[2422] TID5
+[2423] TID6
+[2424] TID7
+[2425] TID8
+[2426] TID9
+[2427] TID10
+[2428] TID11
+[2429] TID12
+[2430] TID13
+[2431] TID14
+[2432] TID15
+[2433] TID16
+[2434] TID17
+[2435] TID18
+[2436] TID19
+[2437] TID20
+[2438] CC01
+[2459] CC02
+[2480] CC03
+[2501] CC04
+[2522] CC05
+[2543] CC06
+[2564] CC07
+[2585] CC08
+[2606] CC09
+[2627] BC-01
+[2648] BC-02
+[2669] BC-03
+[2690] BC-04
+[2711] BC-05
+[2732] BC-06
+[2753] BC-07
+[2774] BC-08
+[2795] BC-09
+[2816] BC-10
+[2837] LA-01
+[2858] LA-02
+[2880] Results/Output/Statistics
+[2881] %completion: 90% functional scope completed with all core modules integrated.
+[2882] Evidence is mapped through backlog-to-module traceability matrix.
+[2883] %accuracy: 90%+ based on manual verification of calculator, filters, and state workflows.
+[2884] Validation performed through targeted test cases for primary user journeys.
+[2886] %correctness: Core requirements conform to expected behavior in local test runs.
+[2887] All critical routes and planning flows were tested against acceptance criteria.
+[2888] Conclusion: Wedify delivers a practical and maintainable wedding planning solution for local users.
+[2889] Conclusion
+[2890] Future work includes authentication, booking/payment, AI recommendations, and vendor dashboards.
+[2891] Bibliography
+[2892] Citations are organized in IEEE-style formatting.
+[2893] Books
+[2894] Ian Sommerville. Software Engineering (10th ed.).
+[2895] Robert C. Martin. Clean Architecture.
+[2896] Ramez Elmasri and Shamkant Navathe. Fundamentals of Database Systems.
+[2897] Martin Fowler. UML Distilled (3rd ed.).
+[2898] Journals
+[2899] Articles
+[2900] Research papers
+[2901] Other References
+[2902] https://c4model.com/
+[2903] Appendix
+[2904] Glossary of terms
+[2905] Pre-requisites
+[2906] Use development setup, deployment setup, and dependencies from this report.

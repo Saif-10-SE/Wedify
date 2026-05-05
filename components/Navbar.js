@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWedding } from '@/context/WeddingContext';
@@ -62,14 +63,18 @@ export default function Navbar() {
       
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-gold-500 to-gold-700 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-              <span className="text-white font-serif text-xl">W</span>
-            </div>
+          {/* Logo (updated to Wedify) */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            <Image
+              src="/images/wedify-logo.svg"
+              alt="Wedify"
+              width={208}
+              height={72}
+              priority
+              className="h-12 w-auto transition-transform group-hover:scale-[1.01]"
+            />
             <div>
-              <h1 className="font-serif text-xl text-gray-800">Lahore Elite</h1>
-              <p className="text-xs text-gold-600 -mt-1">Weddings</p>
+              <p className="text-xs text-gray-600 -mt-1">Pakistan's first wedding planning platform</p>
             </div>
           </Link>
 

@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['www.rpgcc.com', 'rpgcc.com', 'falettishotel.com.pk', 'i0.wp.com', 'www.pchotels.com', 'pchotels.com'],
   },
 }
 

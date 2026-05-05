@@ -1,0 +1,45 @@
+<svg width="640" height="220" viewBox="0 0 640 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Wedify logo</title>
+  <desc id="desc">Decorative Wedify wordmark with an ornate W monogram.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8E4A8"/>
+      <stop offset="45%" stop-color="#D7AE4B"/>
+      <stop offset="100%" stop-color="#A46F18"/>
+    </linearGradient>
+    <linearGradient id="burgundy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6A1431"/>
+      <stop offset="100%" stop-color="#330817"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(22 18)">
+    <g transform="translate(0 10)">
+      <circle cx="86" cy="82" r="56" fill="none" stroke="url(#gold)" stroke-width="8" opacity="0.95"/>
+      <circle cx="86" cy="82" r="46" fill="none" stroke="url(#gold)" stroke-width="2" opacity="0.6" stroke-dasharray="4 8"/>
+      <g fill="url(#gold)">
+        <circle cx="86" cy="12" r="5"/>
+        <circle cx="86" cy="152" r="5"/>
+        <circle cx="16" cy="82" r="5"/>
+        <circle cx="156" cy="82" r="5"/>
+        <circle cx="40" cy="36" r="4"/>
+        <circle cx="132" cy="36" r="4"/>
+        <circle cx="40" cy="128" r="4"/>
+        <circle cx="132" cy="128" r="4"/>
+      </g>
+      <path d="M86 16L96 32L114 34L102 48L106 66L86 58L66 66L70 48L58 34L76 32L86 16Z" fill="url(#gold)" opacity="0.95"/>
+      <text x="86" y="101" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700" fill="url(#burgundy)" letter-spacing="-6">W</text>
+      <path d="M26 179C43 170 60 166 86 166C112 166 129 170 146 179" stroke="url(#gold)" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+      <path d="M62 166C68 158 73 153 86 153C99 153 104 158 110 166" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    </g>
+
+    <line x1="198" y1="58" x2="198" y2="168" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+
+    <g transform="translate(222 48)">
+      <text x="0" y="74" font-family="Georgia, 'Times New Roman', serif" font-size="90" font-weight="700" fill="url(#gold)" letter-spacing="-2">Wedify</text>
+      <path d="M0 97H214" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+      <path d="M83 97C93 92 104 89 116 89C128 89 139 92 149 97" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+      <circle cx="12" cy="97" r="4" fill="url(#gold)"/>
+      <circle cx="202" cy="97" r="4" fill="url(#gold)"/>
+    </g>
+  </g>
+</svg>

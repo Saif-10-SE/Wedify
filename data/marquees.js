@@ -1,5 +1,34 @@
 import { livePricesBySlug, livePriceSnapshot } from '@/data/livePrices';
 
+export const realVenuePhotos = [
+  '/images/venues/falettis-img-4440.jpg',
+  '/images/venues/falettis-dsc-0120.jpg',
+  '/images/venues/falettis-img-4912.jpg',
+  '/images/venues/falettis-dsc-4334.jpg',
+  '/images/venues/falettis-dsc-3936.jpg',
+  '/images/venues/falettis-dsc-0965.jpg',
+  '/images/venues/pc-lahore-eid-package.jpg',
+  '/images/venues/pc-hotel-5958.jpg',
+  '/images/venues/pc-hotel-5960.jpg',
+  '/images/venues/pc-hotel-5959.jpg',
+  '/images/venues/pc-bhurban-2.webp',
+  '/images/venues/pc-karachi-banner.jpg',
+  '/images/venues/falettis-img-8209.jpg',
+  '/images/venues/falettis-dsc-0120.jpg',
+  '/images/venues/pc-lahore-eid-package.jpg',
+  '/images/venues/pc-karachi-banner.jpg'
+];
+
+const buildVenuePhotoSet = (venueIndex, galleryLength = 4) => {
+  const safeLength = Math.max(3, galleryLength);
+  const image = realVenuePhotos[venueIndex % realVenuePhotos.length];
+  const gallery = Array.from({ length: safeLength }, (_, idx) => (
+    realVenuePhotos[(venueIndex + idx) % realVenuePhotos.length]
+  ));
+
+  return { image, gallery };
+};
+
 // Lahore Marquees and Event Halls Database
 const baseMarquees = [
   {
@@ -628,12 +657,23 @@ const baseMarquees = [
   }
 ];
 
-export const marquees = baseMarquees.map((venue) => {
+export const marquees = baseMarquees.map((venue, venueIndex) => {
+  const photoSet = buildVenuePhotoSet(venueIndex, venue.gallery?.length || 4);
+  const venueWithRealPhotos = {
+    ...venue,
+    image: photoSet.image,
+    gallery: photoSet.gallery,
+    photoSource: {
+      provider: 'Pakistani venue sites',
+      type: 'real-photography',
+      note: 'Real venue/event-hall photos (non-AI) sourced from Pakistani venue and hotel sites.'
+    }
+  };
   const live = livePricesBySlug[venue.slug];
 
   if (!live) {
     return {
-      ...venue,
+      ...venueWithRealPhotos,
       priceMeta: {
         mode: 'fallback-static',
         lastUpdated: null,
@@ -644,9 +684,9 @@ export const marquees = baseMarquees.map((venue) => {
   }
 
   return {
-    ...venue,
+    ...venueWithRealPhotos,
     pricing: {
-      ...venue.pricing,
+      ...venueWithRealPhotos.pricing,
       perHead: {
         min: live.perHead.min,
         max: live.perHead.max

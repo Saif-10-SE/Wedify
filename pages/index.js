@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { getFeaturedMarquees, formatPrice, getAreas, marquees } from '@/data/marquees';
+import { getFeaturedMarquees, formatPrice, getAreas, marquees, realVenuePhotos } from '@/data/marquees';
 import { getFeaturedVendors, getVendorCategories } from '@/data/vendors';
 import { getFeaturedTestimonials } from '@/data/testimonials';
 import { useWedding } from '@/context/WeddingContext';
@@ -22,7 +23,6 @@ export default function Home() {
   
   const { weddingDate, recentlyViewed, favorites } = useWedding();
   const [showDateModal, setShowDateModal] = useState(false);
-  const [heroIndex, setHeroIndex] = useState(0);
   
   // Recently viewed venues
   const recentlyViewedVenues = recentlyViewed
@@ -36,20 +36,11 @@ export default function Home() {
     .map(s => marquees.find(m => m.slug === s))
     .filter(Boolean);
 
-  // Hero carousel images
-  const heroImages = [
-    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920',
-    'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920',
-    'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920',
-    'https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=1920'
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const heroImages = featuredMarquees
+    .map((venue) => venue.image)
+    .filter(Boolean)
+    .slice(0, 4);
+  const heroImage = heroImages[0] || realVenuePhotos[0];
 
   return (
     <>
@@ -57,37 +48,55 @@ export default function Home() {
         <title>Lahore Elite Weddings | Premium Marquee & Wedding Planner</title>
         <meta name="description" content="Discover Lahore's most prestigious marquees and calculate your perfect wedding budget. Premium venues, expert planning tools, and trusted vendors." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Lahore Elite Weddings | Premium Marquee & Wedding Planner" />
-        <meta property="og:image" content={heroImages[0]} />
+        <meta property="og:title" content="Wedify | Pakistan's First Wedding Planning Platform" />
+        <meta property="og:image" content={heroImage} />
       </Head>
 
       <Navbar />
 
-      {/* Hero Section with Carousel */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {heroImages.map((img, idx) => (
-          <div 
-            key={idx}
-            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
-              idx === heroIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{ backgroundImage: `url('${img}')` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      {/* Hero Section with layered venue photography */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#fef9f1]">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,250,240,0.92),rgba(255,246,235,0.82)_40%,rgba(255,241,230,0.95)_100%)]" />
+          <div className="absolute inset-0 opacity-95">
+            <div className="absolute -left-10 top-12 w-[42vw] max-w-[620px] h-[72vh] rounded-[2rem] overflow-hidden shadow-2xl rotate-[-6deg] scale-95">
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[0] || heroImage}')` }} />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#5a3d2b]/25 via-transparent to-transparent" />
+            </div>
+            <div className="absolute left-[22%] bottom-10 w-[25vw] min-w-[220px] h-[30vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[5deg] border-4 border-white/80">
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[1] || heroImage}')` }} />
+            </div>
+            <div className="absolute right-[8%] top-20 w-[28vw] min-w-[240px] h-[34vh] rounded-[1.5rem] overflow-hidden shadow-2xl rotate-[7deg] border-4 border-white/70">
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[2] || heroImage}')` }} />
+            </div>
+            <div className="absolute right-[3%] bottom-14 w-[22vw] min-w-[200px] h-[26vh] rounded-[1.5rem] overflow-hidden shadow-xl rotate-[-4deg] border-4 border-white/75">
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroImages[3] || heroImage}')` }} />
+            </div>
           </div>
-        ))}
-        
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-sm mb-6 animate-fadeIn">
-            <Sparkles className="w-4 h-4 text-gold-400" />
-            Lahore's Premier Wedding Planning Platform
+
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(255,250,240,0.55)] via-[rgba(255,248,240,0.35)] to-[rgba(255,246,237,0.78)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.55)_0%,rgba(255,255,255,0.18)_24%,transparent_58%)]" />
+        </div>
+
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <div className="inline-flex flex-col items-center gap-1 px-6 py-3 bg-white/70 backdrop-blur-md rounded-full text-gray-800 text-sm mb-6 animate-fadeIn shadow-lg border border-white/70">
+            <span className="font-medium">Pakistan's first wedding planning platform</span>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 text-shadow animate-fadeIn">
-            Plan Your <span className="text-gold-400">Dream Wedding</span>
+
+          <h1 className="text-5xl md:text-7xl font-serif text-[#2b1f1a] mb-4 leading-tight animate-fadeIn">
+            <span className="sr-only">Wedify</span>
+            <Image
+              src="/images/wedify-logo.svg"
+              alt="Wedify"
+              width={520}
+              height={180}
+              priority
+              className="mx-auto w-[min(92vw,26rem)] h-auto drop-shadow-[0_6px_18px_rgba(43,31,26,0.12)]"
+            />
+            <span className="text-3xl font-light mt-2 block">Pakistan's first wedding planning platform</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-200 mb-8 font-light animate-slideUp">
-            Discover Lahore's Most Prestigious Marquees & Calculate Your Perfect Budget
+          <p className="text-lg md:text-xl text-[#5f5148] mb-8 font-medium animate-slideUp max-w-2xl mx-auto">
+            Discover venues, compare options, and plan your wedding effortlessly with Wedify.
           </p>
           
           {/* Wedding Date Countdown */}
@@ -107,7 +116,7 @@ export default function Home() {
             </Link>
             <Link 
               href="/calculator"
-              className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg backdrop-blur-sm border border-white/30 transition-all inline-flex items-center justify-center"
+              className="px-8 py-4 bg-white/60 hover:bg-white/75 text-[#2b1f1a] font-semibold rounded-lg backdrop-blur-sm border border-white/60 transition-all inline-flex items-center justify-center shadow-md"
             >
               <Calculator className="w-5 h-5 mr-2" />
               Budget Calculator
@@ -117,7 +126,7 @@ export default function Home() {
           {!weddingDate && (
             <button
               onClick={() => setShowDateModal(true)}
-              className="mt-6 px-6 py-3 text-white/80 hover:text-white transition-colors inline-flex items-center gap-2"
+              className="mt-6 px-6 py-3 text-[#6b5a4f] hover:text-[#2b1f1a] transition-colors inline-flex items-center gap-2"
             >
               <Calendar className="w-5 h-5" />
               Set Your Wedding Date
@@ -125,22 +134,9 @@ export default function Home() {
           )}
         </div>
 
-        {/* Hero Indicators */}
-        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2">
-          {heroImages.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setHeroIndex(idx)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                idx === heroIndex ? 'w-8 bg-gold-500' : 'bg-white/50 hover:bg-white/80'
-              }`}
-            />
-          ))}
-        </div>
-
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-[#6b5a4f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
@@ -271,15 +267,15 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {vendorCategories.slice(0, 8).map((category) => {
               const categoryImages = {
-                photography: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400',
-                decoration: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400',
-                catering: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=400',
-                makeup: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400',
-                entertainment: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400',
-                venue: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400',
-                invitations: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400',
-                jewelry: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400',
-                mehndi: 'https://images.unsplash.com/photo-1560800452-f2d475982b96?w=400'
+                photography: realVenuePhotos[1],
+                decoration: realVenuePhotos[3],
+                catering: realVenuePhotos[6],
+                makeup: realVenuePhotos[7],
+                entertainment: realVenuePhotos[11],
+                venue: realVenuePhotos[0],
+                invitations: realVenuePhotos[12],
+                jewelry: realVenuePhotos[13],
+                mehndi: realVenuePhotos[5]
               };
               const imageUrl = categoryImages[category.id] || categoryImages.venue;
               

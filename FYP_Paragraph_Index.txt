@@ -1,0 +1,72 @@
+﻿[2] Project Name
+[14] Submitted By
+[17] Session
+[22] Project Supervisor
+[25] Department Name
+[26] School of Systems and Technology
+[27] University of Management and Technology
+[28] C-II Johar Town Lahore Pakistan
+[30] Dedication
+[55] Final Approval
+[56] Project Name
+[59] Panel of Examiners
+[61] Head of Department______________________
+[62] Department of Software Engineering
+[63] University of Management and Technology
+[64] Lahore
+[69] Program Director ( Final Year Projects)______________________
+[70] Department of Software Engineering
+[71] University of Management and Technology
+[72] Lahore
+[77] Supervisor ______________________
+[78] Department of Software Engineering
+[79] University of Management and Technology
+[80] Lahore
+[85] Co-Supervisor______________________
+[86] (If any)
+[92] Documentation Evaluator______________________
+[95] Acknowledgment
+[108] Project Title
+[109] Objective
+[111] Undertaken by
+[113] Supervised by
+[114] Starting Date
+[116] Completion Date
+[118] Tools Used
+[119] Operating System
+[120] Documentation
+[129] Plagairism Report
+[162] Declaration Form
+[167] I have carefully examined the documentation of the Final Year Project titled â€œProject titleâ€; and I endorse that this documentation complies with the standards of an undergraduate level Final Year Project report.
+[168] The document has been checked for plagiarism through Turnitin software available in UMT Library. The similarities of the document are within acceptable range.
+[169] Moreover, the accompanying CDs contain PDF of the documentation, as well as the source code and binaries with user manual and installation guide.
+[177] FYP Supervisor Name: ______________________________
+[180] Signature: __________________Date:___________________
+[187] Abstract
+[192] Revision Chart
+[193] This chart contains a history of this documentâ€™s revisions. The entries below are provided solely for illustration purposes. Those entries should be deleted until the revision/s they refer to have actually been created.
+[194] The document itself should be stored in revision control, and a brief description of each version should be entered in the Revision Control System. A brief description can be repeated in this section. Revisions need not be described elsewhere in the document, unless they explain the document.
+[196] Version
+[197] Primary Author(s)
+[198] Description of Version
+[199] Date Completed
+[200] Draft
+[201] TBD
+[202] Initial draft created for distribution and review comments
+[203] (To be decided) TBD
+[204] Preliminary
+[205] TBD
+[206] Second draft incorporating initial review comments, distributed for final review
+[207] TBD
+[208] Final
+[209] TBD
+[210] First complete draft, which is placed under change control
+[211] TBD
+[212] Revision 1
+[213] TBD
+[214] Revised draft, revised according to the change control process and maintained under change control
+[215] TBD
+[216] Revision 2
+[217] TBD
+[218] Revised draft, revised according to the change control process and maintained under change control
+[219] TBD

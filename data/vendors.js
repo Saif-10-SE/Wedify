@@ -1,7 +1,28 @@
-import { marquees } from '@/data/marquees';
+import { marquees, realVenuePhotos } from '@/data/marquees';
+
+const assignVenuePhotos = (items, startIndex = 0) => {
+  let photoIndex = startIndex;
+
+  return items.map((item) => {
+    const image = realVenuePhotos[photoIndex % realVenuePhotos.length];
+    photoIndex += 1;
+
+    const portfolio = (item.portfolio || []).map(() => {
+      const photo = realVenuePhotos[photoIndex % realVenuePhotos.length];
+      photoIndex += 1;
+      return photo;
+    });
+
+    return {
+      ...item,
+      image,
+      portfolio,
+    };
+  });
+};
 
 // Complete Vendors Database for Lahore Weddings
-export const vendors = {
+const vendorCatalog = {
   photographers: [
     {
       id: 'photo-1',
@@ -271,6 +292,17 @@ export const vendors = {
       featured: true
     }
   ]
+};
+
+export const vendors = {
+  photographers: assignVenuePhotos(vendorCatalog.photographers, 0),
+  decorators: assignVenuePhotos(vendorCatalog.decorators, 3),
+  caterers: assignVenuePhotos(vendorCatalog.caterers, 6),
+  makeup: assignVenuePhotos(vendorCatalog.makeup, 8),
+  entertainment: assignVenuePhotos(vendorCatalog.entertainment, 10),
+  invitation: assignVenuePhotos(vendorCatalog.invitation, 11),
+  jewelry: assignVenuePhotos(vendorCatalog.jewelry, 12),
+  mehndi: assignVenuePhotos(vendorCatalog.mehndi, 13)
 };
 
 const venueVendors = marquees.map((venue) => ({

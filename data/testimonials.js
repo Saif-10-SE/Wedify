@@ -1,5 +1,7 @@
+import { realVenuePhotos } from '@/data/marquees';
+
 // Testimonials and Reviews Database
-export const testimonials = [
+const testimonialEntries = [
   {
     id: 1,
     couple: 'Ahmed & Fatima',
@@ -105,6 +107,11 @@ export const testimonials = [
     highlights: ['Rooftop Venue', 'Gulberg Location', 'Good Value']
   }
 ];
+
+export const testimonials = testimonialEntries.map((testimonial, index) => ({
+  ...testimonial,
+  image: realVenuePhotos[index % realVenuePhotos.length]
+}));
 
 // Get testimonials by venue
 export const getTestimonialsByVenue = (venueSlug) => {

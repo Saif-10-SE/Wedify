@@ -91,15 +91,9 @@ export default function MarqueeDetail() {
     );
   }
 
-  // Generate gallery images (simulated - would be real in production)
-  const galleryImages = [
-    marquee.image,
-    `https://images.unsplash.com/photo-1519741497674-611481863552?w=800`,
-    `https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800`,
-    `https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=800`,
-    `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800`,
-    `https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800`
-  ];
+  const galleryImages = marquee.gallery?.length
+    ? marquee.gallery
+    : [marquee.image];
 
   return (
     <>

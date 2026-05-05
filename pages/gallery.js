@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import { marquees } from '@/data/marquees';
+import { marquees, realVenuePhotos } from '@/data/marquees';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ImageGallery from '@/components/ImageGallery';
@@ -33,20 +33,7 @@ export default function Gallery() {
   const imageUrls = images.map(img => img.url);
 
   // Featured gallery images
-  const featuredImages = [
-    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200',
-    'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200',
-    'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200',
-    'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200',
-    'https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=1200',
-    'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200',
-    'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=1200',
-    'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=1200',
-    'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200',
-    'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1200',
-    'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200'
-  ];
+  const featuredImages = realVenuePhotos.slice(0, 12);
 
   return (
     <>
@@ -177,10 +164,10 @@ export default function Gallery() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'Mehndi', image: 'https://images.unsplash.com/photo-1560800452-f2d475982b96?w=600', count: 45 },
-              { name: 'Barat', image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600', count: 62 },
-              { name: 'Walima', image: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=600', count: 38 },
-              { name: 'Engagement', image: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600', count: 24 }
+              { name: 'Mehndi', image: realVenuePhotos[5], count: 45 },
+              { name: 'Barat', image: realVenuePhotos[0], count: 62 },
+              { name: 'Walima', image: realVenuePhotos[2], count: 38 },
+              { name: 'Engagement', image: realVenuePhotos[7], count: 24 }
             ].map((category) => (
               <div 
                 key={category.name}
