@@ -3,6 +3,7 @@ import { getAllVendors } from '@/data/vendors';
 
 const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash';
 const GEMINI_TEXT_FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash'];
+const OPENAI_RESPONSES_MODEL = process.env.OPENAI_RESPONSES_MODEL || 'gpt-5.4-mini';
 
 const SYSTEM_PROMPT = `You are Wedify AI, a friendly and practical Pakistani wedding planning assistant.
 
@@ -249,6 +250,66 @@ const extractGeminiText = (payload) => {
     .trim();
 };
 
+const extractOpenAIResponsesText = (payload) => {
+  if (typeof payload?.output_text === 'string' && payload.output_text.trim()) {
+    return payload.output_text.trim();
+  }
+  const output = Array.isArray(payload?.output) ? payload.output : [];
+  for (const item of output) {
+    if (item?.type === 'message' && Array.isArray(item.content)) {
+      const texts = item.content
+        .filter((c) => c?.type === 'output_text' && typeof c.text === 'string')
+        .map((c) => c.text.trim())
+        .filter(Boolean);
+      if (texts.length) return texts.join('\n').trim();
+    }
+  }
+  return '';
+};
+
+const buildOpenAIResponsesInput = ({ systemPrompt, history, message }) => {
+  const historyLines = history.map((h) => `${h.role}: ${h.content}`);
+  return [systemPrompt, '', 'Conversation:', ...historyLines, '', `user: ${message}`].join('\n');
+};
+
+const callOpenAIResponses = async ({ apiKey, model, input }) => {
+  const response = await fetch('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      input,
+      store: true
+    })
+  });
+
+  const payloadText = await response.text();
+  let payloadJson = null;
+  try {
+    payloadJson = JSON.parse(payloadText);
+  } catch (_) {
+    payloadJson = null;
+  }
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      status: response.status,
+      message: payloadJson?.error?.message || payloadText.slice(0, 300)
+    };
+  }
+
+  const reply = extractOpenAIResponsesText(payloadJson);
+  if (!reply) {
+    return { ok: false, status: 502, message: 'OpenAI returned an empty response.' };
+  }
+
+  return { ok: true, reply, id: payloadJson?.id };
+};
+
 const callGeminiTextModel = async ({ model, apiKey, systemPrompt, history, message }) => {
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
@@ -323,17 +384,55 @@ export default async function handler(req, res) {
       alternatives
     });
 
-    if (!process.env.GEMINI_API_KEY) {
+    const openaiKey = process.env.OPENAI_API_KEY;
+    const geminiKey = process.env.GEMINI_API_KEY;
+
+    if (!openaiKey && !geminiKey) {
       return res.status(200).json({
         reply: fallbackReply,
         metadata: {
           source: 'local-fallback',
-          reason: 'missing-gemini-api-key'
+          reason: 'missing-openai-and-gemini-keys'
         }
       });
     }
 
     const composedSystemPrompt = `${SYSTEM_PROMPT}\n\nPlanning context (trusted):\n${planningContext}`;
+
+    if (openaiKey) {
+      const openaiInput = buildOpenAIResponsesInput({
+        systemPrompt: composedSystemPrompt,
+        history,
+        message
+      });
+      const openaiAttempt = await callOpenAIResponses({
+        apiKey: openaiKey,
+        model: OPENAI_RESPONSES_MODEL,
+        input: openaiInput
+      });
+      if (openaiAttempt.ok) {
+        return res.status(200).json({
+          reply: openaiAttempt.reply,
+          metadata: {
+            source: 'openai-responses',
+            model: OPENAI_RESPONSES_MODEL,
+            responseId: openaiAttempt.id
+          }
+        });
+      }
+    }
+
+    if (!geminiKey) {
+      return res.status(200).json({
+        reply: fallbackReply,
+        metadata: {
+          source: 'local-fallback',
+          reason: 'openai-failed-missing-gemini',
+          model: OPENAI_RESPONSES_MODEL
+        }
+      });
+    }
+
     const candidateModels = Array.from(new Set([GEMINI_TEXT_MODEL, ...GEMINI_TEXT_FALLBACK_MODELS]));
 
     let completion = null;
@@ -343,7 +442,7 @@ export default async function handler(req, res) {
     for (const model of candidateModels) {
       const attempt = await callGeminiTextModel({
         model,
-        apiKey: process.env.GEMINI_API_KEY,
+        apiKey: geminiKey,
         systemPrompt: composedSystemPrompt,
         history,
         message
@@ -357,10 +456,8 @@ export default async function handler(req, res) {
 
       lastFailure = attempt;
 
-      // Move to fallback model on not found/version mismatch
       if (attempt.status === 404) continue;
 
-      // On quota/rate limits, return reliable local answer rather than 500.
       if (attempt.status === 429) {
         return res.status(200).json({
           reply: fallbackReply,
