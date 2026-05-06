@@ -3,20 +3,21 @@
   "version": "1.0.0",
   "description": "Elite Wedding Planner for Lahore's Top Marquees",
   "scripts": {
-    "dev":    "  next dev -p 4000",
+    "dev": "  next dev -p 4000",
     "build": "next build",
     "start": "next start -p 4000",
     "lint": "next lint"
   },
   "dependencies": {
+    "lucide-react": "^0.294.0",
     "next": "^14.0.0",
+    "openai": "^4.104.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "lucide-react": "^0.294.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
-    "autoprefixer": "^10.4.0"
+    "tailwindcss": "^3.3.0"
   }
 }

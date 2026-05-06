@@ -24,25 +24,20 @@ self.__BUILD_MANIFEST = {
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/compare": [
+    "/calculator": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/compare.js"
+      "static/chunks/pages/calculator.js"
     ],
-    "/gallery": [
+    "/chatbot": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/gallery.js"
+      "static/chunks/pages/chatbot.js"
     ],
     "/marquees": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/marquees.js"
-    ],
-    "/vendors": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/vendors.js"
     ]
   },
   "ampFirstPages": []

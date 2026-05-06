@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWedding } from '@/context/WeddingContext';
-import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Star } from 'lucide-react';
+import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Bot, Star } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +43,7 @@ export default function Navbar() {
         { name: 'Budget Calculator', href: '/calculator', icon: <Sparkles className="w-4 h-4" /> },
         { name: 'Checklist', href: '/checklist', icon: <ListChecks className="w-4 h-4" /> },
         { name: 'Vendors', href: '/vendors', icon: <Users className="w-4 h-4" /> },
+        { name: 'AI Planner', href: '/chatbot', icon: <Bot className="w-4 h-4" /> },
       ]
     },
     { name: 'Testimonials', href: '/testimonials' },
@@ -174,6 +175,13 @@ export default function Navbar() {
             )}
 
             {/* CTA Button */}
+            <Link
+              href="/chatbot"
+              className="rounded-lg border border-gold-300 bg-white/70 px-4 py-2.5 font-semibold text-gold-800 transition-all hover:bg-white hover:text-gold-900"
+            >
+              AI Planner
+            </Link>
+
             <Link 
               href="/calculator"
               className="rounded-lg bg-gold-500 px-5 py-2.5 font-semibold text-white shadow-md transition-all hover:bg-gold-600 hover:shadow-lg"
@@ -216,6 +224,9 @@ export default function Navbar() {
               </Link>
               <Link href="/checklist" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Checklist
+              </Link>
+              <Link href="/chatbot" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
+                AI Planner
               </Link>
               <Link href="/vendors" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Vendors

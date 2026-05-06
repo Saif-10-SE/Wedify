@@ -3,9 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/calculator": "pages/calculator.js",
-  "/compare": "pages/compare.js",
   "/marquees": "pages/marquees.js",
-  "/vendors": "pages/vendors.js",
-  "/gallery": "pages/gallery.js"
+  "/calculator": "pages/calculator.js",
+  "/chatbot": "pages/chatbot.js"
 }
