@@ -1,72 +1,82 @@
-const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image-preview';
-const GEMINI_IMAGE_FALLBACK_MODELS = ['gemini-2.5-flash-image-preview', 'gemini-2.0-flash-exp'];
+const OPENAI_IMAGE_MODELS = (process.env.OPENAI_IMAGE_MODELS || 'gpt-image-1.5,gpt-image-1')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
-const extractInlineImage = (payload) => {
-  const parts = payload?.candidates?.[0]?.content?.parts;
-  if (!Array.isArray(parts)) return null;
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '30mb'
+    }
+  }
+};
 
-  const imagePart = parts.find((part) => part?.inlineData?.data && part?.inlineData?.mimeType);
-  if (!imagePart) return null;
+const parseOpenAIError = (payloadJson, payloadText) =>
+  payloadJson?.error?.message || payloadText?.slice(0, 280) || 'OpenAI image request failed.';
 
+const fetchUrlAsBase64 = async (url) => {
+  const imageResponse = await fetch(url);
+  if (!imageResponse.ok) return null;
+  const buffer = Buffer.from(await imageResponse.arrayBuffer());
+  const contentType = imageResponse.headers.get('content-type') || 'image/png';
   return {
-    mimeType: imagePart.inlineData.mimeType,
-    base64: imagePart.inlineData.data
+    mimeType: contentType.split(';')[0].trim(),
+    base64: buffer.toString('base64')
   };
 };
 
-const extractText = (payload) => {
-  const parts = payload?.candidates?.[0]?.content?.parts;
-  if (!Array.isArray(parts)) return '';
-  return parts
-    .map((part) => (typeof part?.text === 'string' ? part.text : ''))
-    .join('\n')
-    .trim();
+const parseDataUrl = (entry) => {
+  if (typeof entry !== 'string') return null;
+  const match = entry.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!match) return null;
+  return { mimeType: match[1], base64: match[2] };
 };
 
-const listGeminiModels = async (apiKey) => {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`
-  );
-  if (!response.ok) return [];
-
-  const payload = await response.json();
-  const models = Array.isArray(payload?.models) ? payload.models : [];
-
-  return models
-    .filter((model) => Array.isArray(model?.supportedGenerationMethods))
-    .filter((model) => model.supportedGenerationMethods.includes('generateContent'))
-    .map((model) => String(model?.name || '').replace(/^models\//, ''))
-    .filter(Boolean);
+const fileFromDataUrl = (entry, filename = 'reference.png') => {
+  const parsed = parseDataUrl(entry);
+  if (!parsed) return null;
+  const ext = parsed.mimeType.split('/')[1] || 'png';
+  const bytes = Buffer.from(parsed.base64, 'base64');
+  return new File([bytes], `${filename}.${ext}`, { type: parsed.mimeType });
 };
 
-const findLikelyImageModels = (models) => {
-  return models.filter((name) => {
-    const lower = name.toLowerCase();
-    return (
-      lower.includes('image') ||
-      lower.includes('imagen') ||
-      lower.includes('2.0-flash-exp') ||
-      lower.includes('2.5-flash-image')
-    );
-  });
-};
+const tryOpenAIImage = async ({ apiKey, model, prompt, references }) => {
+  const files = references
+    .map((item, idx) => fileFromDataUrl(item, `reference-${idx + 1}`))
+    .filter(Boolean)
+    .slice(0, 5);
 
-const callGeminiImageModel = async ({ model, apiKey, prompt }) => {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
-      model
-    )}:generateContent?key=${encodeURIComponent(apiKey)}`,
-    {
+  const hasReferences = files.length > 0;
+  let response;
+  if (hasReferences) {
+    const form = new FormData();
+    form.append('model', model);
+    form.append('prompt', prompt);
+    form.append('size', '1024x1024');
+    form.append('n', '1');
+    files.forEach((file) => form.append('image[]', file));
+    response = await fetch('https://api.openai.com/v1/images/edits', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      },
+      body: form
+    });
+  } else {
+    response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`
+      },
       body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          responseModalities: ['TEXT', 'IMAGE']
-        }
+        model,
+        prompt,
+        n: 1,
+        size: '1024x1024'
       })
-    }
-  );
+    });
+  }
 
   const payloadText = await response.text();
   let payloadJson = null;
@@ -76,7 +86,45 @@ const callGeminiImageModel = async ({ model, apiKey, prompt }) => {
     payloadJson = null;
   }
 
-  return { ok: response.ok, status: response.status, payloadText, payloadJson };
+  if (!response.ok || !payloadJson?.data?.[0]) {
+    return {
+      ok: false,
+      status: response.status,
+      message: parseOpenAIError(payloadJson, payloadText),
+      model
+    };
+  }
+
+  const data = payloadJson.data[0];
+  const image = data?.b64_json
+    ? { mimeType: 'image/png', base64: data.b64_json }
+    : data?.url
+      ? await fetchUrlAsBase64(data.url)
+      : null;
+  if (!image) return { ok: false, status: 502, message: 'No image in OpenAI response.', model };
+
+  return {
+    ok: true,
+    image,
+    guidance: typeof data?.revised_prompt === 'string' ? data.revised_prompt : '',
+    model
+  };
+};
+
+const runOpenAIImage = async ({ apiKey, prompt, references }) => {
+  let lastError = null;
+  for (const model of OPENAI_IMAGE_MODELS) {
+    const result = await tryOpenAIImage({
+      apiKey,
+      model,
+      prompt,
+      references
+    });
+    if (result.ok) return result;
+    lastError = result;
+    if (result.status === 404) continue;
+  }
+  return { ok: false, ...lastError };
 };
 
 export default async function handler(req, res) {
@@ -87,14 +135,19 @@ export default async function handler(req, res) {
   try {
     const prompt = typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
     const style = typeof req.body?.style === 'string' ? req.body.style.trim() : '';
+    const references = Array.isArray(req.body?.references) ? req.body.references : [];
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required.' });
     }
+    if (references.length > 5) {
+      return res.status(400).json({ error: 'Up to 5 reference images are supported.' });
+    }
 
-    if (!process.env.GEMINI_API_KEY) {
+    const openaiKey = process.env.OPENAI_API_KEY;
+    if (!openaiKey) {
       return res.status(400).json({
-        error: 'Gemini image generation is not configured. Missing GEMINI_API_KEY.'
+        error: 'OPENAI_API_KEY is required for multi-turn image editing.'
       });
     }
 
@@ -102,95 +155,38 @@ export default async function handler(req, res) {
       'Generate a realistic wedding decor concept image.',
       'Context: Pakistani wedding aesthetics, elegant and premium look.',
       style ? `Style preferences: ${style}` : null,
-      `User request: ${prompt}`
+      references.length ? `Use ${references.length} reference image(s) for style consistency.` : null,
+      `User request: ${prompt}`,
+      'If this is a follow-up turn, refine the previous concept while preserving relevant style.'
     ]
       .filter(Boolean)
       .join('\n');
 
-    const discoveredModels = await listGeminiModels(process.env.GEMINI_API_KEY);
-    const discoveredImageCandidates = findLikelyImageModels(discoveredModels);
+    const openaiResult = await runOpenAIImage({
+      apiKey: openaiKey,
+      prompt: decoratedPrompt,
+      references
+    });
 
-    const candidateModels = Array.from(
-      new Set([GEMINI_IMAGE_MODEL, ...GEMINI_IMAGE_FALLBACK_MODELS, ...discoveredImageCandidates])
-    );
-    let payload = null;
-    let selectedModel = null;
-    let lastFailure = null;
-
-    for (const model of candidateModels) {
-      const attempt = await callGeminiImageModel({
-        model,
-        apiKey: process.env.GEMINI_API_KEY,
-        prompt: decoratedPrompt
-      });
-
-      if (attempt.ok && attempt.payloadJson) {
-        payload = attempt.payloadJson;
-        selectedModel = model;
-        break;
-      }
-
-      lastFailure = attempt;
-      if (attempt.status === 404) continue;
-
-      if (attempt.status === 429) {
-        return res.status(200).json({
-          error: 'Gemini image quota is currently exceeded. Please retry shortly.',
-          guidance: 'Try again in a few minutes or use a billed Gemini project for higher limits.',
-          metadata: {
-            source: 'local-fallback',
-            reason: 'gemini-quota-exceeded',
-            model
-          }
-        });
-      }
-    }
-
-    if (!payload) {
-      const status = lastFailure?.status || 0;
-      const details = String(lastFailure?.payloadText || '').slice(0, 220);
-
-      if (status === 404) {
-        return res.status(200).json({
-          error: 'No image-capable Gemini model is currently available for this API key/project.',
-          guidance:
-            'Enable billing and image-generation access for your Gemini project, then retry. Text planning chat will continue working.',
-          metadata: {
-            source: 'local-fallback',
-            reason: 'no-supported-image-model',
-            model: candidateModels[candidateModels.length - 1] || GEMINI_IMAGE_MODEL,
-            discoveredModels: discoveredImageCandidates.slice(0, 8)
-          }
-        });
-      }
-
+    if (!openaiResult.ok) {
       return res.status(200).json({
-        error: 'Image generation is temporarily unavailable. Please retry in a moment.',
-        guidance: details || 'No additional diagnostics available.',
+        error: openaiResult?.message || 'OpenAI image generation failed.',
+        guidance:
+          'Check API key permissions/billing for GPT Image models and retry. You can continue iterating once generation succeeds.',
         metadata: {
-          source: 'local-fallback',
-          reason: 'image-generation-unavailable',
-          model: candidateModels[candidateModels.length - 1] || GEMINI_IMAGE_MODEL
+          source: 'openai',
+          reason: 'openai-failed',
+          modelsTried: OPENAI_IMAGE_MODELS
         }
       });
     }
 
-    const image = extractInlineImage(payload);
-    const guidance = extractText(payload);
-
-    if (!image) {
-      return res.status(502).json({
-        error: 'Image was not returned by Gemini. Please try a more specific decor prompt.',
-        guidance
-      });
-    }
-
     return res.status(200).json({
-      image,
-      guidance,
+      image: openaiResult.image,
+      guidance: openaiResult.guidance,
       metadata: {
-        source: 'gemini',
-        model: selectedModel || GEMINI_IMAGE_MODEL
+        source: 'openai',
+        model: openaiResult.model
       }
     });
   } catch (error) {

@@ -30,6 +30,7 @@ export default function ChatbotPage() {
   const [isGeneratingDecor, setIsGeneratingDecor] = useState(false);
   const [decorError, setDecorError] = useState('');
   const [decorImages, setDecorImages] = useState([]);
+  const [decorReferences, setDecorReferences] = useState([]);
   const listEndRef = useRef(null);
 
   useEffect(() => {
@@ -114,7 +115,11 @@ export default function ChatbotPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt,
-          style: decorStyle.trim()
+          style: decorStyle.trim(),
+          references: [
+            ...decorReferences.map((item) => item.dataUrl),
+            ...(decorImages[0]?.dataUrl ? [decorImages[0].dataUrl] : [])
+          ].slice(0, 5)
         })
       });
 
@@ -138,7 +143,8 @@ export default function ChatbotPage() {
           prompt,
           style: decorStyle.trim(),
           guidance: data?.guidance || '',
-          dataUrl
+          dataUrl,
+          source: data?.metadata?.source || 'openai'
         },
         ...prev
       ]);
@@ -148,6 +154,42 @@ export default function ChatbotPage() {
     } finally {
       setIsGeneratingDecor(false);
     }
+  };
+
+  const handleDecorReferences = (event) => {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+
+    const total = decorReferences.length + files.length;
+    if (total > 5) {
+      setDecorError('You can upload up to 5 reference images.');
+      return;
+    }
+
+    setDecorError('');
+    Promise.all(
+      files.map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            if (!file.type.startsWith('image/')) {
+              reject(new Error('Only image files are allowed.'));
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => resolve({ id: `${Date.now()}-${file.name}`, name: file.name, dataUrl: reader.result });
+            reader.onerror = () => reject(new Error(`Unable to read ${file.name}`));
+            reader.readAsDataURL(file);
+          })
+      )
+    )
+      .then((loaded) => {
+        setDecorReferences((prev) => [...prev, ...loaded]);
+      })
+      .catch((err) => setDecorError(err?.message || 'Failed to load references.'));
+  };
+
+  const removeDecorReference = (id) => {
+    setDecorReferences((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
@@ -313,6 +355,36 @@ export default function ChatbotPage() {
                 className="min-h-[88px] w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-gold-400 focus:ring-2 focus:ring-gold-200"
               />
             </div>
+            <div className="mt-3 rounded-xl border border-dashed border-gold-300 bg-gold-50/40 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-gray-700">
+                  Reference images for editing/consistency ({decorReferences.length}/5)
+                </p>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleDecorReferences}
+                  className="block text-xs text-gray-700 file:mr-3 file:rounded-md file:border-0 file:bg-gold-500 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-gold-600"
+                />
+              </div>
+              {decorReferences.length ? (
+                <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-5">
+                  {decorReferences.map((item) => (
+                    <div key={item.id} className="relative">
+                      <img src={item.dataUrl} alt={item.name} className="h-16 w-full rounded-md object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => removeDecorReference(item.id)}
+                        className="absolute right-1 top-1 rounded bg-black/70 px-1.5 text-[10px] text-white"
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
 
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <button
@@ -324,6 +396,7 @@ export default function ChatbotPage() {
                 <Sparkles className="h-4 w-4" />
                 {isGeneratingDecor ? 'Generating...' : 'Generate Decor Image'}
               </button>
+              {decorImages.length ? <p className="text-xs text-gray-600">Multi-turn edit is active for this decor thread.</p> : null}
               {decorError ? <p className="text-sm text-red-600">{decorError}</p> : null}
             </div>
 
@@ -335,6 +408,7 @@ export default function ChatbotPage() {
                     <div className="space-y-2 p-3">
                       <p className="text-sm font-medium text-gray-900">{item.prompt}</p>
                       {item.style ? <p className="text-xs text-gray-700">Style: {item.style}</p> : null}
+                      <p className="text-xs text-gray-500">Provider: {item.source}</p>
                       {item.guidance ? <p className="text-xs text-gray-700">{item.guidance}</p> : null}
                     </div>
                   </article>

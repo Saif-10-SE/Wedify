@@ -4,5 +4,6 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/chatbot": "pages/chatbot.js",
-  "/api/decor-image": "pages/api/decor-image.js"
+  "/api/decor-image": "pages/api/decor-image.js",
+  "/api/chatbot": "pages/api/chatbot.js"
 }
