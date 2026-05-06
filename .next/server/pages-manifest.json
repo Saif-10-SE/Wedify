@@ -3,7 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/marquees": "pages/marquees.js",
-  "/calculator": "pages/calculator.js",
-  "/chatbot": "pages/chatbot.js"
+  "/chatbot": "pages/chatbot.js",
+  "/api/decor-image": "pages/api/decor-image.js"
 }

@@ -1,8 +1,8 @@
-import OpenAI from 'openai';
 import { marquees, formatPrice } from '@/data/marquees';
 import { getAllVendors } from '@/data/vendors';
 
-const MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash';
+const GEMINI_TEXT_FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash'];
 
 const SYSTEM_PROMPT = `You are Wedify AI, a friendly and practical Pakistani wedding planning assistant.
 
@@ -233,9 +233,51 @@ const sanitizeHistory = (history) => {
     .slice(-10);
 };
 
-const getClient = () => {
-  if (!process.env.OPENAI_API_KEY) return null;
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const historyToGeminiContents = (history) => {
+  return history.map((item) => ({
+    role: item.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: item.content }]
+  }));
+};
+
+const extractGeminiText = (payload) => {
+  const parts = payload?.candidates?.[0]?.content?.parts;
+  if (!Array.isArray(parts)) return '';
+  return parts
+    .map((part) => (typeof part?.text === 'string' ? part.text : ''))
+    .join('\n')
+    .trim();
+};
+
+const callGeminiTextModel = async ({ model, apiKey, systemPrompt, history, message }) => {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+      model
+    )}:generateContent?key=${encodeURIComponent(apiKey)}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        },
+        generationConfig: {
+          temperature: 0.6
+        },
+        contents: [...historyToGeminiContents(history), { role: 'user', parts: [{ text: message }] }]
+      })
+    }
+  );
+
+  const payloadText = await response.text();
+  let payloadJson = null;
+  try {
+    payloadJson = JSON.parse(payloadText);
+  } catch (_) {
+    payloadJson = null;
+  }
+
+  return { ok: response.ok, status: response.status, payloadText, payloadJson };
 };
 
 export default async function handler(req, res) {
@@ -281,35 +323,69 @@ export default async function handler(req, res) {
       alternatives
     });
 
-    const client = getClient();
-    if (!client) {
+    if (!process.env.GEMINI_API_KEY) {
       return res.status(200).json({
         reply: fallbackReply,
         metadata: {
           source: 'local-fallback',
-          reason: 'missing-openai-api-key'
+          reason: 'missing-gemini-api-key'
         }
       });
     }
 
-    const completion = await client.chat.completions.create({
-      model: MODEL,
-      temperature: 0.6,
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'system', content: `Planning context (trusted):\n${planningContext}` },
-        ...history,
-        { role: 'user', content: message }
-      ]
-    });
+    const composedSystemPrompt = `${SYSTEM_PROMPT}\n\nPlanning context (trusted):\n${planningContext}`;
+    const candidateModels = Array.from(new Set([GEMINI_TEXT_MODEL, ...GEMINI_TEXT_FALLBACK_MODELS]));
 
-    const reply = completion.choices?.[0]?.message?.content?.trim() || fallbackReply;
+    let completion = null;
+    let selectedModel = null;
+    let lastFailure = null;
+
+    for (const model of candidateModels) {
+      const attempt = await callGeminiTextModel({
+        model,
+        apiKey: process.env.GEMINI_API_KEY,
+        systemPrompt: composedSystemPrompt,
+        history,
+        message
+      });
+
+      if (attempt.ok && attempt.payloadJson) {
+        completion = attempt.payloadJson;
+        selectedModel = model;
+        break;
+      }
+
+      lastFailure = attempt;
+
+      // Move to fallback model on not found/version mismatch
+      if (attempt.status === 404) continue;
+
+      // On quota/rate limits, return reliable local answer rather than 500.
+      if (attempt.status === 429) {
+        return res.status(200).json({
+          reply: fallbackReply,
+          metadata: {
+            source: 'local-fallback',
+            reason: 'gemini-quota-exceeded',
+            model
+          }
+        });
+      }
+    }
+
+    if (!completion) {
+      throw new Error(
+        `Gemini request failed (${lastFailure?.status || 'unknown'}): ${String(lastFailure?.payloadText || '').slice(0, 300)}`
+      );
+    }
+
+    const reply = extractGeminiText(completion) || fallbackReply;
 
     return res.status(200).json({
       reply,
       metadata: {
-        source: 'openai',
-        model: MODEL
+        source: 'gemini',
+        model: selectedModel || GEMINI_TEXT_MODEL
       }
     });
   } catch (error) {

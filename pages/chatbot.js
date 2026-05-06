@@ -25,6 +25,11 @@ export default function ChatbotPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [decorPrompt, setDecorPrompt] = useState('');
+  const [decorStyle, setDecorStyle] = useState('');
+  const [isGeneratingDecor, setIsGeneratingDecor] = useState(false);
+  const [decorError, setDecorError] = useState('');
+  const [decorImages, setDecorImages] = useState([]);
   const listEndRef = useRef(null);
 
   useEffect(() => {
@@ -94,6 +99,55 @@ export default function ChatbotPage() {
     setMessages([INITIAL_MESSAGE]);
     setError('');
     window.sessionStorage.removeItem(STORAGE_KEY);
+  };
+
+  const generateDecorImage = async () => {
+    const prompt = decorPrompt.trim();
+    if (!prompt || isGeneratingDecor) return;
+
+    setDecorError('');
+    setIsGeneratingDecor(true);
+
+    try {
+      const response = await fetch('/api/decor-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt,
+          style: decorStyle.trim()
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.error || 'Unable to generate decor image.');
+      }
+
+      if (data?.error && !data?.image) {
+        throw new Error(data.error);
+      }
+
+      if (!data?.image?.base64 || !data?.image?.mimeType) {
+        throw new Error('Image data missing in response.');
+      }
+
+      const dataUrl = `data:${data.image.mimeType};base64,${data.image.base64}`;
+      setDecorImages((prev) => [
+        {
+          id: `${Date.now()}`,
+          prompt,
+          style: decorStyle.trim(),
+          guidance: data?.guidance || '',
+          dataUrl
+        },
+        ...prev
+      ]);
+      setDecorPrompt('');
+    } catch (err) {
+      setDecorError(err?.message || 'Failed to generate decor image.');
+    } finally {
+      setIsGeneratingDecor(false);
+    }
   };
 
   return (
@@ -229,6 +283,64 @@ export default function ChatbotPage() {
 
               {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
             </div>
+          </div>
+
+          <div className="mt-8 rounded-2xl border border-white/70 bg-white/90 p-5 shadow-lg backdrop-blur-sm md:p-6">
+            <div className="mb-4">
+              <p className="inline-flex items-center gap-2 rounded-full bg-gold-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-gold-800">
+                <Sparkles className="h-3.5 w-3.5" />
+                Decor Image Generator
+              </p>
+              <h2 className="mt-3 text-2xl font-bold text-gray-900">Generate Wedding Decor Concepts</h2>
+              <p className="mt-2 text-sm text-gray-700">
+                Describe the look you want and receive AI-generated decor inspiration for stage, aisle, tables, and ambience.
+              </p>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              <textarea
+                value={decorPrompt}
+                onChange={(event) => setDecorPrompt(event.target.value)}
+                rows={3}
+                placeholder="Example: Royal mehndi setup with marigold flowers, lantern lights, and traditional seating."
+                className="min-h-[88px] w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-gold-400 focus:ring-2 focus:ring-gold-200"
+              />
+              <textarea
+                value={decorStyle}
+                onChange={(event) => setDecorStyle(event.target.value)}
+                rows={3}
+                placeholder="Optional style notes: pastel theme, floral tunnel entry, elegant modern stage."
+                className="min-h-[88px] w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-gold-400 focus:ring-2 focus:ring-gold-200"
+              />
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={generateDecorImage}
+                disabled={isGeneratingDecor || !decorPrompt.trim()}
+                className="inline-flex h-[46px] items-center gap-2 rounded-xl bg-burgundy-700 px-4 font-semibold text-white transition-colors hover:bg-burgundy-800 disabled:cursor-not-allowed disabled:bg-gray-300"
+              >
+                <Sparkles className="h-4 w-4" />
+                {isGeneratingDecor ? 'Generating...' : 'Generate Decor Image'}
+              </button>
+              {decorError ? <p className="text-sm text-red-600">{decorError}</p> : null}
+            </div>
+
+            {decorImages.length ? (
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {decorImages.map((item) => (
+                  <article key={item.id} className="overflow-hidden rounded-xl border border-gold-100 bg-gold-50/50">
+                    <img src={item.dataUrl} alt={item.prompt} className="h-52 w-full object-cover" />
+                    <div className="space-y-2 p-3">
+                      <p className="text-sm font-medium text-gray-900">{item.prompt}</p>
+                      {item.style ? <p className="text-xs text-gray-700">Style: {item.style}</p> : null}
+                      {item.guidance ? <p className="text-xs text-gray-700">{item.guidance}</p> : null}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : null}
           </div>
         </section>
       </main>
