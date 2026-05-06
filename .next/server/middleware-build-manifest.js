@@ -24,10 +24,10 @@ self.__BUILD_MANIFEST = {
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/chatbot": [
+    "/compare": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/chatbot.js"
+      "static/chunks/pages/compare.js"
     ]
   },
   "ampFirstPages": []
