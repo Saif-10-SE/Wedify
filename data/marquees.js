@@ -6,17 +6,12 @@ export const realVenuePhotos = [
   '/images/venues/falettis-img-4912.jpg',
   '/images/venues/falettis-dsc-4334.jpg',
   '/images/venues/falettis-dsc-3936.jpg',
-  '/images/venues/falettis-dsc-0965.jpg',
   '/images/venues/pc-lahore-eid-package.jpg',
   '/images/venues/pc-hotel-5958.jpg',
   '/images/venues/pc-hotel-5960.jpg',
   '/images/venues/pc-hotel-5959.jpg',
   '/images/venues/pc-bhurban-2.webp',
   '/images/venues/pc-karachi-banner.jpg',
-  '/images/venues/falettis-img-8209.jpg',
-  '/images/venues/falettis-dsc-0120.jpg',
-  '/images/venues/pc-lahore-eid-package.jpg',
-  '/images/venues/pc-karachi-banner.jpg'
 ];
 
 const buildVenuePhotoSet = (venueIndex, galleryLength = 4) => {

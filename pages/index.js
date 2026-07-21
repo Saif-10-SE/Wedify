@@ -257,13 +257,13 @@ export default function Home({
               const categoryImages = {
                 photography: realVenuePhotos[1],
                 decoration: realVenuePhotos[3],
-                catering: realVenuePhotos[6],
-                makeup: realVenuePhotos[7],
-                entertainment: realVenuePhotos[11],
+                catering: realVenuePhotos[5],
+                makeup: realVenuePhotos[6],
+                entertainment: realVenuePhotos[9],
                 venue: realVenuePhotos[0],
-                invitations: realVenuePhotos[12],
-                jewelry: realVenuePhotos[13],
-                mehndi: realVenuePhotos[5]
+                invitations: '/images/categories/invitations.png',
+                jewelry: realVenuePhotos[2],
+                mehndi: realVenuePhotos[4],
               };
               const imageUrl = categoryImages[category.id] || categoryImages.venue;
               
@@ -273,11 +273,15 @@ export default function Home({
                   href={`/vendors?category=${category.id}`}
                   className="theme-card p-3 sm:p-6 text-center transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group"
                 >
-                  <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full mx-auto mb-2 sm:mb-4 overflow-hidden ring-2 ring-gold-200 group-hover:ring-gold-400 transition-all">
+                  <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full mx-auto mb-2 sm:mb-4 overflow-hidden ring-2 ring-gold-200 group-hover:ring-gold-400 transition-all bg-gray-100">
                     <img
                       src={imageUrl}
                       alt={category.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = categoryImages.venue;
+                      }}
                     />
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base text-gray-800 group-hover:text-gold-600 transition-colors leading-snug">{category.name}</h3>
