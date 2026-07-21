@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import { useWedding } from '@/context/WeddingContext';
 import CountdownTimer from '@/components/CountdownTimer';
 import WeddingDateModal from '@/components/WeddingDateModal';
-import { CheckCircle, Circle, Calendar, ChevronDown, ChevronUp, Download, Share2, Sparkles, Clock, Target, Church, Star, PartyPopper, MoonStar, Wallet, ClipboardList, Handshake, Camera, Smile } from 'lucide-react';
+import { CheckCircle, Circle, Calendar, ChevronDown, ChevronUp, Download, Share2, Sparkles, Clock, Target, Church, Star, PartyPopper, MoonStar, Wallet, ClipboardList, HeartHandshake, Camera, Smile } from 'lucide-react';
 
 const periodIcons = {
   calendar: Calendar,
@@ -22,7 +22,7 @@ const planningTips = [
   { icon: Calendar, title: 'Start Early', tip: 'Begin planning at least 12 months before for popular venues and vendors.' },
   { icon: Wallet, title: 'Budget First', tip: 'Set your budget before making any bookings to avoid overspending.' },
   { icon: ClipboardList, title: 'Stay Organized', tip: 'Use this checklist and keep all contracts and receipts in one place.' },
-  { icon: Handshake, title: 'Delegate Tasks', tip: "Don't try to do everything yourself. Involve family and consider a planner." },
+  { icon: HeartHandshake, title: 'Delegate Tasks', tip: "Don't try to do everything yourself. Involve family and consider a planner." },
   { icon: Camera, title: 'Book Photographers Early', tip: 'Top photographers get booked 6-12 months in advance.' },
   { icon: Smile, title: 'Enjoy the Process', tip: "Remember to enjoy your engagement! Don't let stress take over." },
 ];
