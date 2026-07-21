@@ -4,10 +4,13 @@ import FavoriteButton from './FavoriteButton';
 import CompareButton from './CompareButton';
 
 export default function MarqueeCard({ marquee }) {
+  const visibleAmenities = marquee.amenities.slice(0, 3);
+  const extraAmenities = Math.max(0, marquee.amenities.length - 3);
+
   return (
-    <div className="theme-card overflow-hidden card-hover group">
+    <div className="theme-card overflow-hidden card-hover group h-full flex flex-col">
       {/* Image */}
-      <div className="relative h-56 overflow-hidden">
+      <div className="relative h-56 overflow-hidden shrink-0">
         <img 
           src={marquee.image} 
           alt={marquee.name}
@@ -38,20 +41,20 @@ export default function MarqueeCard({ marquee }) {
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-serif font-semibold text-gray-800 mb-2 group-hover:text-gold-600 transition-colors">
+      <div className="p-6 flex flex-col flex-1 min-h-0">
+        <h3 className="text-xl font-serif font-semibold text-gray-800 mb-2 group-hover:text-gold-600 transition-colors line-clamp-1">
           {marquee.name}
         </h3>
         
         <div className="flex items-center text-gray-500 text-sm mb-3">
-          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          {marquee.location}
+          <span className="truncate">{marquee.location}</span>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2 min-h-[2.5rem]">
           {marquee.description}
         </p>
 
@@ -59,46 +62,47 @@ export default function MarqueeCard({ marquee }) {
         <div className="grid grid-cols-2 gap-4 mb-4 py-4 border-t border-b border-gray-100">
           <div>
             <p className="text-xs text-gray-500 uppercase tracking-wide">Capacity</p>
-            <p className="text-sm font-semibold text-gray-800">
+            <p className="text-sm font-semibold text-gray-800 whitespace-nowrap">
               {marquee.capacity.min} - {marquee.capacity.max} guests
             </p>
           </div>
           <div>
             <p className="text-xs text-gray-500 uppercase tracking-wide">Per Head</p>
-            <p className="text-sm font-semibold text-gold-600">
+            <p className="text-sm font-semibold text-gold-600 whitespace-nowrap">
               {formatPrice(marquee.pricing.perHead.min)}+
             </p>
           </div>
         </div>
 
-        {/* Amenities */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {marquee.amenities.slice(0, 3).map((amenity, index) => (
+        {/* Amenities — fixed single-row height so cards stay even */}
+        <div className="flex items-center gap-2 mb-4 h-7 overflow-hidden">
+          {visibleAmenities.map((amenity, index) => (
             <span 
               key={index}
-              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+              title={amenity}
+              className="inline-flex items-center h-7 max-w-[7.5rem] shrink-0 truncate px-2.5 bg-gray-100 text-gray-600 text-xs leading-none rounded-full"
             >
               {amenity}
             </span>
           ))}
-          {marquee.amenities.length > 3 && (
-            <span className="px-2 py-1 bg-gold-100 text-gold-700 text-xs rounded-full">
-              +{marquee.amenities.length - 3} more
+          {extraAmenities > 0 && (
+            <span className="inline-flex items-center h-7 shrink-0 px-2.5 bg-gold-100 text-gold-700 text-xs leading-none rounded-full">
+              +{extraAmenities} more
             </span>
           )}
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-3">
+        {/* Actions — pinned to bottom, equal widths */}
+        <div className="flex gap-3 mt-auto pt-1">
           <Link 
             href={`/marquees/${marquee.slug}`}
-            className="flex-1 px-4 py-2.5 bg-burgundy-700 hover:bg-burgundy-800 text-white text-center font-semibold rounded-lg transition-all text-sm"
+            className="flex-1 min-w-0 px-4 py-2.5 bg-burgundy-700 hover:bg-burgundy-800 text-white text-center font-semibold rounded-lg transition-all text-sm"
           >
             View Details
           </Link>
           <Link 
             href={`/calculator?venue=${marquee.slug}`}
-            className="px-4 py-2.5 border-2 border-gold-500 text-gold-600 hover:bg-gold-50 font-semibold rounded-lg transition-all text-sm"
+            className="flex-1 min-w-0 px-4 py-2.5 border-2 border-gold-500 text-gold-600 hover:bg-gold-50 font-semibold rounded-lg transition-all text-sm text-center"
           >
             Calculate
           </Link>
