@@ -8,7 +8,11 @@
   --primary: #c54c79;
   --gold: #d4af37;
   --burgundy: #c54c79;
-  --cream: #fffef7;
+  --cream: #fff8f1;
+  --blush: #fff1f5;
+  --blush-deep: #fce4ec;
+  --ink: #2b1f1a;
+  --page-glow: rgba(197, 76, 121, 0.12);
 }
 
 * {
@@ -19,7 +23,7 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--primary);
+  background-color: var(--blush);
 }
 
 body {
@@ -27,7 +31,14 @@ body {
   overflow-x: hidden;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  background-color: var(--primary);
+  color: var(--ink);
+  background-color: var(--blush);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(197, 76, 121, 0.18), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 95% 20%, rgba(245, 158, 11, 0.14), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(197, 76, 121, 0.1), transparent 55%),
+    linear-gradient(180deg, #fff5f8 0%, #ffeef4 35%, #fff8f1 70%, #fce8f0 100%);
+  background-attachment: fixed;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,28 +52,77 @@ h1 {
   font-weight: 900;
 }
 
+/* Themed content sections — bridge colorful header/footer */
+@layer components {
+  .section-blush {
+    @apply relative overflow-hidden;
+    background:
+      radial-gradient(circle at 90% 10%, rgba(255, 154, 139, 0.12) 0 8px, transparent 9px),
+      radial-gradient(circle at 8% 80%, rgba(197, 76, 121, 0.08) 0 10px, transparent 11px),
+      linear-gradient(160deg, #fff1f5 0%, #ffe8f0 48%, #fff5f8 100%);
+  }
+
+  .section-cream {
+    @apply relative overflow-hidden;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(245, 158, 11, 0.1) 0 12px, transparent 13px),
+      linear-gradient(165deg, #fffaf3 0%, #fff3e8 45%, #ffeef4 100%);
+  }
+
+  .section-rose {
+    @apply relative overflow-hidden;
+    background:
+      linear-gradient(135deg, rgba(197, 76, 121, 0.08), rgba(245, 158, 11, 0.06)),
+      linear-gradient(180deg, #fce4ec 0%, #fff1f5 55%, #fff8f1 100%);
+  }
+
+  .section-blush::before,
+  .section-cream::before,
+  .section-rose::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.45;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(197, 76, 121, 0.06) 0 2px, transparent 3px),
+      radial-gradient(circle at 70% 60%, rgba(245, 158, 11, 0.07) 0 2px, transparent 3px),
+      radial-gradient(circle at 40% 80%, rgba(197, 76, 121, 0.05) 0 1.5px, transparent 2px);
+    background-size: 48px 48px, 64px 64px, 36px 36px;
+  }
+
+  .theme-card {
+    @apply relative rounded-2xl border border-burgundy-100/80 bg-white/90 shadow-[0_12px_40px_rgba(103,41,63,0.08)] backdrop-blur-sm;
+  }
+
+  .theme-chip {
+    @apply inline-flex items-center rounded-full border border-burgundy-200/70 bg-white/75 px-6 py-3 font-medium text-burgundy-800 shadow-sm transition-all hover:border-gold-400 hover:bg-gold-50 hover:text-gold-800;
+  }
+}
+
 /* Gradient Backgrounds */
 .gradient-gold {
   background: linear-gradient(135deg, #d4af37 0%, #f4e4ba 50%, #d4af37 100%);
 }
 
-  .gradient-burgundy {
-    background: linear-gradient(135deg, #c54c79 0%, #af3f6a 100%);
-  }
+.gradient-burgundy {
+  background: linear-gradient(135deg, #c54c79 0%, #af3f6a 100%);
+}
 
-  .text-shadow {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  }
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-  /* Card Hover Effects */
-  .card-hover {
-    transition: all 0.3s ease;
-  }
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.3s ease;
+}
 
-  .card-hover:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  }
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(103, 41, 63, 0.14);
+}
+
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
@@ -417,22 +477,20 @@ h1 {
   display: none;
 }
 
-/* Decorative subtle floral/dot pattern on the right side (low opacity) */
+/* Decorative subtle floral/dot pattern across the page (low opacity) */
 body::after {
   content: '';
   position: fixed;
-  right: 0;
-  top: 0;
-  width: 40%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle at 90% 10%, rgba(255,154,139,0.05) 0 6px, transparent 7px),
-                    radial-gradient(circle at 92% 25%, rgba(248,200,220,0.04) 0 6px, transparent 7px),
-                    radial-gradient(circle at 95% 80%, rgba(230,181,102,0.03) 0 8px, transparent 9px),
-                    linear-gradient(135deg, transparent 60%, rgba(248,200,220,0.03) 100%);
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 92% 12%, rgba(255, 154, 139, 0.07) 0 7px, transparent 8px),
+    radial-gradient(circle at 88% 28%, rgba(248, 200, 220, 0.06) 0 6px, transparent 7px),
+    radial-gradient(circle at 94% 78%, rgba(230, 181, 102, 0.05) 0 9px, transparent 10px),
+    radial-gradient(circle at 8% 55%, rgba(197, 76, 121, 0.04) 0 5px, transparent 6px);
   background-repeat: no-repeat;
   opacity: 1;
-  mix-blend-mode: normal;
 }
 
 /* Ensure main content sits above the decorative layer */

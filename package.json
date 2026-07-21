@@ -6,11 +6,14 @@
     "dev": "  next dev -p 4000",
     "build": "next build",
     "start": "next start -p 4000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "node -e \"fetch('http://localhost:4002/api/seed').then(r=>r.json()).then(console.log).catch(e=>{console.error(e);process.exit(1)})\""
   },
   "dependencies": {
     "@google/genai": "^1.52.0",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.294.0",
+    "mongoose": "^8.24.1",
     "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

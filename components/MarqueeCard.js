@@ -5,7 +5,7 @@ import CompareButton from './CompareButton';
 
 export default function MarqueeCard({ marquee }) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-lg card-hover group">
+    <div className="theme-card overflow-hidden card-hover group">
       {/* Image */}
       <div className="relative h-56 overflow-hidden">
         <img 

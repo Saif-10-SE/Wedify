@@ -125,7 +125,11 @@ export default function ChatbotPage() {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data?.error || 'Unable to generate decor image.');
+        const detail =
+          Array.isArray(data?.details) && data.details.length
+            ? ` (${data.details[0]})`
+            : '';
+        throw new Error((data?.error || 'Unable to generate decor image.') + detail);
       }
 
       if (data?.error && !data?.image) {
@@ -136,6 +140,13 @@ export default function ChatbotPage() {
         throw new Error('Image data missing in response.');
       }
 
+      // Reject stale local-fallback responses if an old server build somehow returns them
+      if (data?.metadata?.source === 'local-fallback' || data?.metadata?.source === 'local-catalog') {
+        throw new Error(
+          'Decor generator returned a stock photo instead of an AI image. Please refresh and try again.'
+        );
+      }
+
       const dataUrl = `data:${data.image.mimeType};base64,${data.image.base64}`;
       setDecorImages((prev) => [
         {
@@ -144,7 +155,7 @@ export default function ChatbotPage() {
           style: decorStyle.trim(),
           guidance: data?.guidance || '',
           dataUrl,
-          source: data?.metadata?.source || 'openai'
+          source: data?.metadata?.source || 'ai'
         },
         ...prev
       ]);

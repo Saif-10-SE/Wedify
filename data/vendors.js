@@ -40,7 +40,7 @@ const vendorCatalog = {
         'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800',
         'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800'
       ],
-      contact: { phone: '+92 300 1234567', email: 'info@irfanahson.com', website: 'irfanahson.com' },
+      contact: { phone: '+92 300 8456123', email: 'info@irfanahson.com', website: 'irfanahson.com' },
       featured: true
     },
     {
@@ -109,7 +109,7 @@ const vendorCatalog = {
       priceRange: { min: 500000, max: 3000000 },
       services: ['Traditional Decor', 'Modern Themes', 'Floral Design', 'Mandap Setup'],
       portfolio: [],
-      contact: { phone: '+92 321 1234567', email: 'merajdindecor@gmail.com' },
+      contact: { phone: '+92 321 7788990', email: 'merajdindecor@gmail.com' },
       featured: true
     },
     {
@@ -223,7 +223,7 @@ const vendorCatalog = {
       reviews: 234,
       priceRange: { min: 80000, max: 300000 },
       services: ['DJ Setup', 'Sound System', 'LED Walls', 'Dhol Players'],
-      contact: { phone: '+92 300 1234567', email: 'book@beatsbeyond.pk' },
+      contact: { phone: '+92 300 5566778', email: 'book@beatsbeyond.pk' },
       featured: true
     },
     {

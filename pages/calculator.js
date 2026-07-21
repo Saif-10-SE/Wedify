@@ -1,12 +1,21 @@
 import Head from 'next/head';
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { marquees, additionalServices, formatPrice, getMarqueeBySlug } from '@/data/marquees';
+import { formatPrice } from '@/data/marquees';
+import {
+  fetchMarquees,
+  fetchLivePriceExtras,
+  marqueeBySlug,
+} from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Camera, Music2, Car, Mail } from 'lucide-react';
 
-export default function Calculator() {
+export default function Calculator({
+  marquees = [],
+  additionalServices = {},
+  dataSource = 'local',
+}) {
   const router = useRouter();
   const { venue: venueSlug } = router.query;
 
@@ -26,16 +35,16 @@ export default function Calculator() {
   // Set venue from URL
   useEffect(() => {
     if (venueSlug) {
-      const venue = getMarqueeBySlug(venueSlug);
+      const venue = marqueeBySlug(marquees, venueSlug);
       if (venue) {
         setSelectedVenue(venue.slug);
       }
     }
-  }, [venueSlug]);
+  }, [venueSlug, marquees]);
 
   const currentVenue = useMemo(() => {
     return marquees.find(m => m.slug === selectedVenue) || marquees[0];
-  }, [selectedVenue]);
+  }, [selectedVenue, marquees]);
 
   // Calculate totals
   const calculations = useMemo(() => {
@@ -554,4 +563,18 @@ export default function Calculator() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const [{ items, source }, extras] = await Promise.all([
+    fetchMarquees(),
+    fetchLivePriceExtras(),
+  ]);
+  return {
+    props: {
+      marquees: items,
+      additionalServices: extras.additionalServices || {},
+      dataSource: source,
+    },
+  };
 }

@@ -1,13 +1,21 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import { testimonials, getFeaturedTestimonials } from '@/data/testimonials';
-import { marquees } from '@/data/marquees';
+import {
+  fetchMarquees,
+  fetchTestimonials,
+  featuredTestimonials as pickFeaturedTestimonials,
+} from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TestimonialCard from '@/components/TestimonialCard';
 import { Star, Quote, Filter, Heart, Users } from 'lucide-react';
 
-export default function Testimonials() {
+export default function Testimonials({
+  testimonials = [],
+  marquees = [],
+  featuredTestimonials = [],
+  dataSource = 'local',
+}) {
   const [selectedVenue, setSelectedVenue] = useState('all');
   const [sortBy, setSortBy] = useState('recent');
 
@@ -19,11 +27,11 @@ export default function Testimonials() {
       return 0; // recent - keep original order
     });
 
-  const featuredTestimonials = getFeaturedTestimonials();
-
   // Stats
-  const averageRating = (testimonials.reduce((acc, t) => acc + t.rating, 0) / testimonials.length).toFixed(1);
-  const totalGuests = testimonials.reduce((acc, t) => acc + t.guests, 0);
+  const averageRating = testimonials.length
+    ? (testimonials.reduce((acc, t) => acc + t.rating, 0) / testimonials.length).toFixed(1)
+    : '0';
+  const totalGuests = testimonials.reduce((acc, t) => acc + (t.guests || 0), 0);
 
   return (
     <>
@@ -183,4 +191,19 @@ export default function Testimonials() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const [marqueesRes, testimonialsRes] = await Promise.all([
+    fetchMarquees(),
+    fetchTestimonials(),
+  ]);
+  return {
+    props: {
+      marquees: marqueesRes.items,
+      testimonials: testimonialsRes.items,
+      featuredTestimonials: pickFeaturedTestimonials(testimonialsRes.items),
+      dataSource: testimonialsRes.source,
+    },
+  };
 }

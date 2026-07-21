@@ -12,7 +12,7 @@ const testimonialEntries = [
     review: 'Our wedding at Royal Palm was absolutely magical! The venue exceeded all expectations with its stunning lawns and impeccable service. The team made sure every detail was perfect. We couldn\'t have asked for a better experience.',
     image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
     guests: 1200,
-    budget: 'PKR 85 Lac',
+    budget: 'PKR 72 Lac',
     highlights: ['Beautiful Lawns', 'Excellent Catering', 'Professional Staff']
   },
   {
@@ -25,7 +25,7 @@ const testimonialEntries = [
     review: 'PC Lahore gave us the wedding of our dreams! The 5-star service, exquisite food, and elegant ambiance made our special day unforgettable. Every guest commented on how beautiful everything was.',
     image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800',
     guests: 800,
-    budget: 'PKR 65 Lac',
+    budget: 'PKR 68 Lac',
     highlights: ['5-Star Service', 'Central Location', 'Multiple Halls']
   },
   {
@@ -38,7 +38,7 @@ const testimonialEntries = [
     review: 'We wanted a venue with character and history, and Faletti\'s delivered beautifully. The heritage charm combined with modern amenities created the perfect backdrop for our wedding.',
     image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800',
     guests: 500,
-    budget: 'PKR 45 Lac',
+    budget: 'PKR 38 Lac',
     highlights: ['Heritage Venue', 'Intimate Setting', 'Colonial Charm']
   },
   {
@@ -51,7 +51,7 @@ const testimonialEntries = [
     review: 'The sprawling lawns of Gymkhana gave us the outdoor wedding we always dreamed of. The sunset ceremony was breathtaking, and the staff handled everything with utmost professionalism.',
     image: 'https://images.unsplash.com/photo-1529636798458-92182e662485?w=800',
     guests: 1500,
-    budget: 'PKR 75 Lac',
+    budget: 'PKR 90 Lac',
     highlights: ['Massive Lawns', 'Sunset Ceremony', 'Heritage Architecture']
   },
   {
@@ -64,7 +64,7 @@ const testimonialEntries = [
     review: 'Serena\'s boutique feel and personalized service made our intimate wedding incredibly special. The food was exceptional, and the attention to detail was remarkable.',
     image: 'https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=800',
     guests: 350,
-    budget: 'PKR 55 Lac',
+    budget: 'PKR 32 Lac',
     highlights: ['Boutique Experience', 'Exceptional Food', 'Personalized Service']
   },
   {
@@ -77,7 +77,7 @@ const testimonialEntries = [
     review: 'Grand Marquee was perfect for our large wedding. The modern facilities accommodated all our guests comfortably, and the value for money was excellent.',
     image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800',
     guests: 2500,
-    budget: 'PKR 50 Lac',
+    budget: 'PKR 95 Lac',
     highlights: ['Large Capacity', 'Modern Facilities', 'Great Value']
   },
   {

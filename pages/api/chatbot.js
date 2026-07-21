@@ -1,5 +1,5 @@
-import { marquees, formatPrice } from '@/data/marquees';
-import { getAllVendors } from '@/data/vendors';
+import { formatPrice } from '@/data/marquees';
+import { fetchMarquees, fetchVendors } from '@/lib/catalogService';
 
 const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash';
 const GEMINI_TEXT_FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash'];
@@ -109,7 +109,7 @@ const getBudgetShape = (budgetPkr, guests) => {
   };
 };
 
-const buildVenueRecommendations = ({ budgetPkr, guests, area }) => {
+const buildVenueRecommendations = ({ budgetPkr, guests, area, marquees = [] }) => {
   const { perHeadBudget } = getBudgetShape(budgetPkr, guests);
   const pool = area ? marquees.filter((m) => m.area === area) : [...marquees];
 
@@ -154,10 +154,10 @@ const buildVenueRecommendations = ({ budgetPkr, guests, area }) => {
   return { recommended, alternatives };
 };
 
-const buildVendorRecommendations = (totalBudget) => {
+const buildVendorRecommendations = (totalBudget, vendors = []) => {
   if (!totalBudget) return [];
 
-  const all = getAllVendors().filter((v) => v.type !== 'Venue');
+  const all = vendors.filter((v) => v.type !== 'Venue');
 
   const targets = [
     { type: 'Photography', fraction: 0.12 },
@@ -360,9 +360,18 @@ export default async function handler(req, res) {
     const area = extractArea(combinedText);
     const events = extractEvents(combinedText);
 
+    const [marqueesRes, vendorsRes] = await Promise.all([fetchMarquees(), fetchVendors()]);
+    const marquees = marqueesRes.items;
+    const vendors = vendorsRes.items;
+
     const budgetShape = getBudgetShape(budgetPkr, guests);
-    const { recommended, alternatives } = buildVenueRecommendations({ budgetPkr, guests, area });
-    const vendorRecommendations = buildVendorRecommendations(budgetShape.totalBudget);
+    const { recommended, alternatives } = buildVenueRecommendations({
+      budgetPkr,
+      guests,
+      area,
+      marquees,
+    });
+    const vendorRecommendations = buildVendorRecommendations(budgetShape.totalBudget, vendors);
 
     const planningContext = [
       `Parsed inputs: budget=${budgetPkr || 'unknown'} PKR, guests=${guests || 'unknown'}, area=${area || 'any'}, events=${events.join(', ') || 'not specified'}`,

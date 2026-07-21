@@ -1,7 +1,11 @@
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
-import { getAllVendors, getFeaturedVendors, getVendorCategories } from '@/data/vendors';
 import { formatPrice } from '@/data/marquees';
+import {
+  fetchVendors,
+  featuredVendors as pickFeaturedVendors,
+  getVendorCategories,
+} from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import VendorCard from '@/components/VendorCard';
@@ -19,16 +23,18 @@ const categoryIcons = {
   hand: Hand,
 };
 
-export default function Vendors() {
+export default function Vendors({
+  allVendors = [],
+  featuredVendors = [],
+  categories = [],
+  dataSource = 'local',
+}) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('rating');
   const [viewMode, setViewMode] = useState('grid');
 
-  const allVendors = useMemo(() => getAllVendors(), []);
-  const categories = getVendorCategories();
-  const featuredVendors = getFeaturedVendors();
   const locations = useMemo(() => {
     return [...new Set(
       allVendors
@@ -78,6 +84,9 @@ export default function Vendors() {
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
             Discover Lahore's best wedding professionals. From photographers to caterers, find the perfect team for your special day.
           </p>
+          <p className="mb-6 text-xs uppercase tracking-widest text-gold-400/90">
+            Loaded from {dataSource === 'mongodb' ? 'MongoDB' : 'local data'} · {allVendors.length} vendors
+          </p>
 
           {/* Search Bar */}
           <div className="max-w-xl mx-auto relative">
@@ -94,7 +103,7 @@ export default function Vendors() {
       </section>
 
       {/* Categories */}
-      <section className="py-8 bg-white border-b">
+      <section className="section-cream py-8 border-b border-burgundy-100/50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-4">
             <button
@@ -148,7 +157,7 @@ export default function Vendors() {
       )}
 
       {/* Filters */}
-      <section className="py-4 bg-white border-b sticky top-20 z-40">
+      <section className="py-4 border-b border-burgundy-100/50 sticky top-20 z-40 backdrop-blur-md bg-[#fff8f1]/90">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -195,7 +204,7 @@ export default function Vendors() {
       </section>
 
       {/* Vendors Grid */}
-      <section className="py-12 bg-gray-50 min-h-screen">
+      <section className="section-blush py-12 min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
           {viewMode === 'grid' ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -206,7 +215,7 @@ export default function Vendors() {
           ) : (
             <div className="space-y-4">
               {filteredVendors.map(vendor => (
-                <div key={vendor.id} className="bg-white rounded-xl shadow-sm p-6 flex gap-6 hover:shadow-md transition-shadow">
+                <div key={vendor.id} className="theme-card p-6 flex gap-6 transition-shadow hover:shadow-[0_16px_36px_rgba(103,41,63,0.12)]">
                   <img 
                     src={vendor.image}
                     alt={vendor.name}
@@ -281,4 +290,16 @@ export default function Vendors() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const { items, source } = await fetchVendors();
+  return {
+    props: {
+      allVendors: items,
+      featuredVendors: pickFeaturedVendors(items),
+      categories: getVendorCategories(),
+      dataSource: source,
+    },
+  };
 }

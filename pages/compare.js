@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import { useState, useMemo } from 'react';
-import { marquees, formatPrice } from '@/data/marquees';
+import { formatPrice } from '@/data/marquees';
+import { fetchMarquees } from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 
-export default function Compare() {
+export default function Compare({ marquees = [], dataSource = 'local' }) {
   const [selectedVenues, setSelectedVenues] = useState(['royal-palm', 'pc-marquee', 'falettis']);
 
   const handleVenueChange = (index, value) => {
@@ -16,7 +17,7 @@ export default function Compare() {
 
   const compareVenues = useMemo(() => {
     return selectedVenues.map(slug => marquees.find(m => m.slug === slug)).filter(Boolean);
-  }, [selectedVenues]);
+  }, [selectedVenues, marquees]);
 
   return (
     <>
@@ -258,4 +259,14 @@ export default function Compare() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const { items, source } = await fetchMarquees();
+  return {
+    props: {
+      marquees: items,
+      dataSource: source,
+    },
+  };
 }

@@ -1,12 +1,16 @@
 import Head from 'next/head';
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { marquees, getAreas, formatPrice } from '@/data/marquees';
+import { formatPrice } from '@/data/marquees';
+import {
+  fetchMarquees,
+  areasFromMarquees,
+} from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import MarqueeCard from '@/components/MarqueeCard';
 import Footer from '@/components/Footer';
 
-export default function Marquees() {
+export default function Marquees({ marquees = [], areas = [], dataSource = 'local' }) {
   const router = useRouter();
   const [filters, setFilters] = useState({
     area: '',
@@ -14,8 +18,6 @@ export default function Marquees() {
     maxBudget: '',
     sortBy: 'rating'
   });
-
-  const areas = getAreas();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -58,7 +60,7 @@ export default function Marquees() {
     }
 
     return result;
-  }, [filters]);
+  }, [filters, marquees]);
 
   return (
     <>
@@ -78,11 +80,14 @@ export default function Marquees() {
           <p className="text-white/80 max-w-2xl mx-auto">
             Browse through Lahore's most prestigious marquees and find the perfect venue for your dream wedding
           </p>
+          <p className="mt-3 text-xs uppercase tracking-widest text-gold-400/90">
+            Loaded from {dataSource === 'mongodb' ? 'MongoDB' : 'local data'} · {marquees.length} venues
+          </p>
         </div>
       </section>
 
       {/* Filters */}
-      <section className="bg-white shadow-md sticky top-20 z-40">
+      <section className="sticky top-20 z-40 border-b border-burgundy-100/60 bg-[#fff8f1]/92 shadow-sm backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-wrap gap-4 items-center">
             <select
@@ -139,7 +144,7 @@ export default function Marquees() {
       </section>
 
       {/* Marquees Grid */}
-      <section className="py-12 bg-gray-50 min-h-screen">
+      <section className="section-blush py-12 min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredMarquees.map((marquee) => (
@@ -162,4 +167,15 @@ export default function Marquees() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const { items, source } = await fetchMarquees();
+  return {
+    props: {
+      marquees: items,
+      areas: areasFromMarquees(items),
+      dataSource: source,
+    },
+  };
 }

@@ -1,17 +1,35 @@
 import Link from 'next/link';
-import { Heart, Phone, Mail, MapPin, Instagram, Facebook, Twitter, Youtube, Send, ArrowUp } from 'lucide-react';
+import Image from 'next/image';
+import { Heart, Phone, Mail, MapPin, Instagram, Facebook, Youtube, Send, ArrowUp } from 'lucide-react';
 import { useState } from 'react';
 import { useWedding } from '@/context/WeddingContext';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { showNotification } = useWedding();
   
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (email) {
-      showNotification('Thank you for subscribing!', 'success');
+    if (!email || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Subscription failed');
+      }
+      showNotification(data.message, 'success');
       setEmail('');
+    } catch (err) {
+      showNotification(err.message || 'Could not subscribe. Please try again.', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
@@ -27,7 +45,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
               <h3 className="text-2xl font-serif text-white mb-2">Get Wedding Inspiration</h3>
-              <p className="text-white/70">Subscribe for tips, trends, and exclusive offers</p>
+              <p className="text-white/70">Subscribe for tips, trends, and exclusive venue updates</p>
             </div>
             <form onSubmit={handleSubscribe} className="flex w-full md:w-auto">
               <input
@@ -40,10 +58,11 @@ export default function Footer() {
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-r-lg transition-colors flex items-center gap-2"
+                disabled={isSubmitting}
+                className="px-6 py-3 bg-gold-500 hover:bg-gold-600 disabled:bg-gold-400 text-white font-semibold rounded-r-lg transition-colors flex items-center gap-2"
               >
                 <Send className="w-4 h-4" />
-                Subscribe
+                {isSubmitting ? 'Saving...' : 'Subscribe'}
               </button>
             </form>
           </div>
@@ -54,31 +73,46 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-gold-500 to-gold-700 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-serif text-2xl">W</span>
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl">Lahore Elite</h3>
-                <p className="text-sm text-gold-400 -mt-1">Weddings</p>
-              </div>
-            </div>
+            <Link href="/" className="inline-flex items-center space-x-3 mb-4 group">
+              <Image
+                src="/images/wedify-logo.svg"
+                alt="Wedify"
+                width={180}
+                height={64}
+                className="h-14 w-auto brightness-0 invert opacity-95 group-hover:opacity-100 transition-opacity"
+              />
+            </Link>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Your trusted partner in planning the perfect wedding. Discover Lahore's finest venues and services for your special day.
+              Pakistan&apos;s wedding planning platform for Lahore. Compare real marquee rates, build your budget, and book trusted vendors — all in one place.
             </p>
             
             {/* Social Links */}
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group">
+              <a
+                href="https://www.facebook.com/search/top?q=wedify%20lahore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group"
+                aria-label="Wedify on Facebook"
+              >
                 <Facebook className="w-5 h-5 text-gray-400 group-hover:text-white" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group">
+              <a
+                href="https://www.instagram.com/explore/tags/wedify/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group"
+                aria-label="Wedify on Instagram"
+              >
                 <Instagram className="w-5 h-5 text-gray-400 group-hover:text-white" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group">
-                <Twitter className="w-5 h-5 text-gray-400 group-hover:text-white" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group">
+              <a
+                href="https://www.youtube.com/results?search_query=lahore+wedding+venues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 hover:bg-gold-500 rounded-lg flex items-center justify-center transition-colors group"
+                aria-label="Wedding venues on YouTube"
+              >
                 <Youtube className="w-5 h-5 text-gray-400 group-hover:text-white" />
               </a>
             </div>
@@ -110,6 +144,12 @@ export default function Footer() {
                 <Link href="/vendors" className="text-gray-400 hover:text-gold-400 transition-colors flex items-center">
                   <span className="w-1.5 h-1.5 bg-gold-500 rounded-full mr-2"></span>
                   Find Vendors
+                </Link>
+              </li>
+              <li>
+                <Link href="/invitations" className="text-gray-400 hover:text-gold-400 transition-colors flex items-center">
+                  <span className="w-1.5 h-1.5 bg-gold-500 rounded-full mr-2"></span>
+                  Digital Invitations
                 </Link>
               </li>
               <li>
@@ -169,24 +209,24 @@ export default function Footer() {
             <h4 className="font-semibold text-lg mb-5 text-white">Contact Us</h4>
             <ul className="space-y-4 text-gray-400">
               <li>
-                <a href="tel:+923001234567" className="flex items-center hover:text-gold-400 transition-colors">
+                <a href="tel:+923214567890" className="flex items-center hover:text-gold-400 transition-colors">
                   <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3">
                     <Phone className="w-4 h-4 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Call us</p>
-                    <p>+92 300 1234567</p>
+                    <p className="text-xs text-gray-500">Call / WhatsApp</p>
+                    <p>+92 321 4567890</p>
                   </div>
                 </a>
               </li>
               <li>
-                <a href="mailto:info@lahoreeliteweddings.pk" className="flex items-center hover:text-gold-400 transition-colors">
+                <a href="mailto:hello@wedify.pk" className="flex items-center hover:text-gold-400 transition-colors">
                   <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3">
                     <Mail className="w-4 h-4 text-gold-400" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Email us</p>
-                    <p className="text-sm">info@lahoreeliteweddings.pk</p>
+                    <p className="text-sm">hello@wedify.pk</p>
                   </div>
                 </a>
               </li>
@@ -197,7 +237,7 @@ export default function Footer() {
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Location</p>
-                    <p>Lahore, Pakistan</p>
+                    <p>Gulberg III, Lahore, Pakistan</p>
                   </div>
                 </div>
               </li>
@@ -209,12 +249,12 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-500 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} Lahore Elite Weddings. All rights reserved.
+              © {new Date().getFullYear()} Wedify. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm text-gray-500">
-              <Link href="#" className="hover:text-gold-400 transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-gold-400 transition-colors">Terms of Service</Link>
-              <Link href="#" className="hover:text-gold-400 transition-colors">FAQs</Link>
+              <Link href="/privacy" className="hover:text-gold-400 transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-gold-400 transition-colors">Terms of Service</Link>
+              <Link href="/faq" className="hover:text-gold-400 transition-colors">FAQs</Link>
             </div>
             <p className="text-gray-500 text-sm flex items-center">
               Made with <Heart className="w-4 h-4 text-red-500 mx-1 fill-red-500 animate-heartBeat" /> for beautiful weddings

@@ -21,15 +21,30 @@ export default function InquiryForm({ venue, onSuccess }) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          venueSlug: venue?.slug || null,
+          venueName: venue?.name || null
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send inquiry');
+      }
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    showNotification('Inquiry sent successfully!');
-    
-    if (onSuccess) {
-      onSuccess(formData);
+      setIsSubmitted(true);
+      showNotification(data.message || 'Inquiry sent successfully!');
+      if (onSuccess) {
+        onSuccess(formData);
+      }
+    } catch (err) {
+      showNotification(err.message || 'Could not send inquiry. Please try again.', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

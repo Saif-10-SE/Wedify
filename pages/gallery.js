@@ -1,12 +1,17 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import { marquees, realVenuePhotos } from '@/data/marquees';
+import { realVenuePhotos as localPhotos } from '@/data/marquees';
+import { fetchMarquees, fetchLivePriceExtras } from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ImageGallery from '@/components/ImageGallery';
 import { Camera, Filter, Grid, LayoutGrid } from 'lucide-react';
 
-export default function Gallery() {
+export default function Gallery({
+  marquees = [],
+  realVenuePhotos = localPhotos,
+  dataSource = 'local',
+}) {
   const [selectedVenue, setSelectedVenue] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
 
@@ -14,7 +19,7 @@ export default function Gallery() {
   const getAllImages = () => {
     if (selectedVenue === 'all') {
       return marquees.flatMap(m => 
-        m.gallery.map(img => ({ 
+        (m.gallery || []).map(img => ({ 
           url: img, 
           venue: m.name, 
           slug: m.slug 
@@ -22,7 +27,7 @@ export default function Gallery() {
       );
     }
     const venue = marquees.find(m => m.slug === selectedVenue);
-    return venue ? venue.gallery.map(img => ({ 
+    return venue ? (venue.gallery || []).map(img => ({ 
       url: img, 
       venue: venue.name, 
       slug: venue.slug 
@@ -211,4 +216,18 @@ export default function Gallery() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const [{ items, source }, extras] = await Promise.all([
+    fetchMarquees(),
+    fetchLivePriceExtras(),
+  ]);
+  return {
+    props: {
+      marquees: items,
+      realVenuePhotos: extras.realVenuePhotos || localPhotos,
+      dataSource: source,
+    },
+  };
 }

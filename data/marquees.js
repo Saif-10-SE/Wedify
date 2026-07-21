@@ -49,15 +49,15 @@ const baseMarquees = [
     ],
     amenities: ["Valet Parking", "5-Star Catering", "Bridal Suite", "Prayer Area", "AC Halls", "Outdoor Lawns", "Helipad"],
     pricing: {
-      perHead: { min: 4500, max: 12000 },
-      hallRental: 500000,
-      lawn: 300000
+      perHead: { min: 4500, max: 9000 },
+      hallRental: 400000,
+      lawn: 250000
     },
     menuPackages: [
       { name: "Silver", price: 4500, items: ["Main Course (3)", "Starters (4)", "Desserts (3)", "Beverages"] },
-      { name: "Gold", price: 7000, items: ["Main Course (5)", "Starters (6)", "Live Stations (2)", "Desserts (5)", "Beverages"] },
-      { name: "Platinum", price: 9500, items: ["Main Course (7)", "Starters (8)", "Live Stations (4)", "Desserts (7)", "Premium Beverages", "Imported Items"] },
-      { name: "Diamond", price: 12000, items: ["Unlimited Menu", "Live Stations (6)", "International Cuisine", "Premium Everything", "Personal Chef"] }
+      { name: "Gold", price: 6500, items: ["Main Course (5)", "Starters (6)", "Live Stations (2)", "Desserts (5)", "Beverages"] },
+      { name: "Platinum", price: 8000, items: ["Main Course (7)", "Starters (8)", "Live Stations (4)", "Desserts (7)", "Premium Beverages", "Imported Items"] },
+      { name: "Diamond", price: 9000, items: ["Unlimited Menu", "Live Stations (6)", "International Cuisine", "Premium Everything", "Personal Chef"] }
     ],
     decorPackages: [
       { name: "Classic", price: 800000, includes: ["Stage Setup", "Basic Lighting", "Flower Arrangements", "Entry Gate"] },
@@ -65,7 +65,7 @@ const baseMarquees = [
       { name: "Luxury", price: 2500000, includes: ["Custom Design", "Chandelier Setup", "Imported Flowers", "Full Venue Transformation", "Fountain Display"] },
       { name: "Royal", price: 4000000, includes: ["Celebrity Designer", "International Standards", "Everything Custom", "Fireworks", "Drone Show"] }
     ],
-    contact: { phone: "+92 42 35761234", email: "events@royalpalm.com.pk" },
+    contact: { phone: "+92 42 111 602 602", email: "events@royalpalm.com.pk" },
     featured: true
   },
   {
@@ -86,22 +86,22 @@ const baseMarquees = [
     ],
     amenities: ["Valet Parking", "5-Star Kitchen", "Bridal Room", "Mosque", "Multiple Halls", "Rooftop Option"],
     pricing: {
-      perHead: { min: 5000, max: 15000 },
-      hallRental: 400000,
+      perHead: { min: 7000, max: 11000 },
+      hallRental: 500000,
       lawn: 0
     },
     menuPackages: [
-      { name: "Classic", price: 5000, items: ["Continental Menu", "Main Course (4)", "Starters (5)", "Desserts (4)"] },
-      { name: "Executive", price: 8000, items: ["Mixed Cuisine", "Main Course (6)", "Live BBQ", "Desserts (6)", "Mocktails"] },
-      { name: "Presidential", price: 12000, items: ["International Buffet", "Seafood Station", "Live Cooking", "Premium Desserts"] },
-      { name: "Imperial", price: 15000, items: ["Unlimited International", "Lobster & Prawns", "Sushi Bar", "Chocolate Fountain"] }
+      { name: "Classic", price: 7000, items: ["Continental Menu", "Main Course (4)", "Starters (5)", "Desserts (4)"] },
+      { name: "Executive", price: 8500, items: ["Mixed Cuisine", "Main Course (6)", "Live BBQ", "Desserts (6)", "Mocktails"] },
+      { name: "Presidential", price: 10000, items: ["International Buffet", "Seafood Station", "Live Cooking", "Premium Desserts"] },
+      { name: "Imperial", price: 11000, items: ["Unlimited International", "Lobster & Prawns", "Sushi Bar", "Chocolate Fountain"] }
     ],
     decorPackages: [
       { name: "Elegant", price: 600000, includes: ["Stage Design", "Basic Flowers", "Entrance Decor", "Table Setup"] },
       { name: "Grand", price: 1200000, includes: ["Custom Stage", "Premium Florals", "LED Lighting", "Photo Booth"] },
       { name: "Majestic", price: 2000000, includes: ["Themed Decor", "Imported Flowers", "Chandeliers", "Full Transformation"] }
     ],
-    contact: { phone: "+92 42 36360210", email: "banquets@pchotels.com" },
+    contact: { phone: "+92 42 111 505 505", email: "banquets@pchotels.com" },
     featured: true
   },
   {
@@ -122,22 +122,22 @@ const baseMarquees = [
     ],
     amenities: ["Heritage Building", "Gardens", "Bridal Suite", "Valet Parking", "AC Halls"],
     pricing: {
-      perHead: { min: 4000, max: 10000 },
+      perHead: { min: 6500, max: 9000 },
       hallRental: 350000,
       lawn: 200000
     },
     menuPackages: [
-      { name: "Traditional", price: 4000, items: ["Desi Menu", "Main Course (4)", "Starters (4)", "Desserts (3)"] },
-      { name: "Continental", price: 6500, items: ["Mixed Menu", "Main Course (5)", "Starters (6)", "Live Counter"] },
+      { name: "Traditional", price: 6500, items: ["Desi Menu", "Main Course (4)", "Starters (4)", "Desserts (3)"] },
+      { name: "Continental", price: 7500, items: ["Mixed Menu", "Main Course (5)", "Starters (6)", "Live Counter"] },
       { name: "Royal", price: 8500, items: ["Premium Buffet", "Main Course (7)", "Live Stations (3)", "Dessert Bar"] },
-      { name: "Heritage", price: 10000, items: ["Signature Menu", "Chef's Specials", "Everything Premium"] }
+      { name: "Heritage", price: 9000, items: ["Signature Menu", "Chef's Specials", "Everything Premium"] }
     ],
     decorPackages: [
       { name: "Classic", price: 500000, includes: ["Traditional Stage", "Flower Decor", "Entry Setup"] },
       { name: "Victorian", price: 900000, includes: ["Heritage Theme", "Vintage Decor", "Premium Flowers"] },
       { name: "Royal", price: 1500000, includes: ["Custom Everything", "Luxury Florals", "Full Venue"] }
     ],
-    contact: { phone: "+92 42 36360660", email: "events@falettis.com" },
+    contact: { phone: "+92 42 3631 5333", email: "events@falettis.com" },
     featured: true
   },
   {
@@ -157,22 +157,22 @@ const baseMarquees = [
     ],
     amenities: ["Modern Halls", "Rooftop Venue", "Valet Parking", "Bridal Room", "Prayer Area"],
     pricing: {
-      perHead: { min: 3500, max: 8000 },
+      perHead: { min: 4500, max: 8500 },
       hallRental: 300000,
       lawn: 0
     },
     menuPackages: [
-      { name: "Standard", price: 3500, items: ["Desi Menu", "Main Course (3)", "Starters (4)", "Desserts (3)"] },
-      { name: "Deluxe", price: 5500, items: ["Mixed Menu", "Main Course (5)", "Live BBQ", "Desserts (4)"] },
-      { name: "Premium", price: 7000, items: ["Premium Buffet", "Main Course (6)", "Live Stations (2)", "Dessert Bar"] },
-      { name: "Signature", price: 8000, items: ["Chef Special", "International Items", "Premium Everything"] }
+      { name: "Standard", price: 4500, items: ["Desi Menu", "Main Course (3)", "Starters (4)", "Desserts (3)"] },
+      { name: "Deluxe", price: 6000, items: ["Mixed Menu", "Main Course (5)", "Live BBQ", "Desserts (4)"] },
+      { name: "Premium", price: 7500, items: ["Premium Buffet", "Main Course (6)", "Live Stations (2)", "Dessert Bar"] },
+      { name: "Signature", price: 8500, items: ["Chef Special", "International Items", "Premium Everything"] }
     ],
     decorPackages: [
       { name: "Simple", price: 400000, includes: ["Stage Setup", "Basic Decor", "Flowers"] },
       { name: "Elegant", price: 750000, includes: ["Designer Stage", "Premium Flowers", "Lighting"] },
       { name: "Grand", price: 1200000, includes: ["Full Custom", "Imported Items", "Transformation"] }
     ],
-    contact: { phone: "+92 42 35776677", email: "events@nishathotels.com" },
+    contact: { phone: "+92 42 3577 6677", email: "events@nishathotels.com" },
     featured: false
   },
   {
@@ -192,22 +192,22 @@ const baseMarquees = [
     ],
     amenities: ["Heritage Venue", "Massive Lawns", "AC Halls", "Parking", "Members Club"],
     pricing: {
-      perHead: { min: 4000, max: 9000 },
+      perHead: { min: 5500, max: 9500 },
       hallRental: 400000,
-      lawn: 350000
+      lawn: 300000
     },
     menuPackages: [
-      { name: "Club Standard", price: 4000, items: ["Traditional Menu", "Main Course (4)", "Starters (5)"] },
-      { name: "Club Premium", price: 6000, items: ["Mixed Cuisine", "Main Course (5)", "Live Stations (2)"] },
-      { name: "Club Signature", price: 8000, items: ["Premium Buffet", "Chef Specials", "Unlimited"] },
-      { name: "Presidential", price: 9000, items: ["International Menu", "Everything Premium"] }
+      { name: "Club Standard", price: 5500, items: ["Traditional Menu", "Main Course (4)", "Starters (5)"] },
+      { name: "Club Premium", price: 7000, items: ["Mixed Cuisine", "Main Course (5)", "Live Stations (2)"] },
+      { name: "Club Signature", price: 8500, items: ["Premium Buffet", "Chef Specials", "Unlimited"] },
+      { name: "Presidential", price: 9500, items: ["International Menu", "Everything Premium"] }
     ],
     decorPackages: [
       { name: "Traditional", price: 600000, includes: ["Classic Stage", "Garden Setup", "Flowers"] },
       { name: "Elegant", price: 1000000, includes: ["Designer Decor", "Lighting", "Premium Florals"] },
       { name: "Grand", price: 1800000, includes: ["Full Transformation", "Custom Design", "Premium Everything"] }
     ],
-    contact: { phone: "+92 42 36304545", email: "events@gymkhana.org.pk" },
+    contact: { phone: "+92 42 3630 4545", email: "events@gymkhana.org.pk" },
     featured: true
   },
   {
@@ -227,22 +227,22 @@ const baseMarquees = [
     ],
     amenities: ["Massive Capacity", "Modern Design", "Mall Parking", "Multiple Halls", "AC Throughout"],
     pricing: {
-      perHead: { min: 3000, max: 7000 },
-      hallRental: 350000,
+      perHead: { min: 3000, max: 5500 },
+      hallRental: 250000,
       lawn: 0
     },
     menuPackages: [
       { name: "Economy", price: 3000, items: ["Basic Menu", "Main Course (3)", "Starters (3)"] },
-      { name: "Standard", price: 4500, items: ["Good Menu", "Main Course (4)", "Starters (5)", "Desserts (4)"] },
-      { name: "Premium", price: 6000, items: ["Premium Menu", "Main Course (5)", "Live Stations (2)"] },
-      { name: "Luxury", price: 7000, items: ["Full Buffet", "Everything Included"] }
+      { name: "Standard", price: 4000, items: ["Good Menu", "Main Course (4)", "Starters (5)", "Desserts (4)"] },
+      { name: "Premium", price: 4800, items: ["Premium Menu", "Main Course (5)", "Live Stations (2)"] },
+      { name: "Luxury", price: 5500, items: ["Full Buffet", "Everything Included"] }
     ],
     decorPackages: [
       { name: "Basic", price: 350000, includes: ["Simple Stage", "Basic Decor"] },
       { name: "Standard", price: 600000, includes: ["Good Stage", "Flowers", "Lighting"] },
       { name: "Premium", price: 1000000, includes: ["Custom Stage", "Full Decor", "Premium Setup"] }
     ],
-    contact: { phone: "+92 42 35893456", email: "info@grandmarquee.pk" },
+    contact: { phone: "+92 42 3589 3456", email: "info@grandmarquee.pk" },
     featured: false
   },
   {
@@ -262,15 +262,15 @@ const baseMarquees = [
     ],
     amenities: ["Boutique Hotel", "Intimate Setting", "5-Star Service", "Bridal Suite", "Valet"],
     pricing: {
-      perHead: { min: 5500, max: 14000 },
+      perHead: { min: 6500, max: 12000 },
       hallRental: 450000,
       lawn: 250000
     },
     menuPackages: [
-      { name: "Serena Classic", price: 5500, items: ["Signature Menu", "Main Course (4)", "Appetizers (5)"] },
+      { name: "Serena Classic", price: 6500, items: ["Signature Menu", "Main Course (4)", "Appetizers (5)"] },
       { name: "Serena Gold", price: 8500, items: ["Premium Buffet", "Main Course (6)", "Live Stations (2)"] },
-      { name: "Serena Platinum", price: 11000, items: ["International Cuisine", "Chef's Table", "Premium All"] },
-      { name: "Serena Royal", price: 14000, items: ["Custom Menu", "Everything Bespoke"] }
+      { name: "Serena Platinum", price: 10000, items: ["International Cuisine", "Chef's Table", "Premium All"] },
+      { name: "Serena Royal", price: 12000, items: ["Custom Menu", "Everything Bespoke"] }
     ],
     decorPackages: [
       { name: "Elegant", price: 700000, includes: ["Sophisticated Setup", "Quality Flowers", "Tasteful Lighting"] },
@@ -296,22 +296,22 @@ const baseMarquees = [
     ],
     amenities: ["Large Capacity", "Easy Access", "Ample Parking", "AC Halls", "Open Areas"],
     pricing: {
-      perHead: { min: 2800, max: 6000 },
-      hallRental: 250000,
-      lawn: 180000
+      perHead: { min: 2800, max: 4000 },
+      hallRental: 200000,
+      lawn: 150000
     },
     menuPackages: [
       { name: "Basic", price: 2800, items: ["Simple Menu", "Main Course (3)", "Starters (3)"] },
-      { name: "Standard", price: 4000, items: ["Good Menu", "Main Course (4)", "Starters (4)", "Desserts"] },
-      { name: "Premium", price: 5200, items: ["Better Menu", "Main Course (5)", "Live BBQ"] },
-      { name: "Deluxe", price: 6000, items: ["Full Menu", "Everything Good"] }
+      { name: "Standard", price: 3200, items: ["Good Menu", "Main Course (4)", "Starters (4)", "Desserts"] },
+      { name: "Premium", price: 3600, items: ["Better Menu", "Main Course (5)", "Live BBQ"] },
+      { name: "Deluxe", price: 4000, items: ["Full Menu", "Everything Good"] }
     ],
     decorPackages: [
       { name: "Simple", price: 300000, includes: ["Basic Stage", "Simple Decor"] },
       { name: "Good", price: 550000, includes: ["Nice Stage", "Flowers", "Lighting"] },
       { name: "Premium", price: 900000, includes: ["Full Setup", "Quality Decor"] }
     ],
-    contact: { phone: "+92 42 36671234", email: "events@fortressmarquee.com" },
+    contact: { phone: "+92 42 3667 1234", email: "events@fortressmarquee.com" },
     featured: false
   },
   {
@@ -330,22 +330,22 @@ const baseMarquees = [
     ],
     amenities: ["Historic Location", "Good Parking", "Flexible Spaces", "AC Available"],
     pricing: {
-      perHead: { min: 2500, max: 5500 },
-      hallRental: 200000,
-      lawn: 150000
+      perHead: { min: 2500, max: 4500 },
+      hallRental: 180000,
+      lawn: 120000
     },
     menuPackages: [
       { name: "Economy", price: 2500, items: ["Basic Desi", "Main Course (3)", "Starters (3)"] },
-      { name: "Standard", price: 3500, items: ["Good Menu", "Main Course (4)", "Starters (4)"] },
-      { name: "Premium", price: 4500, items: ["Nice Menu", "Main Course (5)", "Live Counter"] },
-      { name: "Special", price: 5500, items: ["Best Menu", "Good Selection"] }
+      { name: "Standard", price: 3200, items: ["Good Menu", "Main Course (4)", "Starters (4)"] },
+      { name: "Premium", price: 3900, items: ["Nice Menu", "Main Course (5)", "Live Counter"] },
+      { name: "Special", price: 4500, items: ["Best Menu", "Good Selection"] }
     ],
     decorPackages: [
       { name: "Basic", price: 250000, includes: ["Simple Setup", "Basic Flowers"] },
       { name: "Standard", price: 450000, includes: ["Good Stage", "Nice Decor"] },
       { name: "Premium", price: 750000, includes: ["Full Decor", "Good Setup"] }
     ],
-    contact: { phone: "+92 42 37654321", email: "info@baroodkhana.pk" },
+    contact: { phone: "+92 42 3765 4321", email: "info@baroodkhana.pk" },
     featured: false
   },
   {
@@ -365,22 +365,22 @@ const baseMarquees = [
     ],
     amenities: ["DHA Location", "Modern Design", "Good Parking", "AC Throughout", "Prayer Area"],
     pricing: {
-      perHead: { min: 3500, max: 8500 },
-      hallRental: 320000,
-      lawn: 220000
+      perHead: { min: 3800, max: 5500 },
+      hallRental: 280000,
+      lawn: 180000
     },
     menuPackages: [
-      { name: "Standard", price: 3500, items: ["Good Menu", "Main Course (4)", "Starters (4)"] },
-      { name: "Deluxe", price: 5500, items: ["Better Menu", "Main Course (5)", "Live Stations"] },
-      { name: "Premium", price: 7000, items: ["Premium Menu", "Main Course (6)", "Dessert Bar"] },
-      { name: "Elite", price: 8500, items: ["Best Menu", "Everything Premium"] }
+      { name: "Standard", price: 3800, items: ["Good Menu", "Main Course (4)", "Starters (4)"] },
+      { name: "Deluxe", price: 4500, items: ["Better Menu", "Main Course (5)", "Live Stations"] },
+      { name: "Premium", price: 5000, items: ["Premium Menu", "Main Course (6)", "Dessert Bar"] },
+      { name: "Elite", price: 5500, items: ["Best Menu", "Everything Premium"] }
     ],
     decorPackages: [
       { name: "Modern", price: 450000, includes: ["Contemporary Stage", "Modern Decor"] },
       { name: "Elegant", price: 800000, includes: ["Designer Setup", "Premium Flowers", "Lighting"] },
       { name: "Luxurious", price: 1400000, includes: ["Full Custom", "Best Everything"] }
     ],
-    contact: { phone: "+92 42 35691234", email: "events@royalpines.pk" },
+    contact: { phone: "+92 42 3569 1234", email: "events@royalpines.pk" },
     featured: true
   },
   {
@@ -400,14 +400,14 @@ const baseMarquees = [
     ],
     amenities: ["Indoor Hall", "Dedicated Parking", "Bridal Lounge", "Central AC", "Prayer Area"],
     pricing: {
-      perHead: { min: 3200, max: 7600 },
-      hallRental: 300000,
-      lawn: 180000
+      perHead: { min: 3500, max: 5500 },
+      hallRental: 280000,
+      lawn: 160000
     },
     menuPackages: [
-      { name: "Classic", price: 3200, items: ["Main Course (3)", "Starters (3)", "Dessert"] },
-      { name: "Premium", price: 5200, items: ["Main Course (5)", "Live BBQ", "Desserts (4)"] },
-      { name: "Signature", price: 7600, items: ["Main Course (6)", "Live Stations (2)", "Premium Desserts"] }
+      { name: "Classic", price: 3500, items: ["Main Course (3)", "Starters (3)", "Dessert"] },
+      { name: "Premium", price: 4200, items: ["Main Course (5)", "Live BBQ", "Desserts (4)"] },
+      { name: "Signature", price: 4900, items: ["Main Course (6)", "Live Stations (2)", "Premium Desserts"] }
     ],
     decorPackages: [
       { name: "Basic", price: 350000, includes: ["Stage", "Entry Decor", "Basic Floral"] },
@@ -434,21 +434,21 @@ const baseMarquees = [
     ],
     amenities: ["Indoor Hall", "Valet", "Sound System", "Generator Backup", "Prayer Room"],
     pricing: {
-      perHead: { min: 3000, max: 6800 },
-      hallRental: 260000,
+      perHead: { min: 3500, max: 6500 },
+      hallRental: 250000,
       lawn: 0
     },
     menuPackages: [
-      { name: "Standard", price: 3000, items: ["Desi Buffet", "Main Course (3)", "Dessert"] },
-      { name: "Deluxe", price: 4700, items: ["Main Course (5)", "BBQ", "Desserts (3)"] },
-      { name: "Executive", price: 6800, items: ["Main Course (6)", "Live Stations", "Premium Desserts"] }
+      { name: "Standard", price: 3500, items: ["Desi Buffet", "Main Course (3)", "Dessert"] },
+      { name: "Deluxe", price: 4500, items: ["Main Course (5)", "BBQ", "Desserts (3)"] },
+      { name: "Executive", price: 5500, items: ["Main Course (6)", "Live Stations", "Premium Desserts"] }
     ],
     decorPackages: [
       { name: "Simple", price: 300000, includes: ["Stage", "Lighting", "Fresh Flowers"] },
       { name: "Modern", price: 600000, includes: ["Custom Stage", "LED Backdrop", "Premium Flowers"] },
       { name: "Grand", price: 950000, includes: ["Themed Decor", "Walkway Styling", "Full Hall Styling"] }
     ],
-    contact: { phone: "+92 42 35782444", email: "events@monaldowntown.pk" },
+    contact: { phone: "+92 42 3578 2444", email: "events@monaldowntown.pk" },
     featured: false
   },
   {
@@ -468,14 +468,14 @@ const baseMarquees = [
     ],
     amenities: ["Large Hall", "Mall Parking Access", "Central AC", "VIP Lounge", "Stage Lighting"],
     pricing: {
-      perHead: { min: 2700, max: 6200 },
-      hallRental: 280000,
+      perHead: { min: 3200, max: 5000 },
+      hallRental: 250000,
       lawn: 0
     },
     menuPackages: [
-      { name: "Economy", price: 2700, items: ["Main Course (3)", "Starters (3)", "Sweet Dish"] },
-      { name: "Plus", price: 4300, items: ["Main Course (4)", "BBQ", "Desserts (3)"] },
-      { name: "Premium", price: 6200, items: ["Main Course (5)", "Live Stations (2)", "Dessert Bar"] }
+      { name: "Economy", price: 3200, items: ["Main Course (3)", "Starters (3)", "Sweet Dish"] },
+      { name: "Plus", price: 3800, items: ["Main Course (4)", "BBQ", "Desserts (3)"] },
+      { name: "Premium", price: 4400, items: ["Main Course (5)", "Live Stations (2)", "Dessert Bar"] }
     ],
     decorPackages: [
       { name: "Value", price: 280000, includes: ["Basic Stage", "Entrance Decor", "Table Styling"] },
@@ -502,14 +502,14 @@ const baseMarquees = [
     ],
     amenities: ["Mega Hall", "Wide Parking", "Bridal Suite", "Generator", "Catering Kitchen"],
     pricing: {
-      perHead: { min: 2800, max: 6500 },
-      hallRental: 290000,
-      lawn: 210000
+      perHead: { min: 3000, max: 5500 },
+      hallRental: 280000,
+      lawn: 180000
     },
     menuPackages: [
-      { name: "Starter", price: 2800, items: ["Main Course (3)", "Starters (3)", "Dessert"] },
-      { name: "Classic", price: 4600, items: ["Main Course (5)", "Live BBQ", "Desserts (4)"] },
-      { name: "Prime", price: 6500, items: ["Main Course (6)", "Live Stations", "Premium Desserts"] }
+      { name: "Starter", price: 3000, items: ["Main Course (3)", "Starters (3)", "Dessert"] },
+      { name: "Classic", price: 3800, items: ["Main Course (5)", "Live BBQ", "Desserts (4)"] },
+      { name: "Prime", price: 4600, items: ["Main Course (6)", "Live Stations", "Premium Desserts"] }
     ],
     decorPackages: [
       { name: "Basic", price: 320000, includes: ["Stage", "Entry Gate", "Basic Lighting"] },
@@ -536,21 +536,21 @@ const baseMarquees = [
     ],
     amenities: ["Indoor Hall", "Economical Packages", "Parking", "Stage", "Generator"],
     pricing: {
-      perHead: { min: 2200, max: 4800 },
-      hallRental: 170000,
+      perHead: { min: 2200, max: 4000 },
+      hallRental: 150000,
       lawn: 0
     },
     menuPackages: [
       { name: "Budget", price: 2200, items: ["Main Course (2)", "Starters (2)", "Dessert"] },
-      { name: "Regular", price: 3400, items: ["Main Course (4)", "BBQ", "Desserts (2)"] },
-      { name: "Value Plus", price: 4800, items: ["Main Course (5)", "Live Counter", "Dessert Bar"] }
+      { name: "Regular", price: 2800, items: ["Main Course (4)", "BBQ", "Desserts (2)"] },
+      { name: "Value Plus", price: 3400, items: ["Main Course (5)", "Live Counter", "Dessert Bar"] }
     ],
     decorPackages: [
       { name: "Starter", price: 180000, includes: ["Basic Stage", "Entry Decor", "Simple Lighting"] },
       { name: "Enhanced", price: 350000, includes: ["Designer Stage", "Fresh Flowers", "Theme Lights"] },
       { name: "Premium", price: 620000, includes: ["Custom Theme", "Bridal Walkway", "Full Styling"] }
     ],
-    contact: { phone: "+92 42 35913210", email: "bookings@modeltownhall.pk" },
+    contact: { phone: "+92 42 3591 3210", email: "bookings@modeltownhall.pk" },
     featured: false
   },
   {
@@ -570,21 +570,21 @@ const baseMarquees = [
     ],
     amenities: ["Modern Hall", "Gated Community", "Parking", "Bridal Lounge", "Prayer Space"],
     pricing: {
-      perHead: { min: 2900, max: 6700 },
+      perHead: { min: 3000, max: 5500 },
       hallRental: 250000,
       lawn: 140000
     },
     menuPackages: [
-      { name: "Smart", price: 2900, items: ["Main Course (3)", "Starters (3)", "Dessert"] },
-      { name: "Choice", price: 4500, items: ["Main Course (4)", "Live BBQ", "Desserts (3)"] },
-      { name: "Royal", price: 6700, items: ["Main Course (6)", "Live Stations", "Premium Desserts"] }
+      { name: "Smart", price: 3000, items: ["Main Course (3)", "Starters (3)", "Dessert"] },
+      { name: "Choice", price: 3800, items: ["Main Course (4)", "Live BBQ", "Desserts (3)"] },
+      { name: "Royal", price: 4600, items: ["Main Course (6)", "Live Stations", "Premium Desserts"] }
     ],
     decorPackages: [
       { name: "Essential", price: 260000, includes: ["Stage", "Centerpieces", "Entry Setup"] },
       { name: "Elegant", price: 520000, includes: ["Designer Stage", "Floral Arches", "Lighting"] },
       { name: "Ultimate", price: 900000, includes: ["Custom Decor", "Imported Florals", "Full Hall Styling"] }
     ],
-    contact: { phone: "+92 42 111 222 111", email: "events@bahriagranddome.pk" },
+    contact: { phone: "+92 42 3534 1541", email: "events@bahriagranddome.pk" },
     featured: false
   },
   {
@@ -604,21 +604,21 @@ const baseMarquees = [
     ],
     amenities: ["Two Banquet Halls", "Generator Backup", "Parking", "Family Lounge", "In-house Sound"],
     pricing: {
-      perHead: { min: 2400, max: 5600 },
-      hallRental: 210000,
-      lawn: 120000
+      perHead: { min: 2200, max: 4000 },
+      hallRental: 180000,
+      lawn: 100000
     },
     menuPackages: [
-      { name: "Basic", price: 2400, items: ["Main Course (3)", "Starters (2)", "Dessert"] },
-      { name: "Standard", price: 3900, items: ["Main Course (4)", "BBQ", "Desserts (3)"] },
-      { name: "Plus", price: 5600, items: ["Main Course (5)", "Live Station", "Premium Desserts"] }
+      { name: "Basic", price: 2200, items: ["Main Course (3)", "Starters (2)", "Dessert"] },
+      { name: "Standard", price: 2800, items: ["Main Course (4)", "BBQ", "Desserts (3)"] },
+      { name: "Plus", price: 3400, items: ["Main Course (5)", "Live Station", "Premium Desserts"] }
     ],
     decorPackages: [
       { name: "Starter", price: 220000, includes: ["Basic Stage", "Entrance Decor", "Simple Lighting"] },
       { name: "Deluxe", price: 430000, includes: ["Enhanced Stage", "Floral Styling", "Mood Lighting"] },
       { name: "Signature", price: 760000, includes: ["Custom Theme", "Walkway Decor", "Full Styling"] }
     ],
-    contact: { phone: "+92 42 35290044", email: "bookings@wapdatownevents.pk" },
+    contact: { phone: "+92 42 3529 0044", email: "bookings@wapdatownevents.pk" },
     featured: false
   },
   {
@@ -638,21 +638,21 @@ const baseMarquees = [
     ],
     amenities: ["Central Location", "AC Hall", "Parking", "Stage", "Basic Audio"],
     pricing: {
-      perHead: { min: 2100, max: 5100 },
-      hallRental: 160000,
+      perHead: { min: 1800, max: 3500 },
+      hallRental: 140000,
       lawn: 0
     },
     menuPackages: [
-      { name: "Saver", price: 2100, items: ["Main Course (2)", "Starters (2)", "Dessert"] },
-      { name: "Classic", price: 3300, items: ["Main Course (4)", "BBQ", "Desserts (2)"] },
-      { name: "Preferred", price: 5100, items: ["Main Course (5)", "Live Counter", "Dessert Bar"] }
+      { name: "Saver", price: 1800, items: ["Main Course (2)", "Starters (2)", "Dessert"] },
+      { name: "Classic", price: 2300, items: ["Main Course (4)", "BBQ", "Desserts (2)"] },
+      { name: "Preferred", price: 2900, items: ["Main Course (5)", "Live Counter", "Dessert Bar"] }
     ],
     decorPackages: [
       { name: "Essential", price: 170000, includes: ["Simple Stage", "Entrance Arch", "Lighting"] },
       { name: "Modern", price: 340000, includes: ["Designer Stage", "Floral Work", "Ambient Lights"] },
       { name: "Premium", price: 620000, includes: ["Custom Setup", "Theme Styling", "Full Hall Decor"] }
     ],
-    contact: { phone: "+92 42 36245077", email: "events@shadmanroyalhall.pk" },
+    contact: { phone: "+92 42 3624 5077", email: "events@shadmanroyalhall.pk" },
     featured: false
   }
 ];

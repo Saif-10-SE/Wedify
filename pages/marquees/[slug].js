@@ -2,8 +2,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { marquees, formatPrice } from '@/data/marquees';
-import { getTestimonialsByVenue, getVenueAverageRating } from '@/data/testimonials';
+import { formatPrice } from '@/data/marquees';
+import {
+  fetchMarquees,
+  fetchTestimonials,
+  marqueeBySlug,
+  testimonialsByVenueSlug,
+  venueAverageRating,
+} from '@/lib/catalogService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FavoriteButton from '@/components/FavoriteButton';
@@ -13,7 +19,13 @@ import InquiryForm from '@/components/InquiryForm';
 import { useWedding } from '@/context/WeddingContext';
 import { Share2, MapPin, Phone, Mail, Calendar, Users, Star, Clock, ChevronRight, ExternalLink, Check, Play, Maximize2, Copy, CheckCircle } from 'lucide-react';
 
-export default function MarqueeDetail() {
+export default function MarqueeDetail({
+  marquee = null,
+  marquees = [],
+  venueTestimonials = [],
+  avgRating = null,
+  dataSource = 'local',
+}) {
   const router = useRouter();
   const { slug } = router.query;
   const { addToRecentlyViewed, recentlyViewed, showNotification } = useWedding();
@@ -22,10 +34,6 @@ export default function MarqueeDetail() {
   const [showGallery, setShowGallery] = useState(false);
   const [showInquiry, setShowInquiry] = useState(false);
   const [copied, setCopied] = useState(false);
-  
-  const marquee = marquees.find(m => m.slug === slug);
-  const venueTestimonials = marquee ? getTestimonialsByVenue(marquee.name) : [];
-  const avgRating = marquee ? getVenueAverageRating(marquee.name) : marquee?.rating;
   
   // Get related venues
   const relatedVenues = marquees.filter(m => 
@@ -586,4 +594,30 @@ export default function MarqueeDetail() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const slug = context.params?.slug;
+  const [{ items: marquees, source }, { items: testimonials }] = await Promise.all([
+    fetchMarquees(),
+    fetchTestimonials(),
+  ]);
+
+  const marquee = marqueeBySlug(marquees, slug);
+  if (!marquee) {
+    return { notFound: true };
+  }
+
+  const venueTestimonials = testimonialsByVenueSlug(testimonials, slug);
+  const avg = venueAverageRating(testimonials, slug);
+
+  return {
+    props: {
+      marquee,
+      marquees,
+      venueTestimonials,
+      avgRating: avg || marquee.rating || null,
+      dataSource: source,
+    },
+  };
 }

@@ -1,9 +1,18 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { getFeaturedMarquees, formatPrice, getAreas, marquees, realVenuePhotos } from '@/data/marquees';
-import { getFeaturedVendors, getVendorCategories } from '@/data/vendors';
-import { getFeaturedTestimonials } from '@/data/testimonials';
+import { useState } from 'react';
+import { formatPrice, realVenuePhotos as localPhotos } from '@/data/marquees';
+import {
+  fetchMarquees,
+  fetchVendors,
+  fetchTestimonials,
+  fetchLivePriceExtras,
+  featuredMarquees as pickFeaturedMarquees,
+  featuredVendors as pickFeaturedVendors,
+  featuredTestimonials as pickFeaturedTestimonials,
+  areasFromMarquees,
+  getVendorCategories,
+} from '@/lib/catalogService';
 import { useWedding } from '@/context/WeddingContext';
 import Navbar from '@/components/Navbar';
 import MarqueeCard from '@/components/MarqueeCard';
@@ -11,15 +20,18 @@ import TestimonialCard from '@/components/TestimonialCard';
 import CountdownTimer from '@/components/CountdownTimer';
 import WeddingDateModal from '@/components/WeddingDateModal';
 import Footer from '@/components/Footer';
-import { Heart, Calendar, Calculator, MapPin, Users, Star, ArrowRight, CheckCircle, Sparkles, Camera, ChevronRight } from 'lucide-react';
+import { Heart, Calendar, Calculator, MapPin, Star, ArrowRight, CheckCircle, Sparkles, ChevronRight } from 'lucide-react';
 
-export default function Home() {
-  const featuredMarquees = getFeaturedMarquees();
-  const featuredVendors = getFeaturedVendors().slice(0, 6);
-  const featuredTestimonials = getFeaturedTestimonials().slice(0, 3);
-  const vendorCategories = getVendorCategories();
-  const areas = getAreas();
-  
+export default function Home({
+  marquees = [],
+  featuredMarquees = [],
+  featuredVendors = [],
+  featuredTestimonials = [],
+  vendorCategories = [],
+  areas = [],
+  realVenuePhotos = localPhotos,
+  dataSource = 'local',
+}) {
   const { weddingDate, recentlyViewed, favorites } = useWedding();
   const [showDateModal, setShowDateModal] = useState(false);
   
@@ -44,8 +56,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Lahore Elite Weddings | Premium Marquee & Wedding Planner</title>
-        <meta name="description" content="Discover Lahore's most prestigious marquees and calculate your perfect wedding budget. Premium venues, expert planning tools, and trusted vendors." />
+        <title>Wedify | Lahore Wedding Planner & Marquee Finder</title>
+        <meta name="description" content="Discover Lahore's finest marquees with real 2026 pricing, budget tools, vendors, and an AI wedding planner — all in one place." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Wedify | Pakistan's First Wedding Planning Platform" />
         <meta property="og:image" content={heroImage} />
@@ -144,56 +156,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quick Access Bar */}
-      <section className="py-4 bg-white border-b shadow-sm sticky top-20 z-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between overflow-x-auto no-scrollbar gap-4">
-            <div className="flex items-center gap-6">
-              <Link href="/marquees" className="flex items-center gap-2 text-gray-600 hover:text-gold-600 whitespace-nowrap transition-colors">
-                <MapPin className="w-4 h-4" />
-                <span className="text-sm font-medium">Venues</span>
-              </Link>
-              <Link href="/vendors" className="flex items-center gap-2 text-gray-600 hover:text-gold-600 whitespace-nowrap transition-colors">
-                <Users className="w-4 h-4" />
-                <span className="text-sm font-medium">Vendors</span>
-              </Link>
-              <Link href="/gallery" className="flex items-center gap-2 text-gray-600 hover:text-gold-600 whitespace-nowrap transition-colors">
-                <Camera className="w-4 h-4" />
-                <span className="text-sm font-medium">Gallery</span>
-              </Link>
-              <Link href="/checklist" className="flex items-center gap-2 text-gray-600 hover:text-gold-600 whitespace-nowrap transition-colors">
-                <CheckCircle className="w-4 h-4" />
-                <span className="text-sm font-medium">Checklist</span>
-              </Link>
-            </div>
-            {favorites.length > 0 && (
-              <Link href="/favorites" className="flex items-center gap-2 text-burgundy-600 whitespace-nowrap">
-                <Heart className="w-4 h-4 fill-burgundy-600" />
-                <span className="text-sm font-medium">{favorites.length} Saved</span>
-              </Link>
-            )}
-          </div>
-        </div>
-      </section>
-
       {/* Stats Section */}
       <section className="py-16 bg-burgundy-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">10+</h3>
+              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">{marquees.length}</h3>
               <p className="text-white/80">Premium Marquees</p>
             </div>
             <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">500+</h3>
-              <p className="text-white/80">Happy Weddings</p>
+              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">{areas.length}+</h3>
+              <p className="text-white/80">Lahore Areas</p>
             </div>
             <div className="animate-fadeIn" style={{ animationDelay: '0.3s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">50L+</h3>
-              <p className="text-white/80">Budget Range</p>
+              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">1.8K–12K</h3>
+              <p className="text-white/80">Per Head (PKR)</p>
             </div>
             <div className="animate-fadeIn" style={{ animationDelay: '0.4s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">4.8★</h3>
+              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">
+                {(marquees.reduce((sum, m) => sum + m.rating, 0) / marquees.length).toFixed(1)}★
+              </h3>
               <p className="text-white/80">Average Rating</p>
             </div>
           </div>
@@ -201,13 +183,13 @@ export default function Home() {
       </section>
 
       {/* Featured Marquees */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="section-blush py-20">
+        <div className="relative z-[1] max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-serif text-gray-800 mb-4">
               Featured <span className="text-gold-600">Venues</span>
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-burgundy-800/70 max-w-2xl mx-auto">
               Handpicked selection of Lahore's most prestigious wedding destinations
             </p>
           </div>
@@ -223,7 +205,7 @@ export default function Home() {
           <div className="text-center mt-12">
             <Link 
               href="/marquees"
-              className="inline-flex items-center px-8 py-4 bg-burgundy-700 hover:bg-burgundy-800 text-white font-semibold rounded-lg transition-all group"
+              className="inline-flex items-center px-8 py-4 bg-burgundy-700 hover:bg-burgundy-800 text-white font-semibold rounded-lg transition-all group shadow-lg shadow-burgundy-900/15"
             >
               View All Venues
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -233,20 +215,20 @@ export default function Home() {
       </section>
 
       {/* Browse by Area */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="section-cream py-16">
+        <div className="relative z-[1] max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-serif text-gray-800 mb-3">Browse by <span className="text-gold-600">Location</span></h2>
-            <p className="text-gray-600">Find the perfect venue in your preferred area</p>
+            <p className="text-burgundy-800/70">Find the perfect venue in your preferred area</p>
           </div>
           <div className="flex flex-wrap justify-center gap-4">
             {areas.map((area) => (
               <Link 
                 key={area}
                 href={`/marquees?area=${encodeURIComponent(area)}`}
-                className="px-6 py-3 bg-gray-100 hover:bg-gold-100 text-gray-700 hover:text-gold-700 rounded-full transition-colors font-medium"
+                className="theme-chip"
               >
-                <MapPin className="w-4 h-4 inline mr-2" />
+                <MapPin className="w-4 h-4 inline mr-2 text-burgundy-500" />
                 {area}
               </Link>
             ))}
@@ -255,13 +237,13 @@ export default function Home() {
       </section>
 
       {/* Services / Vendor Categories */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="section-rose py-20">
+        <div className="relative z-[1] max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-serif text-gray-800 mb-4">
               Wedding <span className="text-gold-600">Services</span>
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-burgundy-800/70 max-w-2xl mx-auto">
               Connect with verified vendors to make your wedding perfect
             </p>
           </div>
@@ -285,9 +267,9 @@ export default function Home() {
                 <Link 
                   key={category.id}
                   href={`/vendors?category=${category.id}`}
-                  className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all group text-center"
+                  className="theme-card p-6 text-center transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group"
                 >
-                  <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-gold-100 group-hover:ring-gold-300 transition-all">
+                  <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-gold-200 group-hover:ring-gold-400 transition-all">
                     <img
                       src={imageUrl}
                       alt={category.name}
@@ -295,7 +277,7 @@ export default function Home() {
                     />
                   </div>
                   <h3 className="font-semibold text-gray-800 group-hover:text-gold-600 transition-colors">{category.name}</h3>
-                  <p className="text-sm text-gray-500 mt-1">Vendors</p>
+                  <p className="text-sm text-burgundy-700/60 mt-1">Vendors</p>
                 </Link>
               );
             })}
@@ -313,8 +295,8 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="section-cream py-20">
+        <div className="relative z-[1] max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-gray-800 mb-4">
               How It <span className="text-gold-600">Works</span>
@@ -323,48 +305,48 @@ export default function Home() {
 
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-gold-100 to-burgundy-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10 shadow-md shadow-gold-200/40">
                 <span className="text-3xl font-serif text-gold-600">1</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Browse Venues</h3>
-              <p className="text-gray-600">Explore our curated list of Lahore's finest marquees with detailed information.</p>
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gold-200"></div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">Browse Venues</h3>
+              <p className="text-burgundy-800/65">Explore our curated list of Lahore's finest marquees with detailed information.</p>
+              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gold-300 to-burgundy-200"></div>
             </div>
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-gold-100 to-burgundy-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10 shadow-md shadow-gold-200/40">
                 <span className="text-3xl font-serif text-gold-600">2</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Compare & Save</h3>
-              <p className="text-gray-600">Add venues to favorites, compare options side by side.</p>
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gold-200"></div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">Compare & Save</h3>
+              <p className="text-burgundy-800/65">Add venues to favorites, compare options side by side.</p>
+              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gold-300 to-burgundy-200"></div>
             </div>
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-gold-100 to-burgundy-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10 shadow-md shadow-gold-200/40">
                 <span className="text-3xl font-serif text-gold-600">3</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Calculate Budget</h3>
-              <p className="text-gray-600">Use our smart calculator to estimate costs for every aspect.</p>
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gold-200"></div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">Calculate Budget</h3>
+              <p className="text-burgundy-800/65">Use our smart calculator to estimate costs for every aspect.</p>
+              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gold-300 to-burgundy-200"></div>
             </div>
             <div className="text-center">
-              <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-gold-100 to-burgundy-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md shadow-gold-200/40">
                 <span className="text-3xl font-serif text-gold-600">4</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Book & Celebrate</h3>
-              <p className="text-gray-600">Contact venues directly and plan your perfect celebration.</p>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">Book & Celebrate</h3>
+              <p className="text-burgundy-800/65">Contact venues directly and plan your perfect celebration.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="section-blush py-20">
+        <div className="relative z-[1] max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-serif text-gray-800 mb-4">
               Real <span className="text-gold-600">Love Stories</span>
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-burgundy-800/70 max-w-2xl mx-auto">
               Hear from couples who planned their perfect day with us
             </p>
           </div>
@@ -390,8 +372,8 @@ export default function Home() {
 
       {/* Recently Viewed */}
       {recentlyViewedVenues.length > 0 && (
-        <section className="py-12 bg-white">
-          <div className="max-w-7xl mx-auto px-4">
+        <section className="section-cream py-12">
+          <div className="relative z-[1] max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-serif text-gray-800">Recently Viewed</h2>
               <Link href="/marquees" className="text-gold-600 hover:text-gold-700 text-sm font-medium flex items-center">
@@ -401,7 +383,7 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {recentlyViewedVenues.map((venue) => (
                 <Link key={venue.slug} href={`/marquees/${venue.slug}`} className="group">
-                  <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all">
+                  <div className="theme-card overflow-hidden transition-all hover:shadow-[0_16px_36px_rgba(103,41,63,0.12)]">
                     <div className="relative h-32 overflow-hidden">
                       <img 
                         src={venue.image} 
@@ -411,7 +393,7 @@ export default function Home() {
                     </div>
                     <div className="p-3">
                       <h3 className="font-medium text-gray-800 group-hover:text-gold-600 transition-colors truncate">{venue.name}</h3>
-                      <p className="text-sm text-gray-500">{formatPrice(venue.pricing.perHead.min)}+ /head</p>
+                      <p className="text-sm text-burgundy-700/60">{formatPrice(venue.pricing.perHead.min)}+ /head</p>
                     </div>
                   </div>
                 </Link>
@@ -422,29 +404,29 @@ export default function Home() {
       )}
 
       {/* Planning Tools */}
-      <section className="py-16 bg-burgundy-50">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="section-rose py-16">
+        <div className="relative z-[1] max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-serif text-gray-800 mb-3">Planning <span className="text-burgundy-600">Tools</span></h2>
-            <p className="text-gray-600">Everything you need to plan your perfect wedding</p>
+            <p className="text-burgundy-800/70">Everything you need to plan your perfect wedding</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <Link href="/calculator" className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all group">
+            <Link href="/calculator" className="theme-card p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group">
               <Calculator className="w-12 h-12 text-gold-500 mb-4 group-hover:scale-110 transition-transform" />
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Budget Calculator</h3>
-              <p className="text-gray-600 text-sm">Calculate detailed costs for venue, catering, decor, and more.</p>
+              <p className="text-burgundy-800/65 text-sm">Calculate detailed costs for venue, catering, decor, and more.</p>
             </Link>
-            <Link href="/compare" className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all group">
+            <Link href="/compare" className="theme-card p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group">
               <svg className="w-12 h-12 text-burgundy-500 mb-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Venue Comparison</h3>
-              <p className="text-gray-600 text-sm">Compare venues side by side to find your perfect match.</p>
+              <p className="text-burgundy-800/65 text-sm">Compare venues side by side to find your perfect match.</p>
             </Link>
-            <Link href="/checklist" className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all group">
-              <CheckCircle className="w-12 h-12 text-green-500 mb-4 group-hover:scale-110 transition-transform" />
+            <Link href="/checklist" className="theme-card p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group">
+              <CheckCircle className="w-12 h-12 text-gold-600 mb-4 group-hover:scale-110 transition-transform" />
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Wedding Checklist</h3>
-              <p className="text-gray-600 text-sm">Stay organized with our comprehensive planning checklist.</p>
+              <p className="text-burgundy-800/65 text-sm">Stay organized with our comprehensive planning checklist.</p>
             </Link>
           </div>
         </div>
@@ -486,4 +468,26 @@ export default function Home() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const [marqueesRes, vendorsRes, testimonialsRes, extras] = await Promise.all([
+    fetchMarquees(),
+    fetchVendors(),
+    fetchTestimonials(),
+    fetchLivePriceExtras(),
+  ]);
+
+  return {
+    props: {
+      marquees: marqueesRes.items,
+      featuredMarquees: pickFeaturedMarquees(marqueesRes.items),
+      featuredVendors: pickFeaturedVendors(vendorsRes.items).slice(0, 6),
+      featuredTestimonials: pickFeaturedTestimonials(testimonialsRes.items).slice(0, 3),
+      vendorCategories: getVendorCategories(),
+      areas: areasFromMarquees(marqueesRes.items),
+      realVenuePhotos: extras.realVenuePhotos || localPhotos,
+      dataSource: marqueesRes.source,
+    },
+  };
 }

@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 export default function TestimonialCard({ testimonial, featured = false }) {
   return (
-    <div className={`bg-white rounded-2xl overflow-hidden shadow-lg transition-all hover:-translate-y-2 hover:shadow-xl ${
-      featured ? 'border-2 border-gold-300' : ''
+    <div className={`theme-card overflow-hidden transition-all hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] ${
+      featured ? 'ring-2 ring-gold-300' : ''
     }`}>
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
