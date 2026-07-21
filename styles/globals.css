@@ -96,7 +96,7 @@ h1 {
   }
 
   .theme-chip {
-    @apply inline-flex items-center rounded-full border border-burgundy-200/70 bg-white/75 px-6 py-3 font-medium text-burgundy-800 shadow-sm transition-all hover:border-gold-400 hover:bg-gold-50 hover:text-gold-800;
+    @apply inline-flex items-center rounded-full border border-burgundy-200/70 bg-white/75 px-3 py-2 text-sm font-medium text-burgundy-800 shadow-sm transition-all hover:border-gold-400 hover:bg-gold-50 hover:text-gold-800 sm:px-6 sm:py-3 sm:text-base;
   }
 }
 
@@ -121,6 +121,18 @@ h1 {
 .card-hover:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(103, 41, 63, 0.14);
+}
+
+@media (hover: none) {
+  .card-hover:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 

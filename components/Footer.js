@@ -47,19 +47,19 @@ export default function Footer() {
               <h3 className="text-2xl font-serif text-white mb-2">Get Wedding Inspiration</h3>
               <p className="text-white/70">Subscribe for tips, trends, and exclusive venue updates</p>
             </div>
-            <form onSubmit={handleSubscribe} className="flex w-full md:w-auto">
+            <form onSubmit={handleSubscribe} className="flex w-full flex-col sm:flex-row md:w-auto gap-2 sm:gap-0">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="flex-1 md:w-80 px-4 py-3 rounded-l-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-gold-400"
+                className="w-full sm:flex-1 md:w-80 px-4 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-gold-400"
                 required
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-3 bg-gold-500 hover:bg-gold-600 disabled:bg-gold-400 text-white font-semibold rounded-r-lg transition-colors flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 bg-gold-500 hover:bg-gold-600 disabled:bg-gold-400 text-white font-semibold rounded-lg sm:rounded-r-lg sm:rounded-l-none transition-colors flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
                 {isSubmitting ? 'Saving...' : 'Subscribe'}
@@ -266,7 +266,7 @@ export default function Footer() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-6 right-6 w-12 h-12 bg-gold-500 hover:bg-gold-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-40"
+        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 w-11 h-11 sm:w-12 sm:h-12 bg-gold-500 hover:bg-gold-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-40 mb-[env(safe-area-inset-bottom)]"
         aria-label="Scroll to top"
       >
         <ArrowUp className="w-5 h-5" />

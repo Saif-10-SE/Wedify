@@ -93,7 +93,7 @@ export default function InquiryForm({ venue, onSuccess }) {
       </div>
 
       {/* Email & Phone */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
           <div className="relative">
@@ -127,7 +127,7 @@ export default function InquiryForm({ venue, onSuccess }) {
       </div>
 
       {/* Event Date & Guests */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Event Date *</label>
           <div className="relative">
@@ -161,7 +161,7 @@ export default function InquiryForm({ venue, onSuccess }) {
       </div>
 
       {/* Event Type & Preferred Time */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
           <select

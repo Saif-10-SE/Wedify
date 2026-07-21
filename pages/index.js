@@ -65,54 +65,59 @@ export default function Home({
 
       <Navbar />
 
-      {/* Hero stack: bg → top haze → collage → copy (foremost) */}
-      <section className="relative isolate h-screen flex items-center justify-center overflow-hidden bg-[#fef9f1]">
+      {/* Hero stack: bg → overlays → collage → copy */}
+      <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#2b1f1a] lg:bg-[#fef9f1]">
         <div
-          className="absolute inset-0 z-0 bg-cover bg-bottom bg-no-repeat"
+          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat sm:bg-bottom"
           style={{ backgroundImage: "url('/images/header-bg.jpg')" }}
           aria-hidden
         />
 
-        {/* Soft top veil: pulls chroma down so the hero reads calm under the nav / headline */}
+        {/* Mobile: darken photo so white copy stays readable without collage */}
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[min(52vh,480px)] bg-gradient-to-b from-[#fef9f1]/92 via-[#fef9f1]/55 to-transparent"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/70 via-black/45 to-black/65 lg:hidden"
           aria-hidden
         />
 
-        <div className="relative z-10 mx-auto grid h-full w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-24 pb-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+        {/* Desktop soft top veil */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 z-[1] hidden h-[min(52vh,480px)] bg-gradient-to-b from-[#fef9f1]/92 via-[#fef9f1]/55 to-transparent lg:block"
+          aria-hidden
+        />
+
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-4 pb-16 pt-24 sm:gap-10 sm:pb-14 sm:pt-28 lg:h-full lg:min-h-[100svh] lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
           <div className="text-center lg:text-left">
-            <div className="relative z-[1] mb-6 inline-flex flex-col items-center gap-1 rounded-full border border-white/35 bg-white/15 px-6 py-3 text-sm text-white shadow-lg backdrop-blur-md lg:items-start">
-              <span className="font-medium tracking-wide">Pakistan's first wedding planning platform</span>
+            <div className="relative z-[1] mb-4 inline-flex max-w-full flex-col items-center gap-1 rounded-full border border-white/35 bg-white/15 px-4 py-2 text-xs text-white shadow-lg backdrop-blur-md sm:mb-6 sm:px-6 sm:py-3 sm:text-sm lg:items-start">
+              <span className="font-medium tracking-wide">Pakistan&apos;s first wedding planning platform</span>
             </div>
 
-            <h1 className="relative z-[1] mb-5 font-serif text-[2.15rem] font-semibold leading-[1.1] text-white animate-fadeIn sm:text-5xl md:text-6xl lg:text-[4.1rem]">
+            <h1 className="relative z-[1] mb-4 font-serif text-[1.85rem] font-semibold leading-[1.15] text-white animate-fadeIn xs:text-[2.15rem] sm:mb-5 sm:text-5xl md:text-6xl lg:text-[4.1rem]">
               Plan Your Dream Wedding
-              <span className="mt-3 block font-sans text-base font-medium uppercase tracking-[0.22em] text-white/85 sm:text-lg">
+              <span className="mt-2 block font-sans text-sm font-medium uppercase tracking-[0.16em] text-white/85 sm:mt-3 sm:text-base sm:tracking-[0.22em] sm:text-lg">
                 Elegance. Simplicity. Complete Control.
               </span>
             </h1>
-            <p className="mb-8 max-w-2xl font-sans text-base font-medium leading-relaxed text-white/90 animate-slideUp sm:text-lg md:text-xl lg:max-w-xl">
+            <p className="mx-auto mb-6 max-w-xl font-sans text-sm font-medium leading-relaxed text-white/90 animate-slideUp sm:mb-8 sm:text-base md:text-xl lg:mx-0 lg:max-w-xl lg:text-lg">
               Discover venues, compare options, and plan your wedding effortlessly with Wedify.
             </p>
             
-            {/* Wedding Date Countdown */}
             {weddingDate && (
-              <div className="mb-8 animate-fadeIn lg:max-w-md">
+              <div className="mb-6 animate-fadeIn sm:mb-8 lg:max-w-md">
                 <CountdownTimer />
               </div>
             )}
             
-            <div className="flex flex-col gap-4 animate-slideUp sm:flex-row lg:justify-start">
+            <div className="flex w-full flex-col gap-3 animate-slideUp sm:flex-row sm:gap-4 lg:justify-start">
               <Link 
                 href="/marquees"
-                className="inline-flex items-center justify-center rounded-xl bg-gold-500 px-8 py-4 font-semibold text-white shadow-xl shadow-gold-200/50 transition-all hover:scale-105 hover:bg-gold-600 group"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-gold-500 px-6 py-3.5 font-semibold text-white shadow-xl shadow-gold-200/50 transition-all hover:bg-gold-600 group sm:w-auto sm:px-8 sm:py-4 sm:hover:scale-105"
               >
                 Explore Marquees
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link 
                 href="/calculator"
-                className="inline-flex items-center justify-center rounded-xl border border-white/70 bg-white/70 px-8 py-4 font-semibold text-[#2b1f1a] shadow-md backdrop-blur-sm transition-all hover:bg-white/85"
+                className="inline-flex w-full items-center justify-center rounded-xl border border-white/70 bg-white/85 px-6 py-3.5 font-semibold text-[#2b1f1a] shadow-md backdrop-blur-sm transition-all hover:bg-white sm:w-auto sm:px-8 sm:py-4"
               >
                 <Calculator className="mr-2 h-5 w-5" />
                 Budget Calculator
@@ -122,7 +127,7 @@ export default function Home({
             {!weddingDate && (
               <button
                 onClick={() => setShowDateModal(true)}
-                className="mt-6 inline-flex items-center gap-2 px-1 py-2 text-white/85 transition-colors hover:text-white"
+                className="mt-5 inline-flex items-center gap-2 px-1 py-2 text-sm text-white/90 transition-colors hover:text-white sm:mt-6 sm:text-base"
               >
                 <Calendar className="h-5 w-5" />
                 Set Your Wedding Date
@@ -148,53 +153,52 @@ export default function Home({
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 z-20 transform -translate-x-1/2 animate-bounce pointer-events-none">
-          <svg className="w-6 h-6 text-[#6b5a4f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 animate-bounce pointer-events-none sm:block">
+          <svg className="w-6 h-6 text-white/70 lg:text-[#6b5a4f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-burgundy-800">
+      <section className="py-10 sm:py-16 bg-burgundy-800">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 text-center">
             <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">{marquees.length}</h3>
-              <p className="text-white/80">Premium Marquees</p>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gold-400 mb-1 sm:mb-2">{marquees.length}</h3>
+              <p className="text-white/80 text-xs sm:text-base">Premium Marquees</p>
             </div>
             <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">{areas.length}+</h3>
-              <p className="text-white/80">Lahore Areas</p>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gold-400 mb-1 sm:mb-2">{areas.length}+</h3>
+              <p className="text-white/80 text-xs sm:text-base">Lahore Areas</p>
             </div>
             <div className="animate-fadeIn" style={{ animationDelay: '0.3s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">1.8K–12K</h3>
-              <p className="text-white/80">Per Head (PKR)</p>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gold-400 mb-1 sm:mb-2">1.8K–12K</h3>
+              <p className="text-white/80 text-xs sm:text-base">Per Head (PKR)</p>
             </div>
             <div className="animate-fadeIn" style={{ animationDelay: '0.4s' }}>
-              <h3 className="text-4xl md:text-5xl font-serif text-gold-400 mb-2">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gold-400 mb-1 sm:mb-2">
                 {(marquees.reduce((sum, m) => sum + m.rating, 0) / marquees.length).toFixed(1)}★
               </h3>
-              <p className="text-white/80">Average Rating</p>
+              <p className="text-white/80 text-xs sm:text-base">Average Rating</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Featured Marquees */}
-      <section className="section-blush py-20">
+      <section className="section-blush py-12 sm:py-20">
         <div className="relative z-[1] max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif text-gray-800 mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 mb-3 sm:mb-4">
               Featured <span className="text-gold-600">Venues</span>
             </h2>
-            <p className="text-burgundy-800/70 max-w-2xl mx-auto">
-              Handpicked selection of Lahore's most prestigious wedding destinations
+            <p className="text-burgundy-800/70 max-w-2xl mx-auto text-sm sm:text-base">
+              Handpicked selection of Lahore&apos;s most prestigious wedding destinations
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             {featuredMarquees.slice(0, 6).map((marquee, index) => (
               <div key={marquee.id} className="animate-fadeIn" style={{ animationDelay: `${index * 0.1}s` }}>
                 <MarqueeCard marquee={marquee} />
@@ -202,10 +206,10 @@ export default function Home({
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-8 sm:mt-12">
             <Link 
               href="/marquees"
-              className="inline-flex items-center px-8 py-4 bg-burgundy-700 hover:bg-burgundy-800 text-white font-semibold rounded-lg transition-all group shadow-lg shadow-burgundy-900/15"
+              className="inline-flex w-full sm:w-auto items-center justify-center px-8 py-4 bg-burgundy-700 hover:bg-burgundy-800 text-white font-semibold rounded-lg transition-all group shadow-lg shadow-burgundy-900/15"
             >
               View All Venues
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -215,20 +219,20 @@ export default function Home({
       </section>
 
       {/* Browse by Area */}
-      <section className="section-cream py-16">
+      <section className="section-cream py-12 sm:py-16">
         <div className="relative z-[1] max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-serif text-gray-800 mb-3">Browse by <span className="text-gold-600">Location</span></h2>
-            <p className="text-burgundy-800/70">Find the perfect venue in your preferred area</p>
+          <div className="text-center mb-6 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl font-serif text-gray-800 mb-2 sm:mb-3">Browse by <span className="text-gold-600">Location</span></h2>
+            <p className="text-burgundy-800/70 text-sm sm:text-base">Find the perfect venue in your preferred area</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
             {areas.map((area) => (
               <Link 
                 key={area}
                 href={`/marquees?area=${encodeURIComponent(area)}`}
                 className="theme-chip"
               >
-                <MapPin className="w-4 h-4 inline mr-2 text-burgundy-500" />
+                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline mr-1.5 sm:mr-2 text-burgundy-500" />
                 {area}
               </Link>
             ))}
@@ -248,7 +252,7 @@ export default function Home({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
             {vendorCategories.slice(0, 8).map((category) => {
               const categoryImages = {
                 photography: realVenuePhotos[1],
@@ -267,17 +271,17 @@ export default function Home({
                 <Link 
                   key={category.id}
                   href={`/vendors?category=${category.id}`}
-                  className="theme-card p-6 text-center transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group"
+                  className="theme-card p-3 sm:p-6 text-center transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group"
                 >
-                  <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-gold-200 group-hover:ring-gold-400 transition-all">
+                  <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full mx-auto mb-2 sm:mb-4 overflow-hidden ring-2 ring-gold-200 group-hover:ring-gold-400 transition-all">
                     <img
                       src={imageUrl}
                       alt={category.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="font-semibold text-gray-800 group-hover:text-gold-600 transition-colors">{category.name}</h3>
-                  <p className="text-sm text-burgundy-700/60 mt-1">Vendors</p>
+                  <h3 className="font-semibold text-sm sm:text-base text-gray-800 group-hover:text-gold-600 transition-colors leading-snug">{category.name}</h3>
+                  <p className="text-xs sm:text-sm text-burgundy-700/60 mt-1">Vendors</p>
                 </Link>
               );
             })}
@@ -433,27 +437,27 @@ export default function Home({
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 gradient-burgundy">
+      <section className="py-12 sm:py-20 gradient-burgundy">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-4 sm:mb-6">
             Ready to Plan Your Wedding?
           </h2>
-          <p className="text-white/80 text-lg mb-8">
+          <p className="text-white/80 text-base sm:text-lg mb-6 sm:mb-8">
             Start calculating your budget and find the perfect venue for your special day
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link 
               href="/calculator"
-              className="inline-flex items-center px-10 py-5 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-xl text-lg"
+              className="inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-lg transition-all sm:hover:scale-105 shadow-xl text-base sm:text-lg"
             >
-              <Calculator className="w-6 h-6 mr-3" />
+              <Calculator className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
               Start Budget Calculator
             </Link>
             <button
               onClick={() => setShowDateModal(true)}
-              className="inline-flex items-center px-10 py-5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all border border-white/30 text-lg"
+              className="inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all border border-white/30 text-base sm:text-lg"
             >
-              <Calendar className="w-6 h-6 mr-3" />
+              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
               Set Wedding Date
             </button>
           </div>

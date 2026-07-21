@@ -10,7 +10,7 @@ export default function MarqueeCard({ marquee }) {
   return (
     <div className="theme-card overflow-hidden card-hover group h-full flex flex-col">
       {/* Image */}
-      <div className="relative h-56 overflow-hidden shrink-0">
+      <div className="relative h-44 sm:h-56 overflow-hidden shrink-0">
         <img 
           src={marquee.image} 
           alt={marquee.name}
@@ -41,8 +41,8 @@ export default function MarqueeCard({ marquee }) {
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-1 min-h-0">
-        <h3 className="text-xl font-serif font-semibold text-gray-800 mb-2 group-hover:text-gold-600 transition-colors line-clamp-1">
+      <div className="p-4 sm:p-6 flex flex-col flex-1 min-h-0">
+        <h3 className="text-lg sm:text-xl font-serif font-semibold text-gray-800 mb-2 group-hover:text-gold-600 transition-colors line-clamp-1">
           {marquee.name}
         </h3>
         
@@ -59,50 +59,50 @@ export default function MarqueeCard({ marquee }) {
         </p>
 
         {/* Details Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-4 py-4 border-t border-b border-gray-100">
-          <div>
-            <p className="text-xs text-gray-500 uppercase tracking-wide">Capacity</p>
-            <p className="text-sm font-semibold text-gray-800 whitespace-nowrap">
-              {marquee.capacity.min} - {marquee.capacity.max} guests
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4 py-3 sm:py-4 border-t border-b border-gray-100">
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide">Capacity</p>
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 truncate">
+              {marquee.capacity.min}-{marquee.capacity.max} guests
             </p>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 uppercase tracking-wide">Per Head</p>
-            <p className="text-sm font-semibold text-gold-600 whitespace-nowrap">
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide">Per Head</p>
+            <p className="text-xs sm:text-sm font-semibold text-gold-600 truncate">
               {formatPrice(marquee.pricing.perHead.min)}+
             </p>
           </div>
         </div>
 
         {/* Amenities — fixed single-row height so cards stay even */}
-        <div className="flex items-center gap-2 mb-4 h-7 overflow-hidden">
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 h-7 overflow-hidden">
           {visibleAmenities.map((amenity, index) => (
             <span 
               key={index}
               title={amenity}
-              className="inline-flex items-center h-7 max-w-[7.5rem] shrink-0 truncate px-2.5 bg-gray-100 text-gray-600 text-xs leading-none rounded-full"
+              className="inline-flex items-center h-7 max-w-[6.5rem] sm:max-w-[7.5rem] shrink-0 truncate px-2 sm:px-2.5 bg-gray-100 text-gray-600 text-[11px] sm:text-xs leading-none rounded-full"
             >
               {amenity}
             </span>
           ))}
           {extraAmenities > 0 && (
-            <span className="inline-flex items-center h-7 shrink-0 px-2.5 bg-gold-100 text-gold-700 text-xs leading-none rounded-full">
+            <span className="inline-flex items-center h-7 shrink-0 px-2 sm:px-2.5 bg-gold-100 text-gold-700 text-[11px] sm:text-xs leading-none rounded-full">
               +{extraAmenities} more
             </span>
           )}
         </div>
 
         {/* Actions — pinned to bottom, equal widths */}
-        <div className="flex gap-3 mt-auto pt-1">
+        <div className="flex gap-2 sm:gap-3 mt-auto pt-1">
           <Link 
             href={`/marquees/${marquee.slug}`}
-            className="flex-1 min-w-0 px-4 py-2.5 bg-burgundy-700 hover:bg-burgundy-800 text-white text-center font-semibold rounded-lg transition-all text-sm"
+            className="flex-1 min-w-0 px-3 sm:px-4 py-2.5 bg-burgundy-700 hover:bg-burgundy-800 text-white text-center font-semibold rounded-lg transition-all text-xs sm:text-sm"
           >
             View Details
           </Link>
           <Link 
             href={`/calculator?venue=${marquee.slug}`}
-            className="flex-1 min-w-0 px-4 py-2.5 border-2 border-gold-500 text-gold-600 hover:bg-gold-50 font-semibold rounded-lg transition-all text-sm text-center"
+            className="flex-1 min-w-0 px-3 sm:px-4 py-2.5 border-2 border-gold-500 text-gold-600 hover:bg-gold-50 font-semibold rounded-lg transition-all text-xs sm:text-sm text-center"
           >
             Calculate
           </Link>

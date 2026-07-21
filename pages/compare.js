@@ -41,15 +41,15 @@ export default function Compare({ marquees = [], dataSource = 'local' }) {
       </section>
 
       {/* Venue Selectors */}
-      <section className="py-8 bg-white border-b sticky top-20 z-40">
+      <section className="py-4 sm:py-8 bg-white border-b sticky top-16 sm:top-20 z-40">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
             {[0, 1, 2].map((index) => (
               <select
                 key={index}
                 value={selectedVenues[index] || ''}
                 onChange={(e) => handleVenueChange(index, e.target.value)}
-                className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500 focus:border-transparent font-medium"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500 focus:border-transparent font-medium"
               >
                 <option value="">Select Venue {index + 1}</option>
                 {marquees.map(m => (
@@ -62,10 +62,11 @@ export default function Compare({ marquees = [], dataSource = 'local' }) {
       </section>
 
       {/* Comparison Table */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-8 sm:py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           {compareVenues.length > 0 ? (
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden min-w-[640px]">
               {/* Images Row */}
               <div className="grid grid-cols-3">
                 {compareVenues.map((venue, index) => (
@@ -73,10 +74,10 @@ export default function Compare({ marquees = [], dataSource = 'local' }) {
                     <img 
                       src={venue.image}
                       alt={venue.name}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-32 sm:h-48 object-cover"
                     />
                     {venue.featured && (
-                      <span className="absolute top-4 left-4 px-3 py-1 bg-gold-500 text-white text-xs font-semibold rounded-full">
+                      <span className="absolute top-2 left-2 sm:top-4 sm:left-4 px-2 sm:px-3 py-1 bg-gold-500 text-white text-xs font-semibold rounded-full">
                         Featured
                       </span>
                     )}
@@ -87,9 +88,9 @@ export default function Compare({ marquees = [], dataSource = 'local' }) {
               {/* Venue Names */}
               <div className="grid grid-cols-3 border-b">
                 {compareVenues.map((venue, index) => (
-                  <div key={index} className="p-6 text-center border-r last:border-r-0">
-                    <h3 className="text-xl font-serif font-semibold text-gray-800">{venue.name}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{venue.location}</p>
+                  <div key={index} className="p-3 sm:p-6 text-center border-r last:border-r-0">
+                    <h3 className="text-sm sm:text-xl font-serif font-semibold text-gray-800 leading-snug">{venue.name}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1">{venue.location}</p>
                   </div>
                 ))}
               </div>
@@ -243,6 +244,7 @@ export default function Compare({ marquees = [], dataSource = 'local' }) {
                   </div>
                 ))}
               </div>
+            </div>
             </div>
           ) : (
             <div className="text-center py-16">

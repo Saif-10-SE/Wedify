@@ -93,25 +93,25 @@ export default function Calculator({
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-32 pb-12 bg-gradient-to-br from-burgundy-800 to-burgundy-900">
+      <section className="pt-24 sm:pt-32 pb-8 sm:pb-12 bg-gradient-to-br from-burgundy-800 to-burgundy-900">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-serif text-white mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-3 sm:mb-4">
             Wedding <span className="text-gold-400">Budget Calculator</span>
           </h1>
-          <p className="text-white/80 max-w-2xl mx-auto">
+          <p className="text-white/80 max-w-2xl mx-auto text-sm sm:text-base">
             Plan your dream wedding with our comprehensive calculator. Get accurate estimates for venues, catering, decor, and more.
           </p>
         </div>
       </section>
 
       {/* Calculator */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-8 sm:py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-5 sm:gap-8">
             {/* Form Section */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-5 sm:space-y-6">
               {/* Venue Selection */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
                 <h2 className="text-xl font-serif text-gray-800 mb-4 flex items-center">
                   <span className="w-8 h-8 bg-gold-500 text-white rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
                   Select Venue

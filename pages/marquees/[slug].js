@@ -131,11 +131,11 @@ export default function MarqueeDetail({
 
       {/* Hero Image Gallery */}
       <section className="bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 pb-8">
-          <div className="grid grid-cols-4 grid-rows-2 gap-3 h-[500px] rounded-2xl overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 pb-6 sm:pb-8">
+          <div className="relative h-56 sm:h-[500px] rounded-2xl overflow-hidden sm:grid sm:grid-cols-4 sm:grid-rows-2 sm:gap-3">
             {/* Main Image */}
             <div 
-              className="col-span-2 row-span-2 relative group cursor-pointer"
+              className="absolute inset-0 sm:relative sm:col-span-2 sm:row-span-2 group cursor-pointer"
               onClick={() => setShowGallery(true)}
             >
               <img 
@@ -146,13 +146,20 @@ export default function MarqueeDetail({
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                 <Maximize2 className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
+              <button
+                type="button"
+                onClick={() => setShowGallery(true)}
+                className="absolute bottom-3 right-3 sm:hidden px-3 py-1.5 rounded-full bg-black/55 text-white text-xs font-medium backdrop-blur-sm"
+              >
+                View photos
+              </button>
             </div>
             
-            {/* Secondary Images */}
+            {/* Secondary Images — desktop only */}
             {galleryImages.slice(1, 5).map((img, idx) => (
               <div 
                 key={idx} 
-                className="relative group cursor-pointer"
+                className="relative group cursor-pointer hidden sm:block"
                 onClick={() => setShowGallery(true)}
               >
                 <img 
@@ -171,37 +178,37 @@ export default function MarqueeDetail({
           </div>
           
           {/* Venue Header */}
-          <div className="flex flex-wrap items-start justify-between mt-6">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
+          <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between mt-5 sm:mt-6">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                 {marquee.featured && (
-                  <span className="px-3 py-1 bg-gold-500 text-white text-sm font-semibold rounded-full animate-pulse inline-flex items-center gap-1.5">
+                  <span className="px-3 py-1 bg-gold-500 text-white text-xs sm:text-sm font-semibold rounded-full animate-pulse inline-flex items-center gap-1.5">
                     <Star className="w-4 h-4 fill-white" />
                     Featured Venue
                   </span>
                 )}
-                <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                <span className="px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full">
                   Verified
                 </span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-serif text-gray-800 mb-2">{marquee.name}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-gray-600">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-gray-800 mb-2 break-words">{marquee.name}</h1>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">
                 <span className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-1 text-gold-500" />
+                  <MapPin className="w-4 h-4 mr-1 text-gold-500 shrink-0" />
                   {marquee.location}
                 </span>
                 <span className="flex items-center">
-                  <Star className="w-4 h-4 mr-1 text-gold-500 fill-gold-500" />
+                  <Star className="w-4 h-4 mr-1 text-gold-500 fill-gold-500 shrink-0" />
                   {avgRating || marquee.rating} ({marquee.reviews + venueTestimonials.length} reviews)
                 </span>
                 <span className="flex items-center">
-                  <Users className="w-4 h-4 mr-1 text-gold-500" />
+                  <Users className="w-4 h-4 mr-1 text-gold-500 shrink-0" />
                   {marquee.capacity.min} - {marquee.capacity.max} guests
                 </span>
               </div>
             </div>
             
-            <div className="flex items-center gap-3 mt-4 lg:mt-0">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               <FavoriteButton slug={marquee.slug} size="lg" showLabel />
               <CompareButton slug={marquee.slug} size="lg" showLabel />
               <button 

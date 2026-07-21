@@ -72,13 +72,13 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-burgundy-800 to-burgundy-900">
+      <section className="pt-24 sm:pt-32 pb-10 sm:pb-16 bg-gradient-to-br from-burgundy-800 to-burgundy-900">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-serif text-white mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-3 sm:mb-4">
             Discover <span className="text-gold-400">Premium Venues</span>
           </h1>
-          <p className="text-white/80 max-w-2xl mx-auto">
-            Browse through Lahore's most prestigious marquees and find the perfect venue for your dream wedding
+          <p className="text-white/80 max-w-2xl mx-auto text-sm sm:text-base">
+            Browse through Lahore&apos;s most prestigious marquees and find the perfect venue for your dream wedding
           </p>
           <p className="mt-3 text-xs uppercase tracking-widest text-gold-400/90">
             Loaded from {dataSource === 'mongodb' ? 'MongoDB' : 'local data'} · {marquees.length} venues
@@ -87,13 +87,13 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
       </section>
 
       {/* Filters */}
-      <section className="sticky top-20 z-40 border-b border-burgundy-100/60 bg-[#fff8f1]/92 shadow-sm backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex flex-wrap gap-4 items-center">
+      <section className="sticky top-16 sm:top-20 z-40 border-b border-burgundy-100/60 bg-[#fff8f1]/95 shadow-sm backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-4 items-center">
             <select
               value={filters.area}
               onChange={(e) => setFilters({ ...filters, area: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+              className="w-full sm:w-auto min-w-0 px-3 sm:px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent bg-white"
             >
               <option value="">All Areas</option>
               {areas.map(area => (
@@ -104,7 +104,7 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
             <select
               value={filters.minCapacity}
               onChange={(e) => setFilters({ ...filters, minCapacity: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+              className="w-full sm:w-auto min-w-0 px-3 sm:px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent bg-white"
             >
               <option value="">Any Capacity</option>
               <option value="500">500+ Guests</option>
@@ -116,7 +116,7 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
             <select
               value={filters.maxBudget}
               onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+              className="w-full sm:w-auto min-w-0 px-3 sm:px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent bg-white"
             >
               <option value="">Any Budget</option>
               <option value="3500">Up to PKR 3,500/head</option>
@@ -128,7 +128,7 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
             <select
               value={filters.sortBy}
               onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+              className="w-full sm:w-auto min-w-0 px-3 sm:px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent bg-white"
             >
               <option value="rating">Sort by Rating</option>
               <option value="price-low">Price: Low to High</option>
@@ -136,7 +136,7 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
               <option value="capacity">Capacity: High to Low</option>
             </select>
 
-            <div className="ml-auto text-gray-600">
+            <div className="col-span-2 sm:ml-auto text-gray-600 text-sm text-center sm:text-left pt-1 sm:pt-0">
               Showing {filteredMarquees.length} venues
             </div>
           </div>
@@ -144,9 +144,9 @@ export default function Marquees({ marquees = [], areas = [], dataSource = 'loca
       </section>
 
       {/* Marquees Grid */}
-      <section className="section-blush py-12 min-h-screen">
+      <section className="section-blush py-8 sm:py-12 min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             {filteredMarquees.map((marquee) => (
               <MarqueeCard key={marquee.id} marquee={marquee} />
             ))}
