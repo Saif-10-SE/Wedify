@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import InvitationCard from '@/components/InvitationCard';
 import InvitationGuestList from '@/components/InvitationGuestList';
+import RsvpPanel from '@/components/ds/RsvpPanel';
 import { useWedding } from '@/context/WeddingContext';
 import {
   invitationTemplates,
@@ -432,14 +433,32 @@ export default function CreateInvitationPage() {
               )}
 
               {step === 1 && (
-                <InvitationGuestList
-                  guests={design.guests}
-                  selectedGuestId={selectedGuestId}
-                  onSelectGuest={setSelectedGuestId}
-                  onChangeGuest={onChangeGuest}
-                  onAddGuest={onAddGuest}
-                  onRemoveGuest={onRemoveGuest}
-                />
+                <div className="space-y-8">
+                  <InvitationGuestList
+                    guests={design.guests}
+                    selectedGuestId={selectedGuestId}
+                    onSelectGuest={setSelectedGuestId}
+                    onChangeGuest={onChangeGuest}
+                    onAddGuest={onAddGuest}
+                    onRemoveGuest={onRemoveGuest}
+                  />
+                  <div className="border-t border-burgundy-100 pt-6">
+                    <h3 className="text-lg font-serif text-gray-800 mb-2">Predict attendance (Data Science)</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Uses logistic regression on your guest list to estimate who is likely to attend and expected headcount.
+                    </p>
+                    <RsvpPanel
+                      initialGuests={(design.guests || []).map((g) => ({
+                        id: g.id,
+                        name: g.name || 'Guest',
+                        members: Number(g.members) || 1,
+                        leadDays: 21,
+                        relationship: 'Friend',
+                        pastRsvpRate: 0.65,
+                      }))}
+                    />
+                  </div>
+                </div>
               )}
 
               {step === 2 && (

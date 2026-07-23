@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWedding } from '@/context/WeddingContext';
-import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Bot, Mail } from 'lucide-react';
+import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Bot, Mail, BarChart3 } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,6 +48,7 @@ export default function Navbar() {
       href: '/calculator',
       dropdown: [
         { name: 'Budget Calculator', href: '/calculator', icon: <Sparkles className="w-4 h-4" /> },
+        { name: 'Data Insights', href: '/insights', icon: <BarChart3 className="w-4 h-4" /> },
         { name: 'Invitations', href: '/invitations', icon: <Mail className="w-4 h-4" /> },
         { name: 'Checklist', href: '/checklist', icon: <ListChecks className="w-4 h-4" /> },
         { name: 'Vendors', href: '/vendors', icon: <Users className="w-4 h-4" /> },
@@ -217,6 +218,9 @@ export default function Navbar() {
               </Link>
               <Link href="/calculator" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Budget Calculator
+              </Link>
+              <Link href="/insights" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
+                Data Insights
               </Link>
               <Link href="/invitations" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Invitations

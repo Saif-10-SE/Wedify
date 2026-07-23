@@ -20,7 +20,7 @@ import TestimonialCard from '@/components/TestimonialCard';
 import CountdownTimer from '@/components/CountdownTimer';
 import WeddingDateModal from '@/components/WeddingDateModal';
 import Footer from '@/components/Footer';
-import { Heart, Calendar, Calculator, MapPin, Star, ArrowRight, CheckCircle, Sparkles, ChevronRight } from 'lucide-react';
+import { Heart, Calendar, Calculator, MapPin, Star, ArrowRight, CheckCircle, Sparkles, ChevronRight, BarChart3 } from 'lucide-react';
 
 export default function Home({
   marquees = [],
@@ -418,11 +418,16 @@ export default function Home({
             <h2 className="text-3xl font-serif text-gray-800 mb-3">Planning <span className="text-burgundy-600">Tools</span></h2>
             <p className="text-burgundy-800/70">Everything you need to plan your perfect wedding</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/calculator" className="theme-card p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group">
               <Calculator className="w-12 h-12 text-gold-500 mb-4 group-hover:scale-110 transition-transform" />
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Budget Calculator</h3>
               <p className="text-burgundy-800/65 text-sm">Calculate detailed costs for venue, catering, decor, and more.</p>
+            </Link>
+            <Link href="/insights" className="theme-card p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group">
+              <BarChart3 className="w-12 h-12 text-burgundy-600 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Data Insights</h3>
+              <p className="text-burgundy-800/65 text-sm">ML recommendations, budget prediction, seasonality and RSVP analytics.</p>
             </Link>
             <Link href="/compare" className="theme-card p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(103,41,63,0.12)] group">
               <svg className="w-12 h-12 text-burgundy-500 mb-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
