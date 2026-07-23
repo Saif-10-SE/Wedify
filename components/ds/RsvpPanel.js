@@ -70,7 +70,7 @@ export default function RsvpPanel({ initialGuests }) {
       <InsightBanner>
         <p className="mb-2">
           <strong>How it works:</strong> We estimate who is likely to attend based on party size,
-          how early you invite them, relationship, and past RSVP habits.
+          how early you invited them, relationship, and past RSVP habits.
         </p>
         <p>
           Use this to plan headcount and catering with fewer surprises. The scorecards below show how
@@ -107,7 +107,7 @@ export default function RsvpPanel({ initialGuests }) {
 
       <div className="theme-card p-4 sm:p-5 mb-4 overflow-x-auto">
         <div className="flex items-center justify-between mb-3 gap-2">
-          <h3 className="font-semibold text-burgundy-800">Guest list features</h3>
+          <h3 className="font-semibold text-burgundy-800">Your guest groups</h3>
           <button type="button" onClick={addGuest} className="text-sm text-gold-700 font-medium hover:underline">+ Add guest</button>
         </div>
         <table className="w-full text-sm min-w-[640px]">
@@ -115,9 +115,15 @@ export default function RsvpPanel({ initialGuests }) {
             <tr className="text-left text-gray-500">
               <th className="py-2 pr-2 font-medium">Name</th>
               <th className="py-2 pr-2 font-medium">Members</th>
-              <th className="py-2 pr-2 font-medium">Lead days</th>
+              <th className="py-2 pr-2 font-medium">
+                How early you invited
+                <span className="block text-[10px] font-normal normal-case text-gray-400">days before wedding</span>
+              </th>
               <th className="py-2 pr-2 font-medium">Relationship</th>
-              <th className="py-2 font-medium">Past RSVP</th>
+              <th className="py-2 font-medium">
+                Usually attend?
+                <span className="block text-[10px] font-normal normal-case text-gray-400">0 to 1</span>
+              </th>
             </tr>
           </thead>
           <tbody>
