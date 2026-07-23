@@ -10,6 +10,14 @@ const defaultGuests = [
   { name: 'Distant Relatives', members: 6, leadDays: 5, relationship: 'Distant Relative', pastRsvpRate: 0.4 },
 ];
 
+function displayNum(value) {
+  return value === '' || value == null ? '' : value;
+}
+
+function parseNumInput(raw) {
+  return raw === '' ? '' : Number(raw);
+}
+
 export default function RsvpPanel({ initialGuests }) {
   const [guests, setGuests] = useState(initialGuests?.length ? initialGuests : defaultGuests);
   const [result, setResult] = useState(null);
@@ -32,16 +40,22 @@ export default function RsvpPanel({ initialGuests }) {
   };
 
   const addGuest = () => {
-    setGuests((prev) => [...prev, { name: '', members: 2, leadDays: 14, relationship: 'Friend', pastRsvpRate: 0.6 }]);
+    setGuests((prev) => [...prev, { name: '', members: '', leadDays: '', relationship: 'Friend', pastRsvpRate: '' }]);
   };
 
   const run = async () => {
     setLoading(true);
     try {
+      const normalized = guests.map((g) => ({
+        ...g,
+        members: g.members === '' || g.members == null ? 1 : Number(g.members),
+        leadDays: g.leadDays === '' || g.leadDays == null ? 14 : Number(g.leadDays),
+        pastRsvpRate: g.pastRsvpRate === '' || g.pastRsvpRate == null ? 0.6 : Number(g.pastRsvpRate),
+      }));
       const res = await fetch('/api/ds/predict-rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ guests }),
+        body: JSON.stringify({ guests: normalized }),
       });
       const json = await res.json();
       setResult(json);
@@ -59,7 +73,7 @@ export default function RsvpPanel({ initialGuests }) {
           invite lead time, family vs friend, and historical RSVP rate.
         </p>
         <p>
-          Threshold 0.5 for class labels. Holdout accuracy / precision / recall / F1 and confusion matrix
+          Threshold 0.5 for class labels. Holdout accuracy, precision, recall, F1 and confusion matrix
           support your Data Science viva narrative.
         </p>
       </InsightBanner>
@@ -80,31 +94,33 @@ export default function RsvpPanel({ initialGuests }) {
         </div>
         <table className="w-full text-sm min-w-[640px]">
           <thead>
-            <tr className="text-left text-gray-500 border-b">
-              <th className="py-2 pr-2">Name</th>
-              <th className="py-2 pr-2">Members</th>
-              <th className="py-2 pr-2">Lead days</th>
-              <th className="py-2 pr-2">Relationship</th>
-              <th className="py-2">Past RSVP</th>
+            <tr className="text-left text-gray-500">
+              <th className="py-2 pr-2 font-medium">Name</th>
+              <th className="py-2 pr-2 font-medium">Members</th>
+              <th className="py-2 pr-2 font-medium">Lead days</th>
+              <th className="py-2 pr-2 font-medium">Relationship</th>
+              <th className="py-2 font-medium">Past RSVP</th>
             </tr>
           </thead>
           <tbody>
             {guests.map((g, idx) => (
-              <tr key={idx} className="border-b border-gray-50">
+              <tr key={idx}>
                 <td className="py-2 pr-2">
-                  <input className="w-full rounded-lg border px-2 py-1.5" value={g.name}
+                  <input className="w-full rounded-lg border border-gray-200 px-2 py-1.5" value={g.name}
                     onChange={(e) => updateGuest(idx, { name: e.target.value })} />
                 </td>
                 <td className="py-2 pr-2">
-                  <input type="number" className="w-20 rounded-lg border px-2 py-1.5" value={g.members}
-                    onChange={(e) => updateGuest(idx, { members: Number(e.target.value) })} />
+                  <input type="number" className="w-20 rounded-lg border border-gray-200 px-2 py-1.5"
+                    value={displayNum(g.members)}
+                    onChange={(e) => updateGuest(idx, { members: parseNumInput(e.target.value) })} />
                 </td>
                 <td className="py-2 pr-2">
-                  <input type="number" className="w-20 rounded-lg border px-2 py-1.5" value={g.leadDays}
-                    onChange={(e) => updateGuest(idx, { leadDays: Number(e.target.value) })} />
+                  <input type="number" className="w-20 rounded-lg border border-gray-200 px-2 py-1.5"
+                    value={displayNum(g.leadDays)}
+                    onChange={(e) => updateGuest(idx, { leadDays: parseNumInput(e.target.value) })} />
                 </td>
                 <td className="py-2 pr-2">
-                  <select className="rounded-lg border px-2 py-1.5 bg-white" value={g.relationship}
+                  <select className="rounded-lg border border-gray-200 px-2 py-1.5 bg-white" value={g.relationship}
                     onChange={(e) => updateGuest(idx, { relationship: e.target.value })}>
                     {['Close Family', 'Family', 'Relative', 'Friend', 'Colleague', 'Distant Relative'].map((r) => (
                       <option key={r} value={r}>{r}</option>
@@ -112,9 +128,9 @@ export default function RsvpPanel({ initialGuests }) {
                   </select>
                 </td>
                 <td className="py-2">
-                  <input type="number" step="0.05" min="0" max="1" className="w-20 rounded-lg border px-2 py-1.5"
-                    value={g.pastRsvpRate}
-                    onChange={(e) => updateGuest(idx, { pastRsvpRate: Number(e.target.value) })} />
+                  <input type="number" step="0.05" min="0" max="1" className="w-20 rounded-lg border border-gray-200 px-2 py-1.5"
+                    value={displayNum(g.pastRsvpRate)}
+                    onChange={(e) => updateGuest(idx, { pastRsvpRate: parseNumInput(e.target.value) })} />
                 </td>
               </tr>
             ))}
@@ -136,18 +152,18 @@ export default function RsvpPanel({ initialGuests }) {
             <h3 className="font-semibold text-burgundy-800 mb-3">Predictions</h3>
             <table className="w-full text-sm min-w-[520px]">
               <thead>
-                <tr className="text-left text-gray-500 border-b">
-                  <th className="py-2">Guest</th>
-                  <th className="py-2">P(attend)</th>
-                  <th className="py-2">Expected headcount</th>
-                  <th className="py-2">Label</th>
+                <tr className="text-left text-gray-500">
+                  <th className="py-2 font-medium">Guest</th>
+                  <th className="py-2 font-medium">P(attend)</th>
+                  <th className="py-2 font-medium">Expected headcount</th>
+                  <th className="py-2 font-medium">Label</th>
                 </tr>
               </thead>
               <tbody>
                 {result.predictions.map((p) => (
-                  <tr key={p.id} className="border-b border-gray-50">
-                    <td className="py-2 font-medium">{p.name}</td>
-                    <td className="py-2">
+                  <tr key={p.id}>
+                    <td className="py-2.5 font-medium">{p.name}</td>
+                    <td className="py-2.5">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden max-w-[100px]">
                           <div className="h-full bg-gold-500" style={{ width: `${p.probability * 100}%` }} />
@@ -155,8 +171,8 @@ export default function RsvpPanel({ initialGuests }) {
                         <span>{(p.probability * 100).toFixed(0)}%</span>
                       </div>
                     </td>
-                    <td className="py-2">{p.expectedMembers}</td>
-                    <td className="py-2">
+                    <td className="py-2.5">{p.expectedMembers}</td>
+                    <td className="py-2.5">
                       <span className={`text-xs px-2 py-1 rounded-full ${p.attend ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
                         {p.label}
                       </span>
@@ -166,7 +182,8 @@ export default function RsvpPanel({ initialGuests }) {
               </tbody>
             </table>
             <p className="mt-4 text-sm text-gray-600">
-              Expected total headcount: <strong>{result.summary.expectedHeadcount}</strong> ·
+              Expected total headcount: <strong>{result.summary.expectedHeadcount}</strong>
+              {' · '}
               Likely attending parties: <strong>{result.summary.likelyAttendingParties}</strong>
             </p>
           </div>

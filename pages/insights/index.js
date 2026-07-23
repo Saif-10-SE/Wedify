@@ -39,7 +39,7 @@ export default function InsightsPage() {
           </h1>
           <p className="text-white/75 max-w-2xl text-sm sm:text-base leading-relaxed">
             Recommendation ranking, budget regression, EDA dashboards, seasonality forecasting, and RSVP
-            attendance classification — built for a Data Science viva with explainable metrics.
+            attendance classification. Built for a Data Science viva with explainable metrics.
           </p>
         </div>
       </section>

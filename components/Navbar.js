@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWedding } from '@/context/WeddingContext';
-import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Bot, Mail, BarChart3 } from 'lucide-react';
+import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Bot, Mail } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,13 +48,13 @@ export default function Navbar() {
       href: '/calculator',
       dropdown: [
         { name: 'Budget Calculator', href: '/calculator', icon: <Sparkles className="w-4 h-4" /> },
-        { name: 'Data Insights', href: '/insights', icon: <BarChart3 className="w-4 h-4" /> },
         { name: 'Invitations', href: '/invitations', icon: <Mail className="w-4 h-4" /> },
         { name: 'Checklist', href: '/checklist', icon: <ListChecks className="w-4 h-4" /> },
         { name: 'Vendors', href: '/vendors', icon: <Users className="w-4 h-4" /> },
         { name: 'AI Planner', href: '/chatbot', icon: <Bot className="w-4 h-4" /> },
       ]
     },
+    { name: 'Data Insights', href: '/insights' },
     { name: 'Testimonials', href: '/testimonials' },
   ];
 

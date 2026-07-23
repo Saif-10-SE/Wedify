@@ -34,10 +34,15 @@ export default function RecommendPanel() {
     setLoading(true);
     setError('');
     try {
+      const payload = {
+        ...form,
+        budget: form.budget === '' || form.budget == null ? 5000000 : Number(form.budget),
+        guests: form.guests === '' || form.guests == null ? 500 : Number(form.guests),
+      };
       const res = await fetch('/api/ds/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Failed');
@@ -56,7 +61,7 @@ export default function RecommendPanel() {
           <strong>Method:</strong> Content-based recommendation. Each venue gets a weighted score from
           budget fit, guest-capacity fit, area match, rating, and style/amenity overlap.
         </p>
-        <p>Scores are explainable — you see why each venue ranked high. No black-box neural net; ideal for viva defense.</p>
+        <p>Scores are explainable so you see why each venue ranked high. No black-box neural net; ideal for viva defense.</p>
       </InsightBanner>
 
       <form onSubmit={run} className="theme-card p-4 sm:p-6 mb-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -65,8 +70,11 @@ export default function RecommendPanel() {
           <input
             type="number"
             className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2.5"
-            value={form.budget}
-            onChange={(e) => setForm({ ...form, budget: Number(e.target.value) })}
+            value={form.budget === '' || form.budget == null ? '' : form.budget}
+            onChange={(e) => {
+              const raw = e.target.value;
+              setForm({ ...form, budget: raw === '' ? '' : Number(raw) });
+            }}
           />
         </label>
         <label className="block text-sm">
@@ -74,8 +82,11 @@ export default function RecommendPanel() {
           <input
             type="number"
             className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2.5"
-            value={form.guests}
-            onChange={(e) => setForm({ ...form, guests: Number(e.target.value) })}
+            value={form.guests === '' || form.guests == null ? '' : form.guests}
+            onChange={(e) => {
+              const raw = e.target.value;
+              setForm({ ...form, guests: raw === '' ? '' : Number(raw) });
+            }}
           />
         </label>
         <label className="block text-sm">
@@ -154,7 +165,7 @@ export default function RecommendPanel() {
                   <ScoreRing score={v.score} />
                 </div>
                 <p className="text-sm text-gold-700 font-medium mt-2">
-                  {formatPrice(v.priceMin)}+ / head · {v.capacity.min}–{v.capacity.max} guests
+                  {formatPrice(v.priceMin)}+ / head · {v.capacity.min}-{v.capacity.max} guests
                 </p>
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {v.reasons.map((r) => (

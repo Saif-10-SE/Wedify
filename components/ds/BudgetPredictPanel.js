@@ -29,10 +29,14 @@ export default function BudgetPredictPanel() {
     e?.preventDefault();
     setLoading(true);
     try {
+      const payload = {
+        ...form,
+        guests: form.guests === '' || form.guests == null ? 500 : Number(form.guests),
+      };
       const res = await fetch('/api/ds/predict-budget', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const json = await res.json();
       setResult(json);
@@ -67,8 +71,12 @@ export default function BudgetPredictPanel() {
       <form onSubmit={run} className="theme-card p-4 sm:p-6 mb-6 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <label className="text-sm">
           <span className="font-medium text-gray-700">Guests</span>
-          <input type="number" className="mt-1 w-full rounded-xl border px-3 py-2.5" value={form.guests}
-            onChange={(e) => setForm({ ...form, guests: Number(e.target.value) })} />
+          <input type="number" className="mt-1 w-full rounded-xl border px-3 py-2.5"
+            value={form.guests === '' || form.guests == null ? '' : form.guests}
+            onChange={(e) => {
+              const raw = e.target.value;
+              setForm({ ...form, guests: raw === '' ? '' : Number(raw) });
+            }} />
         </label>
         <label className="text-sm">
           <span className="font-medium text-gray-700">Events</span>
@@ -108,7 +116,7 @@ export default function BudgetPredictPanel() {
             <p className="text-sm text-white/70 uppercase tracking-wider">Predicted wedding total</p>
             <p className="text-4xl font-serif font-bold text-gold-400 mt-2">{formatPrice(result.predictedTotal)}</p>
             <p className="mt-3 text-white/80 text-sm">
-              Range {formatPrice(result.low)} – {formatPrice(result.high)} · ≈ {formatPrice(result.perHead)} / guest
+              Range {formatPrice(result.low)} to {formatPrice(result.high)} · about {formatPrice(result.perHead)} / guest
             </p>
           </div>
           <div className="theme-card p-4 sm:p-6">

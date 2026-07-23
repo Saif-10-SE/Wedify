@@ -109,8 +109,8 @@ export default function AnalyticsPanel() {
         <h3 className="font-semibold text-burgundy-800 mb-3">Key insights</h3>
         <ul className="space-y-2">
           {data.insights.map((t) => (
-            <li key={t} className="text-sm text-burgundy-800/80 flex gap-2">
-              <span className="text-gold-600 font-bold">→</span> {t}
+            <li key={t} className="text-sm text-burgundy-800/80 pl-3 border-l-2 border-gold-400">
+              {t}
             </li>
           ))}
         </ul>

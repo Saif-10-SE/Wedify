@@ -1,5 +1,9 @@
 import { Plus, Trash2, Users } from 'lucide-react';
 
+function membersDisplay(value) {
+  return value === '' || value == null ? '' : value;
+}
+
 export default function InvitationGuestList({
   guests,
   selectedGuestId,
@@ -66,12 +70,18 @@ export default function InvitationGuestList({
                       type="number"
                       min={1}
                       max={50}
-                      value={guest.members}
-                      onChange={(e) =>
+                      value={membersDisplay(guest.members)}
+                      onChange={(e) => {
+                        const raw = e.target.value;
                         onChangeGuest(guest.id, {
-                          members: Math.max(1, Number(e.target.value) || 1)
-                        })
-                      }
+                          members: raw === '' ? '' : Number(raw),
+                        });
+                      }}
+                      onBlur={() => {
+                        if (guest.members === '' || guest.members == null || Number(guest.members) < 1) {
+                          onChangeGuest(guest.id, { members: 1 });
+                        }
+                      }}
                       onClick={(e) => e.stopPropagation()}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent text-sm"
                     />

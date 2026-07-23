@@ -131,7 +131,9 @@ export default function SeasonalityPanel() {
       <div className="theme-card p-5">
         <h3 className="font-semibold text-burgundy-800 mb-2">Insights</h3>
         <ul className="space-y-2 text-sm text-burgundy-800/80">
-          {data.insights.map((t) => <li key={t}>→ {t}</li>)}
+          {data.insights.map((t) => (
+            <li key={t} className="pl-3 border-l-2 border-gold-400">{t}</li>
+          ))}
         </ul>
       </div>
     </div>
