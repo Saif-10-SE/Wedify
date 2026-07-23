@@ -69,21 +69,39 @@ export default function RsvpPanel({ initialGuests }) {
     <div>
       <InsightBanner>
         <p className="mb-2">
-          <strong>Method:</strong> Logistic regression predicts attendance probability from party size,
-          invite lead time, family vs friend, and historical RSVP rate.
+          <strong>How it works:</strong> We estimate who is likely to attend based on party size,
+          how early you invite them, relationship, and past RSVP habits.
         </p>
         <p>
-          Threshold 0.5 for class labels. Holdout accuracy, precision, recall, F1 and confusion matrix
-          support your Data Science viva narrative.
+          Use this to plan headcount and catering with fewer surprises. The scorecards below show how
+          reliable these guesses usually are.
         </p>
       </InsightBanner>
 
       {model?.metrics ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          <MetricCard label="Accuracy" value={model.metrics.accuracy} />
-          <MetricCard label="Precision" value={model.metrics.precision} accent="gold" />
-          <MetricCard label="Recall" value={model.metrics.recall} accent="blush" />
-          <MetricCard label="F1" value={model.metrics.f1} />
+          <MetricCard
+            label="Overall correctness"
+            value={`${Math.round(Number(model.metrics.accuracy) * 100)}%`}
+            hint="How often the guess matches the outcome"
+          />
+          <MetricCard
+            label="When we say yes"
+            value={`${Math.round(Number(model.metrics.precision) * 100)}%`}
+            hint="Of predicted attendees, how many really come"
+            accent="gold"
+          />
+          <MetricCard
+            label="Guests we catch"
+            value={`${Math.round(Number(model.metrics.recall) * 100)}%`}
+            hint="Of people who do attend, how many we spotted"
+            accent="blush"
+          />
+          <MetricCard
+            label="Balance score"
+            value={`${Math.round(Number(model.metrics.f1) * 100)}%`}
+            hint="Blend of the two scores above"
+          />
         </div>
       ) : null}
 

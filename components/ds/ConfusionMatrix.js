@@ -9,12 +9,12 @@ export default function ConfusionMatrix({ matrix }) {
   );
   return (
     <div>
-      <p className="text-sm font-semibold text-burgundy-800 mb-3">Confusion Matrix (holdout)</p>
+      <p className="text-sm font-semibold text-burgundy-800 mb-3">How our guesses lined up</p>
       <div className="grid grid-cols-2 gap-2">
-        {cell('True Positive', tp, 'bg-emerald-50 text-emerald-800')}
-        {cell('False Positive', fp, 'bg-amber-50 text-amber-900')}
-        {cell('False Negative', fn, 'bg-rose-50 text-rose-900')}
-        {cell('True Negative', tn, 'bg-sky-50 text-sky-900')}
+        {cell('Correct: will attend', tp, 'bg-emerald-50 text-emerald-800')}
+        {cell('False alarm', fp, 'bg-amber-50 text-amber-900')}
+        {cell('Missed attendees', fn, 'bg-rose-50 text-rose-900')}
+        {cell('Correct: will skip', tn, 'bg-sky-50 text-sky-900')}
       </div>
     </div>
   );

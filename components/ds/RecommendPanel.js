@@ -58,10 +58,13 @@ export default function RecommendPanel() {
     <div>
       <InsightBanner>
         <p className="mb-2">
-          <strong>Method:</strong> Content-based recommendation. Each venue gets a weighted score from
-          budget fit, guest-capacity fit, area match, rating, and style/amenity overlap.
+          <strong>How it works:</strong> We rank venues by how well they match your budget, guest count,
+          preferred area, ratings, and style tags.
         </p>
-        <p>Scores are explainable so you see why each venue ranked high. No black-box neural net; ideal for viva defense.</p>
+        <p>
+          Each result shows a match score and plain reasons why that venue ranked high, so you can
+          compare options quickly.
+        </p>
       </InsightBanner>
 
       <form onSubmit={run} className="theme-card p-4 sm:p-6 mb-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

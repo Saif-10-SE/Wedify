@@ -11,7 +11,7 @@ import { BarChart3, Sparkles, LineChart, CalendarRange, Users } from 'lucide-rea
 
 const TABS = [
   { id: 'recommend', label: 'Recommend', icon: Sparkles },
-  { id: 'budget', label: 'Budget ML', icon: LineChart },
+  { id: 'budget', label: 'Budget Estimate', icon: LineChart },
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'seasonality', label: 'Seasonality', icon: CalendarRange },
   { id: 'rsvp', label: 'RSVP Predict', icon: Users },
@@ -33,13 +33,13 @@ export default function InsightsPage() {
       <section className="pt-24 sm:pt-28 pb-10 bg-gradient-to-br from-burgundy-900 via-burgundy-800 to-burgundy-950 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(212,175,55,0.35), transparent 40%), radial-gradient(circle at 80% 0%, rgba(255,255,255,0.12), transparent 35%)' }} />
         <div className="relative max-w-7xl mx-auto px-4">
-          <p className="text-gold-400 text-sm font-semibold uppercase tracking-[0.2em] mb-3">Data Science Lab</p>
+          <p className="text-gold-400 text-sm font-semibold uppercase tracking-[0.2em] mb-3">Wedding insights</p>
           <h1 className="text-3xl sm:text-5xl font-serif text-white mb-4 max-w-3xl">
             Insights that turn Lahore wedding data into decisions
           </h1>
           <p className="text-white/75 max-w-2xl text-sm sm:text-base leading-relaxed">
-            Recommendation ranking, budget regression, EDA dashboards, seasonality forecasting, and RSVP
-            attendance classification. Built for a Data Science viva with explainable metrics.
+            Find matching venues, estimate your budget, explore market trends, check busy seasons, and
+            predict guest attendance with clear, easy-to-read results.
           </p>
         </div>
       </section>
