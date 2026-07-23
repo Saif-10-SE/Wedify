@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Heart, Minimize2, PartyPopper, Sparkles, X } from 'lucide-react';
+import { Heart, Minimize2, PartyPopper, X } from 'lucide-react';
 import { useWedding } from '@/context/WeddingContext';
 import WeddingDateModal from '@/components/WeddingDateModal';
+import DholIcon from '@/components/DholIcon';
 
 function calcParts(targetDate) {
   if (!targetDate) return null;
@@ -21,22 +22,42 @@ function calcParts(targetDate) {
 
 function Digit({ value, label }) {
   return (
-    <div className="flex min-w-[2.75rem] flex-col items-center sm:min-w-[3.1rem]">
-      <div className="relative w-full overflow-hidden rounded-lg bg-gradient-to-b from-burgundy-800 to-burgundy-950 px-1.5 py-1.5 text-center shadow-inner ring-1 ring-white/10">
-        <span className="font-mono text-lg font-bold tabular-nums leading-none text-gold-300 sm:text-xl">
+    <div className="flex min-w-[3.1rem] flex-1 flex-col items-center">
+      <div className="relative w-full overflow-hidden rounded-xl bg-[#2a0a24]/85 px-1 py-2 text-center shadow-[inset_0_2px_8px_rgba(0,0,0,0.45)] ring-2 ring-white/25">
+        <span className="block font-mono text-2xl font-black tabular-nums leading-none text-[#FFE566] drop-shadow-[0_2px_0_rgba(0,0,0,0.45)] sm:text-[1.65rem]">
           {String(value).padStart(2, '0')}
         </span>
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/25" />
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-white/20" />
       </div>
-      <span className="mt-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-burgundy-700/70">
+      <span className="mt-1.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-white">
         {label}
       </span>
     </div>
   );
 }
 
+function Colon() {
+  return (
+    <div className="mb-5 flex flex-col gap-1.5 self-center px-0.5" aria-hidden>
+      <span className="h-1.5 w-1.5 rounded-full bg-[#FFE566] shadow-[0_0_8px_#FFE566]" />
+      <span className="h-1.5 w-1.5 rounded-full bg-[#FFE566] shadow-[0_0_8px_#FFE566]" />
+    </div>
+  );
+}
+
+function DholParade() {
+  return (
+    <div className="relative mt-2 flex items-end justify-center gap-1 pb-1" aria-hidden>
+      <div className="absolute inset-x-0 bottom-0 h-8 rounded-[100%] bg-[#1a0618]/55 blur-[1px]" />
+      <DholIcon className="relative z-[1] h-12 w-11 animate-dholBounce -rotate-12 drop-shadow-lg" />
+      <DholIcon className="relative z-[2] h-16 w-14 animate-dholBounce-delay drop-shadow-xl" />
+      <DholIcon className="relative z-[1] h-12 w-11 animate-dholBounce-delay2 rotate-12 drop-shadow-lg" />
+    </div>
+  );
+}
+
 /**
- * Floating big-day countdown — bottom-right, does not sit in/on the navbar.
+ * Funky floating wedding countdown — high contrast, dhol parade, promo energy.
  */
 export default function FloatingBigDayCountdown() {
   const { weddingDate, coupleLabel, brideName, groomName, clearBigDay } = useWedding();
@@ -65,14 +86,14 @@ export default function FloatingBigDayCountdown() {
         <button
           type="button"
           onClick={() => setCollapsed(false)}
-          className="fixed bottom-5 right-5 z-[60] flex items-center gap-2 rounded-full border border-gold-300/60 bg-white/95 px-4 py-2.5 text-sm font-semibold text-burgundy-900 shadow-[0_12px_40px_rgba(88,28,48,0.28)] backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(88,28,48,0.35)]"
+          className="fixed bottom-5 right-5 z-[60] flex animate-bigDayBob items-center gap-2 rounded-full border-2 border-white/40 bg-gradient-to-r from-[#c41e5a] via-[#9b1b6a] to-[#6b1b8f] px-4 py-3 text-sm font-extrabold text-white shadow-[0_14px_40px_rgba(155,27,106,0.55)]"
           aria-label="Expand wedding countdown"
         >
-          <Heart className="h-4 w-4 text-burgundy-700" fill="currentColor" />
+          <DholIcon className="h-7 w-7" />
           {parts.expired ? (
-            <span>Big day!</span>
+            <span>Shaadi time!</span>
           ) : (
-            <span className="font-mono tabular-nums text-burgundy-900">
+            <span className="font-mono tabular-nums tracking-wide text-[#FFE566]">
               {parts.days}d {String(parts.hours).padStart(2, '0')}:
               {String(parts.minutes).padStart(2, '0')}:
               {String(parts.seconds).padStart(2, '0')}
@@ -87,35 +108,25 @@ export default function FloatingBigDayCountdown() {
   return (
     <>
       <aside
-        className="fixed bottom-5 right-5 z-[60] w-[min(100vw-1.5rem,20rem)] origin-bottom-right animate-fadeIn"
+        className="fixed bottom-4 right-4 z-[60] w-[min(100vw-1.25rem,21rem)] animate-bigDayBob sm:bottom-5 sm:right-5"
         aria-live="polite"
         aria-label="Wedding countdown"
       >
-        <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-gradient-to-br from-[#fff8f1] via-white to-[#f8e8ef] p-4 shadow-[0_18px_50px_rgba(88,28,48,0.28)] ring-1 ring-burgundy-900/5 backdrop-blur-xl">
-          <div
-            className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gold-300/25 blur-2xl"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute -bottom-8 -left-4 h-20 w-20 rounded-full bg-burgundy-400/15 blur-2xl"
-            aria-hidden
-          />
+        <div className="relative overflow-hidden rounded-[1.75rem] border-[3px] border-white/50 bg-gradient-to-b from-[#e91e8c] via-[#9b1b6a] to-[#4a0e6b] p-4 text-white shadow-[0_22px_55px_rgba(120,20,90,0.55)]">
+          {/* Decorative blobs */}
+          <div className="pointer-events-none absolute -left-8 top-8 h-28 w-28 rounded-full bg-[#FFE566]/25 blur-2xl" />
+          <div className="pointer-events-none absolute -right-6 top-0 h-24 w-24 rounded-full bg-white/20 blur-2xl" />
+          <div className="pointer-events-none absolute bottom-16 left-1/2 h-20 w-40 -translate-x-1/2 rounded-full bg-[#ff6bcb]/30 blur-2xl" />
 
-          <div className="relative mb-3 flex items-start justify-between gap-2">
-            <div className="min-w-0">
-              <p className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-gold-700">
-                <Sparkles className="h-3 w-3" />
-                Big day timer
-              </p>
-              <p className="mt-1 truncate font-serif text-base text-burgundy-900">
-                Hey {greeting}
-              </p>
-            </div>
+          <div className="relative mb-2 flex items-start justify-between gap-2">
+            <p className="inline-flex items-center gap-1.5 rounded-full bg-black/25 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#FFE566] ring-1 ring-white/30">
+              Big day timer
+            </p>
             <div className="flex shrink-0 items-center gap-0.5">
               <button
                 type="button"
                 onClick={() => setCollapsed(true)}
-                className="rounded-lg p-1.5 text-burgundy-700/60 transition hover:bg-burgundy-50 hover:text-burgundy-900"
+                className="rounded-full bg-black/25 p-1.5 text-white ring-1 ring-white/30 transition hover:bg-black/40"
                 aria-label="Minimize countdown"
                 title="Minimize"
               >
@@ -127,7 +138,7 @@ export default function FloatingBigDayCountdown() {
                   clearBigDay();
                   setHidden(true);
                 }}
-                className="rounded-lg p-1.5 text-burgundy-700/60 transition hover:bg-burgundy-50 hover:text-burgundy-900"
+                className="rounded-full bg-black/25 p-1.5 text-white ring-1 ring-white/30 transition hover:bg-black/40"
                 aria-label="Reset and hide countdown"
                 title="Reset"
               >
@@ -136,51 +147,61 @@ export default function FloatingBigDayCountdown() {
             </div>
           </div>
 
+          <h3 className="relative text-center font-serif text-2xl font-bold leading-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+            Hey {greeting}
+          </h3>
+          <p className="relative mt-1 text-center text-sm font-semibold text-[#FFE566]">
+            Shaadi vibes loading…
+          </p>
+
           {parts.expired ? (
-            <div className="relative rounded-xl bg-burgundy-900/95 px-3 py-4 text-center text-white">
-              <PartyPopper className="mx-auto mb-2 h-6 w-6 text-gold-400" />
-              <p className="font-serif text-lg text-gold-300">Congratulations!</p>
-              <p className="mt-1 text-xs text-white/75">Your special day has arrived.</p>
+            <div className="relative mt-4 rounded-2xl bg-black/35 px-3 py-4 text-center ring-2 ring-[#FFE566]/50">
+              <PartyPopper className="mx-auto mb-2 h-7 w-7 text-[#FFE566]" />
+              <p className="font-serif text-xl font-bold text-[#FFE566]">Mubarak!</p>
+              <p className="mt-1 text-sm font-medium text-white">Your special day has arrived.</p>
               <button
                 type="button"
                 onClick={() => setEditOpen(true)}
-                className="mt-3 text-xs font-semibold text-gold-300 underline underline-offset-2 hover:text-gold-200"
+                className="mt-3 text-sm font-bold text-white underline underline-offset-2"
               >
                 Update wedding date
               </button>
             </div>
           ) : (
-            <>
-              <p className="relative mb-3 text-center text-xs text-burgundy-800/70">
+            <div className="relative mt-4 rounded-2xl bg-black/40 px-3 py-3 ring-2 ring-white/25 backdrop-blur-sm">
+              <p className="mb-2 text-center text-xs font-bold uppercase tracking-wider text-white/90">
                 Time left until your big day
               </p>
-              <div className="relative flex items-end justify-between gap-1 px-0.5">
+              <div className="flex items-end justify-between gap-1">
                 <Digit value={parts.days} label="Days" />
-                <span className="mb-5 text-lg font-bold text-gold-500">:</span>
+                <Colon />
                 <Digit value={parts.hours} label="Hrs" />
-                <span className="mb-5 text-lg font-bold text-gold-500">:</span>
+                <Colon />
                 <Digit value={parts.minutes} label="Min" />
-                <span className="mb-5 text-lg font-bold text-gold-500">:</span>
+                <Colon />
                 <Digit value={parts.seconds} label="Sec" />
               </div>
-            </>
+            </div>
           )}
 
-          <div className="relative mt-3 flex items-center justify-between gap-2 border-t border-burgundy-100 pt-3">
+          <div className="relative mt-3 flex items-center justify-between gap-2">
             <button
               type="button"
               onClick={() => setEditOpen(true)}
-              className="text-xs font-medium text-burgundy-700/80 hover:text-burgundy-900 hover:underline"
+              className="inline-flex items-center gap-1 text-sm font-bold text-white underline decoration-[#FFE566] underline-offset-4 hover:text-[#FFE566]"
             >
+              <Heart className="h-3.5 w-3.5 fill-current" />
               Edit date
             </button>
             <Link
               href="/checklist"
-              className="rounded-full bg-burgundy-800 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-burgundy-900"
+              className="rounded-full bg-[#FFE566] px-4 py-2 text-sm font-black text-[#4a0e6b] shadow-lg transition hover:scale-105 hover:bg-white"
             >
               Checklist
             </Link>
           </div>
+
+          <DholParade />
         </div>
       </aside>
 

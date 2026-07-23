@@ -251,6 +251,32 @@ h1 {
     animation: spin-slow 8s linear infinite;
   }
 
+  @keyframes bigDayBob {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+  }
+
+  .animate-bigDayBob {
+    animation: bigDayBob 3.2s ease-in-out infinite;
+  }
+
+  @keyframes dholBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.05); }
+  }
+
+  .animate-dholBounce {
+    animation: dholBounce 1.8s ease-in-out infinite;
+  }
+
+  .animate-dholBounce-delay {
+    animation: dholBounce 1.8s ease-in-out 0.35s infinite;
+  }
+
+  .animate-dholBounce-delay2 {
+    animation: dholBounce 1.8s ease-in-out 0.7s infinite;
+  }
+
   /* Gradient Text */
   .text-gradient {
     background: linear-gradient(135deg, #d4af37 0%, #f4e4ba 50%, #d4af37 100%);
