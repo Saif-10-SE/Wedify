@@ -39,7 +39,7 @@ function Digit({ value, label }) {
  * Floating big-day countdown — bottom-right, does not sit in/on the navbar.
  */
 export default function FloatingBigDayCountdown() {
-  const { weddingDate, coupleName } = useWedding();
+  const { weddingDate, coupleLabel, brideName, groomName, clearBigDay } = useWedding();
   const [parts, setParts] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -55,9 +55,9 @@ export default function FloatingBigDayCountdown() {
     return () => clearInterval(id);
   }, [weddingDate]);
 
-  if (!weddingDate || !parts || hidden) return null;
+  if (!weddingDate || !brideName || !groomName || !parts || hidden) return null;
 
-  const greeting = coupleName ? coupleName.split(',')[0].trim() : 'Lovebirds';
+  const greeting = coupleLabel || 'Lovebirds';
 
   if (collapsed) {
     return (
@@ -123,10 +123,13 @@ export default function FloatingBigDayCountdown() {
               </button>
               <button
                 type="button"
-                onClick={() => setHidden(true)}
+                onClick={() => {
+                  clearBigDay();
+                  setHidden(true);
+                }}
                 className="rounded-lg p-1.5 text-burgundy-700/60 transition hover:bg-burgundy-50 hover:text-burgundy-900"
-                aria-label="Hide countdown"
-                title="Hide"
+                aria-label="Reset and hide countdown"
+                title="Reset"
               >
                 <X className="h-3.5 w-3.5" />
               </button>

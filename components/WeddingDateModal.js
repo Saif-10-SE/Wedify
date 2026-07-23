@@ -3,60 +3,74 @@ import { useWedding } from '@/context/WeddingContext';
 import { Calendar, Heart, Sparkles, X } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 
-const SESSION_DISMISS_KEY = 'wedify-bigday-dismissed';
-
 export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) {
-  const { weddingDate, coupleName, setWeddingDate, setCoupleName, clearBigDay, getDaysUntilWedding } =
-    useWedding();
+  const {
+    weddingDate,
+    brideName,
+    groomName,
+    setWeddingDate,
+    setBrideName,
+    setGroomName,
+    clearBigDay,
+    getDaysUntilWedding,
+  } = useWedding();
   const [selectedDate, setSelectedDate] = useState('');
-  const [nameInput, setNameInput] = useState('');
+  const [brideInput, setBrideInput] = useState('');
+  const [groomInput, setGroomInput] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (!isOpen) return;
     setSelectedDate(weddingDate ? new Date(weddingDate).toISOString().split('T')[0] : '');
-    setNameInput(coupleName || '');
+    setBrideInput(brideName || '');
+    setGroomInput(groomName || '');
     setError('');
-  }, [isOpen, weddingDate, coupleName]);
+  }, [isOpen, weddingDate, brideName, groomName]);
 
   if (!isOpen) return null;
 
   const handleSave = () => {
-    if (!nameInput.trim()) {
-      setError('Please tell us your name (or couple names).');
+    if (!brideInput.trim()) {
+      setError('Please enter the bride\'s name.');
+      return;
+    }
+    if (!groomInput.trim()) {
+      setError('Please enter the groom\'s name.');
       return;
     }
     if (!selectedDate) {
       setError('Please select your wedding date.');
       return;
     }
-    setCoupleName(nameInput.trim());
+    setBrideName(brideInput.trim());
+    setGroomName(groomInput.trim());
     setWeddingDate(new Date(selectedDate));
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem(SESSION_DISMISS_KEY);
-    }
     onClose?.();
   };
 
   const handleClear = () => {
     clearBigDay();
     setSelectedDate('');
-    setNameInput('');
+    setBrideInput('');
+    setGroomInput('');
   };
 
-  const handleMaybeLater = () => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(SESSION_DISMISS_KEY, '1');
-    }
-    onClose?.();
+  /** Cancel resets the timer and closes; next visit will ask again. */
+  const handleCancel = () => {
+    clearBigDay();
+    setSelectedDate('');
+    setBrideInput('');
+    setGroomInput('');
+    onClose?.({ cancelled: true });
   };
 
   const daysLeft = getDaysUntilWedding();
+  const previewNames = [brideInput.trim(), groomInput.trim()].filter(Boolean).join(' & ');
 
   return (
     <div
       className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
-      onClick={allowSkip ? handleMaybeLater : undefined}
+      onClick={allowSkip ? handleCancel : undefined}
     >
       <div
         className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl"
@@ -66,9 +80,9 @@ export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) 
           {allowSkip ? (
             <button
               type="button"
-              onClick={handleMaybeLater}
+              onClick={handleCancel}
               className="absolute right-4 top-4 rounded-full p-2 transition-colors hover:bg-white/10"
-              aria-label="Close"
+              aria-label="Cancel"
             >
               <X className="h-5 w-5" />
             </button>
@@ -76,23 +90,38 @@ export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) 
           <Sparkles className="mb-3 h-10 w-10 text-gold-400" />
           <h2 className="font-serif text-2xl">When is your big day?</h2>
           <p className="mt-1 text-sm text-white/80">
-            Tell us your name and wedding date. We will keep a cute countdown on Wedify for you.
+            Enter the bride and groom names plus your wedding date to start a live countdown.
           </p>
         </div>
 
         <div className="p-6">
-          <div className="mb-5">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              <Heart className="mr-2 inline h-4 w-4 text-burgundy-600" />
-              Your name (or couple names)
-            </label>
-            <input
-              type="text"
-              value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
-              placeholder="e.g. Ayesha & Ahmed"
-              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-lg focus:border-transparent focus:ring-2 focus:ring-gold-500"
-            />
+          <div className="mb-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                <Heart className="mr-2 inline h-4 w-4 text-burgundy-600" />
+                Bride&apos;s name
+              </label>
+              <input
+                type="text"
+                value={brideInput}
+                onChange={(e) => setBrideInput(e.target.value)}
+                placeholder="e.g. Fatima"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-base focus:border-transparent focus:ring-2 focus:ring-gold-500"
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                <Heart className="mr-2 inline h-4 w-4 text-gold-600" />
+                Groom&apos;s name
+              </label>
+              <input
+                type="text"
+                value={groomInput}
+                onChange={(e) => setGroomInput(e.target.value)}
+                placeholder="e.g. Azmeer"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-base focus:border-transparent focus:ring-2 focus:ring-gold-500"
+              />
+            </div>
           </div>
 
           <div className="mb-5">
@@ -112,7 +141,7 @@ export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) 
           {selectedDate ? (
             <div className="mb-5 rounded-xl bg-gray-50 p-5">
               <p className="mb-3 text-center text-sm text-gray-600">
-                {nameInput.trim() ? `${nameInput.trim()}, your countdown starts here` : 'Countdown preview'}
+                {previewNames ? `${previewNames}, your countdown starts here` : 'Countdown preview'}
               </p>
               <CountdownTimer targetDate={selectedDate} />
             </div>
@@ -122,8 +151,6 @@ export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) 
             <div className="mb-5 rounded-xl border border-gold-200 bg-gold-50 p-4 text-center">
               <p className="text-gold-800">
                 <span className="text-2xl font-bold">{daysLeft}</span> days until your wedding!
-                {daysLeft < 30 ? ' Final stretch excitement!' : ''}
-                {daysLeft > 365 ? ' Plenty of time to plan beautifully.' : ''}
               </p>
             </div>
           ) : null}
@@ -143,10 +170,10 @@ export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) 
             {allowSkip ? (
               <button
                 type="button"
-                onClick={handleMaybeLater}
+                onClick={handleCancel}
                 className="rounded-xl border-2 border-gray-200 px-5 py-3 font-semibold text-gray-500 transition-all hover:bg-gray-50"
               >
-                Maybe later
+                Cancel
               </button>
             ) : null}
             <button
@@ -162,5 +189,3 @@ export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) 
     </div>
   );
 }
-
-export { SESSION_DISMISS_KEY };

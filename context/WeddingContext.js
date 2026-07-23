@@ -9,7 +9,8 @@ export function WeddingProvider({ children }) {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [weddingDate, setWeddingDateState] = useState(null);
-  const [coupleName, setCoupleNameState] = useState('');
+  const [brideName, setBrideNameState] = useState('');
+  const [groomName, setGroomNameState] = useState('');
   const [isWeddingHydrated, setIsWeddingHydrated] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [compareList, setCompareList] = useState([]);
@@ -19,16 +20,19 @@ export function WeddingProvider({ children }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
+      // Big-day timer is visit-only: wipe any previously saved date/names
+      localStorage.removeItem('wedding_date');
+      localStorage.removeItem('wedding_couple_name');
+      localStorage.removeItem('wedding_bride_name');
+      localStorage.removeItem('wedding_groom_name');
+      sessionStorage.removeItem('wedify-bigday-dismissed');
+
       const savedFavorites = localStorage.getItem('wedding_favorites');
-      const savedDate = localStorage.getItem('wedding_date');
-      const savedName = localStorage.getItem('wedding_couple_name');
       const savedRecent = localStorage.getItem('recently_viewed');
       const savedCompare = localStorage.getItem('compare_list');
       const savedInquiry = localStorage.getItem('inquiry_cart');
 
       if (savedFavorites) setFavorites(JSON.parse(savedFavorites));
-      if (savedDate) setWeddingDateState(new Date(savedDate));
-      if (savedName) setCoupleNameState(savedName);
       if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent));
       if (savedCompare) setCompareList(JSON.parse(savedCompare));
       if (savedInquiry) setInquiryCart(JSON.parse(savedInquiry));
@@ -39,29 +43,23 @@ export function WeddingProvider({ children }) {
     }
   }, []);
 
+  // Leaving the site / closing the tab clears the countdown so the next visit asks again
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const resetOnExit = () => {
+      setWeddingDateState(null);
+      setBrideNameState('');
+      setGroomNameState('');
+    };
+    window.addEventListener('pagehide', resetOnExit);
+    return () => window.removeEventListener('pagehide', resetOnExit);
+  }, []);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('wedding_favorites', JSON.stringify(favorites));
     }
   }, [favorites]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !isWeddingHydrated) return;
-    if (weddingDate) {
-      localStorage.setItem('wedding_date', weddingDate.toISOString());
-    } else {
-      localStorage.removeItem('wedding_date');
-    }
-  }, [weddingDate, isWeddingHydrated]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !isWeddingHydrated) return;
-    if (coupleName) {
-      localStorage.setItem('wedding_couple_name', coupleName);
-    } else {
-      localStorage.removeItem('wedding_couple_name');
-    }
-  }, [coupleName, isWeddingHydrated]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -85,18 +83,21 @@ export function WeddingProvider({ children }) {
     setWeddingDateState(date ? new Date(date) : null);
   };
 
-  const setCoupleName = (name) => {
-    setCoupleNameState(String(name || '').trim());
+  const setBrideName = (name) => {
+    setBrideNameState(String(name || '').trim());
+  };
+
+  const setGroomName = (name) => {
+    setGroomNameState(String(name || '').trim());
   };
 
   const clearBigDay = () => {
     setWeddingDateState(null);
-    setCoupleNameState('');
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('wedding_date');
-      localStorage.removeItem('wedding_couple_name');
-    }
+    setBrideNameState('');
+    setGroomNameState('');
   };
+
+  const coupleLabel = [brideName, groomName].filter(Boolean).join(' & ');
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
@@ -205,8 +206,11 @@ export function WeddingProvider({ children }) {
     performSearch,
     weddingDate,
     setWeddingDate,
-    coupleName,
-    setCoupleName,
+    brideName,
+    setBrideName,
+    groomName,
+    setGroomName,
+    coupleLabel,
     clearBigDay,
     isWeddingHydrated,
     getDaysUntilWedding,
