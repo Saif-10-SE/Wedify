@@ -4,47 +4,41 @@ import { marquees } from '@/data/marquees';
 const WeddingContext = createContext();
 
 export function WeddingProvider({ children }) {
-  // Favorites
   const [favorites, setFavorites] = useState([]);
-  
-  // Search
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  
-  // Wedding Date
-  const [weddingDate, setWeddingDate] = useState(null);
-  
-  // Recently Viewed
+  const [weddingDate, setWeddingDateState] = useState(null);
+  const [coupleName, setCoupleNameState] = useState('');
+  const [isWeddingHydrated, setIsWeddingHydrated] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
-  
-  // Comparison List
   const [compareList, setCompareList] = useState([]);
-  
-  // Inquiry Cart
   const [inquiryCart, setInquiryCart] = useState([]);
-  
-  // Notification
   const [notification, setNotification] = useState(null);
 
-  // Load from localStorage on mount
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window === 'undefined') return;
+    try {
       const savedFavorites = localStorage.getItem('wedding_favorites');
       const savedDate = localStorage.getItem('wedding_date');
+      const savedName = localStorage.getItem('wedding_couple_name');
       const savedRecent = localStorage.getItem('recently_viewed');
       const savedCompare = localStorage.getItem('compare_list');
       const savedInquiry = localStorage.getItem('inquiry_cart');
-      
+
       if (savedFavorites) setFavorites(JSON.parse(savedFavorites));
-      if (savedDate) setWeddingDate(new Date(savedDate));
+      if (savedDate) setWeddingDateState(new Date(savedDate));
+      if (savedName) setCoupleNameState(savedName);
       if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent));
       if (savedCompare) setCompareList(JSON.parse(savedCompare));
       if (savedInquiry) setInquiryCart(JSON.parse(savedInquiry));
+    } catch (_) {
+      // ignore corrupt storage
+    } finally {
+      setIsWeddingHydrated(true);
     }
   }, []);
 
-  // Save to localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('wedding_favorites', JSON.stringify(favorites));
@@ -52,10 +46,22 @@ export function WeddingProvider({ children }) {
   }, [favorites]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && weddingDate) {
+    if (typeof window === 'undefined' || !isWeddingHydrated) return;
+    if (weddingDate) {
       localStorage.setItem('wedding_date', weddingDate.toISOString());
+    } else {
+      localStorage.removeItem('wedding_date');
     }
-  }, [weddingDate]);
+  }, [weddingDate, isWeddingHydrated]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !isWeddingHydrated) return;
+    if (coupleName) {
+      localStorage.setItem('wedding_couple_name', coupleName);
+    } else {
+      localStorage.removeItem('wedding_couple_name');
+    }
+  }, [coupleName, isWeddingHydrated]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -75,92 +81,96 @@ export function WeddingProvider({ children }) {
     }
   }, [inquiryCart]);
 
-  // Show notification
+  const setWeddingDate = (date) => {
+    setWeddingDateState(date ? new Date(date) : null);
+  };
+
+  const setCoupleName = (name) => {
+    setCoupleNameState(String(name || '').trim());
+  };
+
+  const clearBigDay = () => {
+    setWeddingDateState(null);
+    setCoupleNameState('');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('wedding_date');
+      localStorage.removeItem('wedding_couple_name');
+    }
+  };
+
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
-  // Toggle favorite
   const toggleFavorite = (slug) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const isFavorite = prev.includes(slug);
       if (isFavorite) {
         showNotification('Removed from favorites');
-        return prev.filter(s => s !== slug);
-      } else {
-        showNotification('Added to favorites');
-        return [...prev, slug];
+        return prev.filter((s) => s !== slug);
       }
+      showNotification('Added to favorites');
+      return [...prev, slug];
     });
   };
 
-  // Check if favorite
   const isFavorite = (slug) => favorites.includes(slug);
 
-  // Get favorite venues
   const getFavoriteVenues = () => {
-    return marquees.filter(m => favorites.includes(m.slug));
+    return marquees.filter((m) => favorites.includes(m.slug));
   };
 
-  // Add to recently viewed
   const addToRecentlyViewed = (slug) => {
-    setRecentlyViewed(prev => {
-      const filtered = prev.filter(s => s !== slug);
+    setRecentlyViewed((prev) => {
+      const filtered = prev.filter((s) => s !== slug);
       return [slug, ...filtered].slice(0, 5);
     });
   };
 
-  // Get recently viewed venues
   const getRecentlyViewedVenues = () => {
-    return recentlyViewed
-      .map(slug => marquees.find(m => m.slug === slug))
-      .filter(Boolean);
+    return recentlyViewed.map((slug) => marquees.find((m) => m.slug === slug)).filter(Boolean);
   };
 
-  // Toggle compare
   const toggleCompare = (slug) => {
-    setCompareList(prev => {
+    setCompareList((prev) => {
       const isInList = prev.includes(slug);
       if (isInList) {
         showNotification('Removed from comparison');
-        return prev.filter(s => s !== slug);
-      } else {
-        if (prev.length >= 4) {
-          showNotification('Maximum 4 venues can be compared', 'error');
-          return prev;
-        }
-        showNotification('Added to comparison');
-        return [...prev, slug];
+        return prev.filter((s) => s !== slug);
       }
+      if (prev.length >= 4) {
+        showNotification('Maximum 4 venues can be compared', 'error');
+        return prev;
+      }
+      showNotification('Added to comparison');
+      return [...prev, slug];
     });
   };
 
-  // Check if in compare list
   const isInCompareList = (slug) => compareList.includes(slug);
 
-  // Search function
   const performSearch = (query) => {
     setSearchQuery(query);
     if (query.trim() === '') {
       setSearchResults([]);
       return;
     }
-    
-    const results = marquees.filter(m => 
-      m.name.toLowerCase().includes(query.toLowerCase()) ||
-      m.location.toLowerCase().includes(query.toLowerCase()) ||
-      m.area.toLowerCase().includes(query.toLowerCase()) ||
-      m.description.toLowerCase().includes(query.toLowerCase()) ||
-      m.amenities.some(a => a.toLowerCase().includes(query.toLowerCase()))
+
+    const results = marquees.filter(
+      (m) =>
+        m.name.toLowerCase().includes(query.toLowerCase()) ||
+        m.location.toLowerCase().includes(query.toLowerCase()) ||
+        m.area.toLowerCase().includes(query.toLowerCase()) ||
+        m.description.toLowerCase().includes(query.toLowerCase()) ||
+        m.amenities.some((a) => a.toLowerCase().includes(query.toLowerCase()))
     );
     setSearchResults(results);
   };
 
-  // Add to inquiry cart
   const addToInquiry = (slug, details = {}) => {
-    setInquiryCart(prev => {
-      const exists = prev.find(item => item.slug === slug);
+    setInquiryCart((prev) => {
+      const exists = prev.find((item) => item.slug === slug);
       if (exists) {
         showNotification('Already in inquiry list');
         return prev;
@@ -170,66 +180,50 @@ export function WeddingProvider({ children }) {
     });
   };
 
-  // Remove from inquiry cart
   const removeFromInquiry = (slug) => {
-    setInquiryCart(prev => prev.filter(item => item.slug !== slug));
+    setInquiryCart((prev) => prev.filter((item) => item.slug !== slug));
     showNotification('Removed from inquiry list');
   };
 
-  // Get days until wedding
   const getDaysUntilWedding = () => {
     if (!weddingDate) return null;
     const today = new Date();
     const wedding = new Date(weddingDate);
     const diffTime = wedding - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
   const value = {
-    // Favorites
     favorites,
     toggleFavorite,
     isFavorite,
     getFavoriteVenues,
-    
-    // Search
     searchQuery,
     searchResults,
     isSearchOpen,
     setIsSearchOpen,
     performSearch,
-    
-    // Wedding Date
     weddingDate,
     setWeddingDate,
+    coupleName,
+    setCoupleName,
+    clearBigDay,
+    isWeddingHydrated,
     getDaysUntilWedding,
-    
-    // Recently Viewed
     recentlyViewed,
     addToRecentlyViewed,
     getRecentlyViewedVenues,
-    
-    // Compare
     compareList,
     toggleCompare,
     isInCompareList,
-    
-    // Inquiry
     inquiryCart,
     addToInquiry,
     removeFromInquiry,
-    
-    // Notification
     notification,
-    showNotification,
+    showNotification
   };
 
-  return (
-    <WeddingContext.Provider value={value}>
-      {children}
-    </WeddingContext.Provider>
-  );
+  return <WeddingContext.Provider value={value}>{children}</WeddingContext.Provider>;
 }
 
 export function useWedding() {

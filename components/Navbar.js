@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWedding } from '@/context/WeddingContext';
-import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Bot, Mail } from 'lucide-react';
+import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Mail } from 'lucide-react';
+import BigDayCountdownBanner from '@/components/BigDayCountdownBanner';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,8 +35,8 @@ export default function Navbar() {
   const daysLeft = getDaysUntilWedding();
 
   const navLinks = [
-    { 
-      name: 'Venues', 
+    {
+      name: 'Venues',
       href: '/marquees',
       dropdown: [
         { name: 'All Marquees', href: '/marquees', icon: <Sparkles className="w-4 h-4" /> },
@@ -43,18 +44,19 @@ export default function Navbar() {
         { name: 'Gallery', href: '/gallery', icon: <Camera className="w-4 h-4" /> },
       ]
     },
-    { 
-      name: 'Planning', 
+    {
+      name: 'Planning',
       href: '/calculator',
       dropdown: [
         { name: 'Budget Calculator', href: '/calculator', icon: <Sparkles className="w-4 h-4" /> },
         { name: 'Invitations', href: '/invitations', icon: <Mail className="w-4 h-4" /> },
         { name: 'Checklist', href: '/checklist', icon: <ListChecks className="w-4 h-4" /> },
         { name: 'Vendors', href: '/vendors', icon: <Users className="w-4 h-4" /> },
-        { name: 'AI Planner', href: '/chatbot', icon: <Bot className="w-4 h-4" /> },
       ]
     },
     { name: 'Data Insights', href: '/insights' },
+    { name: 'AI Chatbot', href: '/chatbot' },
+    { name: 'Image Generation', href: '/image-generation' },
     { name: 'Testimonials', href: '/testimonials' },
   ];
 
@@ -64,14 +66,8 @@ export default function Navbar() {
         ? 'bg-white/55 backdrop-blur-xl shadow-[0_10px_30px_rgba(31,24,18,0.18)]'
         : 'bg-white/35 backdrop-blur-xl shadow-[0_8px_24px_rgba(31,24,18,0.1)]'
     }`}>
-      {daysLeft && daysLeft > 0 && daysLeft <= 30 && (
-        <div className="bg-gradient-to-r from-gold-500 to-gold-600 text-white py-1.5 px-3 text-center text-xs sm:text-sm">
-          <Sparkles className="inline w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5" />
-          <span className="font-medium">{daysLeft} days</span> until your wedding!
-          <Link href="/checklist" className="underline ml-2 hover:text-white/80">Checklist</Link>
-        </div>
-      )}
-      
+      <BigDayCountdownBanner />
+
       <div className="max-w-7xl mx-auto px-3 sm:px-4">
         <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
           <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group min-w-0 shrink">
@@ -88,26 +84,26 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden xl:flex items-center space-x-0.5">
             {navLinks.map((link) => (
-              <div 
+              <div
                 key={link.name}
                 className="relative"
                 onMouseEnter={() => link.dropdown && setShowDropdown(link.name)}
                 onMouseLeave={() => setShowDropdown(null)}
               >
-                <Link 
+                <Link
                   href={link.href}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-lg font-medium transition-all ${
-                    router.pathname.startsWith(link.href) 
-                      ? 'text-gold-700 bg-white/70 shadow-sm' 
+                  className={`flex items-center gap-1 px-2.5 py-2 rounded-lg font-medium text-sm transition-all ${
+                    router.pathname.startsWith(link.href)
+                      ? 'text-gold-700 bg-white/70 shadow-sm'
                       : 'text-gray-800 hover:text-gold-700 hover:bg-white/55'
                   }`}
                 >
                   {link.name}
                   {link.dropdown && <ChevronDown className="w-4 h-4" />}
                 </Link>
-                
+
                 {link.dropdown && showDropdown === link.name && (
                   <div className="absolute top-full left-0 pt-2 w-56 animate-fadeIn">
                     <div className="rounded-xl border border-white/40 bg-white/75 py-2 shadow-xl backdrop-blur-lg">
@@ -129,7 +125,7 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-0.5 sm:gap-2">
-            <button 
+            <button
               onClick={() => setIsSearchOpen(true)}
               className="rounded-lg p-2 text-gray-700/85 transition-colors hover:bg-white/65 hover:text-gold-700"
               title="Search"
@@ -138,7 +134,7 @@ export default function Navbar() {
               <Search className="w-5 h-5" />
             </button>
 
-            <Link 
+            <Link
               href="/favorites"
               className="relative rounded-lg p-2 text-gray-700/85 transition-colors hover:bg-white/65 hover:text-red-500"
               title="Favorites"
@@ -153,7 +149,7 @@ export default function Navbar() {
             </Link>
 
             <div className="hidden md:flex items-center gap-2">
-              <Link 
+              <Link
                 href="/compare"
                 className="relative rounded-lg p-2.5 text-gray-700/85 transition-colors hover:bg-white/65 hover:text-gold-700"
                 title="Compare Venues"
@@ -167,7 +163,7 @@ export default function Navbar() {
               </Link>
 
               {weddingDate && (
-                <Link 
+                <Link
                   href="/checklist"
                   className="flex items-center gap-2 rounded-lg border border-white/40 bg-white/60 px-3 py-2 text-sm text-gold-800 backdrop-blur-sm"
                   title="Your Wedding Date"
@@ -178,13 +174,6 @@ export default function Navbar() {
               )}
 
               <Link
-                href="/chatbot"
-                className="rounded-lg border border-gold-300 bg-white/70 px-4 py-2.5 font-semibold text-gold-800 transition-all hover:bg-white hover:text-gold-900"
-              >
-                AI Planner
-              </Link>
-
-              <Link 
                 href="/calculator"
                 className="rounded-lg bg-gold-500 px-5 py-2.5 font-semibold text-white shadow-md transition-all hover:bg-gold-600 hover:shadow-lg"
               >
@@ -192,8 +181,8 @@ export default function Navbar() {
               </Link>
             </div>
 
-            <button 
-              className="rounded-lg p-2 transition-colors hover:bg-white/65 lg:hidden"
+            <button
+              className="rounded-lg p-2 transition-colors hover:bg-white/65 xl:hidden"
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
@@ -208,7 +197,7 @@ export default function Navbar() {
         </div>
 
         {isOpen && (
-          <div className="lg:hidden border-t border-white/35 animate-fadeIn max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]">
+          <div className="xl:hidden border-t border-white/35 animate-fadeIn max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]">
             <div className="flex flex-col space-y-1 py-3">
               <Link href="/" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Home
@@ -222,6 +211,12 @@ export default function Navbar() {
               <Link href="/insights" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Data Insights
               </Link>
+              <Link href="/chatbot" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
+                AI Chatbot
+              </Link>
+              <Link href="/image-generation" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
+                Image Generation
+              </Link>
               <Link href="/invitations" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Invitations
               </Link>
@@ -234,9 +229,6 @@ export default function Navbar() {
               <Link href="/checklist" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Checklist
               </Link>
-              <Link href="/chatbot" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
-                AI Planner
-              </Link>
               <Link href="/vendors" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Vendors
               </Link>
@@ -246,19 +238,19 @@ export default function Navbar() {
               <Link href="/testimonials" className="px-4 py-3 text-gray-800 hover:text-gold-700 hover:bg-white/60 rounded-lg font-medium">
                 Testimonials
               </Link>
-              
+
               <div className="pt-3 px-4 pb-4 space-y-2">
-                <Link 
+                <Link
                   href="/calculator"
                   className="block w-full px-6 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl transition-all text-center"
                 >
                   Start Planning
                 </Link>
-                <Link 
+                <Link
                   href="/chatbot"
                   className="block w-full px-6 py-3.5 border border-gold-300 bg-white/80 text-gold-800 font-semibold rounded-xl transition-all text-center"
                 >
-                  Talk to AI Planner
+                  Talk to AI Chatbot
                 </Link>
               </div>
             </div>

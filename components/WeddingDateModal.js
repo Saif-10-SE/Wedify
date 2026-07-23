@@ -1,104 +1,160 @@
+import { useEffect, useState } from 'react';
 import { useWedding } from '@/context/WeddingContext';
-import { useState } from 'react';
-import { Calendar, X, Sparkles } from 'lucide-react';
+import { Calendar, Heart, Sparkles, X } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 
-export default function WeddingDateModal({ isOpen, onClose }) {
-  const { weddingDate, setWeddingDate, getDaysUntilWedding } = useWedding();
-  const [selectedDate, setSelectedDate] = useState(
-    weddingDate ? new Date(weddingDate).toISOString().split('T')[0] : ''
-  );
+const SESSION_DISMISS_KEY = 'wedify-bigday-dismissed';
+
+export default function WeddingDateModal({ isOpen, onClose, allowSkip = true }) {
+  const { weddingDate, coupleName, setWeddingDate, setCoupleName, clearBigDay, getDaysUntilWedding } =
+    useWedding();
+  const [selectedDate, setSelectedDate] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setSelectedDate(weddingDate ? new Date(weddingDate).toISOString().split('T')[0] : '');
+    setNameInput(coupleName || '');
+    setError('');
+  }, [isOpen, weddingDate, coupleName]);
 
   if (!isOpen) return null;
 
   const handleSave = () => {
-    if (selectedDate) {
-      setWeddingDate(new Date(selectedDate));
-      onClose();
+    if (!nameInput.trim()) {
+      setError('Please tell us your name (or couple names).');
+      return;
     }
+    if (!selectedDate) {
+      setError('Please select your wedding date.');
+      return;
+    }
+    setCoupleName(nameInput.trim());
+    setWeddingDate(new Date(selectedDate));
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(SESSION_DISMISS_KEY);
+    }
+    onClose?.();
   };
 
   const handleClear = () => {
-    setWeddingDate(null);
+    clearBigDay();
     setSelectedDate('');
+    setNameInput('');
+  };
+
+  const handleMaybeLater = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(SESSION_DISMISS_KEY, '1');
+    }
+    onClose?.();
   };
 
   const daysLeft = getDaysUntilWedding();
 
   return (
-    <div 
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-      onClick={onClose}
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      onClick={allowSkip ? handleMaybeLater : undefined}
     >
-      <div 
-        className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden"
+      <div
+        className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-burgundy-700 to-burgundy-800 p-6 text-white relative">
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <Sparkles className="w-10 h-10 mb-3 text-gold-400" />
-          <h2 className="text-2xl font-serif">Your Wedding Date</h2>
-          <p className="text-white/80 text-sm mt-1">Set your date to see the countdown</p>
+        <div className="relative bg-gradient-to-r from-burgundy-700 to-burgundy-800 p-6 text-white">
+          {allowSkip ? (
+            <button
+              type="button"
+              onClick={handleMaybeLater}
+              className="absolute right-4 top-4 rounded-full p-2 transition-colors hover:bg-white/10"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          ) : null}
+          <Sparkles className="mb-3 h-10 w-10 text-gold-400" />
+          <h2 className="font-serif text-2xl">When is your big day?</h2>
+          <p className="mt-1 text-sm text-white/80">
+            Tell us your name and wedding date. We will keep a cute countdown on Wedify for you.
+          </p>
         </div>
 
-        {/* Content */}
         <div className="p-6">
-          {/* Date Input */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <Calendar className="inline w-4 h-4 mr-2" />
-              Select Your Wedding Date
+          <div className="mb-5">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              <Heart className="mr-2 inline h-4 w-4 text-burgundy-600" />
+              Your name (or couple names)
+            </label>
+            <input
+              type="text"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              placeholder="e.g. Ayesha & Ahmed"
+              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-lg focus:border-transparent focus:ring-2 focus:ring-gold-500"
+            />
+          </div>
+
+          <div className="mb-5">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              <Calendar className="mr-2 inline h-4 w-4" />
+              Wedding date
             </label>
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500 focus:border-transparent text-lg"
+              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-lg focus:border-transparent focus:ring-2 focus:ring-gold-500"
             />
           </div>
 
-          {/* Countdown Preview */}
-          {selectedDate && (
-            <div className="bg-gray-50 rounded-xl p-6 mb-6">
-              <p className="text-center text-sm text-gray-600 mb-4">Countdown to your big day</p>
+          {selectedDate ? (
+            <div className="mb-5 rounded-xl bg-gray-50 p-5">
+              <p className="mb-3 text-center text-sm text-gray-600">
+                {nameInput.trim() ? `${nameInput.trim()}, your countdown starts here` : 'Countdown preview'}
+              </p>
               <CountdownTimer targetDate={selectedDate} />
             </div>
-          )}
+          ) : null}
 
-          {/* Days Left Message */}
-          {daysLeft !== null && daysLeft > 0 && (
-            <div className="bg-gold-50 border border-gold-200 rounded-xl p-4 mb-6 text-center">
+          {daysLeft !== null && daysLeft > 0 && weddingDate ? (
+            <div className="mb-5 rounded-xl border border-gold-200 bg-gold-50 p-4 text-center">
               <p className="text-gold-800">
-                <span className="font-bold text-2xl">{daysLeft}</span> days until your wedding! 
-                {daysLeft < 30 && " Final month excitement!"}
-                {daysLeft > 365 && " Plenty of time to plan!"}
+                <span className="text-2xl font-bold">{daysLeft}</span> days until your wedding!
+                {daysLeft < 30 ? ' Final stretch excitement!' : ''}
+                {daysLeft > 365 ? ' Plenty of time to plan beautifully.' : ''}
               </p>
             </div>
-          )}
+          ) : null}
 
-          {/* Action Buttons */}
-          <div className="flex gap-3">
-            {weddingDate && (
+          {error ? <p className="mb-3 text-sm text-red-600">{error}</p> : null}
+
+          <div className="flex flex-wrap gap-3">
+            {weddingDate ? (
               <button
+                type="button"
                 onClick={handleClear}
-                className="px-6 py-3 border-2 border-gray-300 text-gray-600 hover:bg-gray-50 font-semibold rounded-xl transition-all"
+                className="rounded-xl border-2 border-gray-300 px-5 py-3 font-semibold text-gray-600 transition-all hover:bg-gray-50"
               >
-                Clear Date
+                Clear
               </button>
-            )}
+            ) : null}
+            {allowSkip ? (
+              <button
+                type="button"
+                onClick={handleMaybeLater}
+                className="rounded-xl border-2 border-gray-200 px-5 py-3 font-semibold text-gray-500 transition-all hover:bg-gray-50"
+              >
+                Maybe later
+              </button>
+            ) : null}
             <button
+              type="button"
               onClick={handleSave}
-              disabled={!selectedDate}
-              className="flex-1 py-3 bg-gold-500 hover:bg-gold-600 disabled:bg-gray-300 text-white font-semibold rounded-xl transition-all"
+              className="flex-1 rounded-xl bg-gold-500 py-3 font-semibold text-white transition-all hover:bg-gold-600"
             >
-              Save Wedding Date
+              Save & start countdown
             </button>
           </div>
         </div>
@@ -106,3 +162,5 @@ export default function WeddingDateModal({ isOpen, onClose }) {
     </div>
   );
 }
+
+export { SESSION_DISMISS_KEY };

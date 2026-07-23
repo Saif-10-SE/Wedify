@@ -1,21 +1,21 @@
 import { formatPrice } from '@/data/marquees';
 import { fetchMarquees, fetchVendors } from '@/lib/catalogService';
+import { buildWeddingPlan, formatVerifiedPlanMarkdown } from '@/lib/weddingPlanBuilder';
 
 const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash';
 const GEMINI_TEXT_FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash'];
 const OPENAI_RESPONSES_MODEL = process.env.OPENAI_RESPONSES_MODEL || 'gpt-5.4-mini';
 
-const SYSTEM_PROMPT = `You are Wedify AI, a friendly and practical Pakistani wedding planning assistant.
+const SYSTEM_PROMPT = `You are Wedify AI Chatbot, a practical Pakistani wedding planning assistant for Lahore.
 
-Rules:
-- Keep tone warm, clear, and concise.
-- Focus on Pakistan wedding context (especially Lahore) when relevant.
-- Ask clarifying questions when critical inputs are missing (budget, city, guest count, events).
-- Give realistic estimates in PKR.
-- Prefer practical recommendations over generic advice.
-- If user budget is tight, suggest smart trade-offs and phased alternatives.
-- Never claim real-time pricing unless explicitly provided in the context.
-- When giving options, present a short comparison and a recommendation.`;
+Hard rules (never break these):
+1. ONLY cite venue names, vendor names, capacities, and PKR amounts that appear in the Planning context / Verified plan below. Never invent venues, vendors, or prices.
+2. If a detail is missing from context, ask a clarifying question or say you do not have that number. Do not guess.
+3. When a total budget is present, deliver a COMPLETE plan: venue shortlist, package cost breakdown, vendor picks, trade-offs, and next steps. Use the Verified plan numbers as the source of truth.
+4. Prefer total wedding budget (PKR). If the user gave a small amount that looks like per-head, ask whether they meant total or per-head before assuming.
+5. Tone: warm, clear, concise. Use PKR. Pakistan/Lahore wedding context.
+6. End with actionable next steps linking to /calculator, /marquees, /vendors, or /image-generation when relevant.
+7. Never claim real-time market prices beyond the catalog context.`;
 
 const AREA_ALIASES = {
   'mall road': 'Mall Road',
@@ -32,7 +32,7 @@ const AREA_ALIASES = {
   'canal road': 'Canal Road'
 };
 
-const EVENT_KEYWORDS = ['mehndi', 'mayun', 'barat', 'baraat', 'walima', 'engagement', 'nikah', 'nikah', 'dholki'];
+const EVENT_KEYWORDS = ['mehndi', 'mayun', 'barat', 'baraat', 'walima', 'engagement', 'nikah', 'dholki'];
 
 const parseNumberToken = (value, unit = '') => {
   if (!value) return null;
@@ -51,7 +51,8 @@ const extractBudgetPkr = (text) => {
   const source = String(text || '');
   const budgetPatterns = [
     /(?:budget|around|about|under|upto|up to|within|pkr|rs\.?|rupees?)\s*([0-9][0-9,.]*)\s*(crore|lakh|lac|k|m|million)?/gi,
-    /([0-9][0-9,.]*)\s*(crore|lakh|lac|k|m|million)\s*(?:budget|for wedding|overall)?/gi
+    /([0-9][0-9,.]*)\s*(crore|lakh|lac|k|m|million)\s*(?:budget|for wedding|overall|total)?/gi,
+    /(?:plan|wedding)\s+(?:for|with)\s+([0-9][0-9,.]*)\s*(crore|lakh|lac)/gi
   ];
 
   const matches = [];
@@ -66,6 +67,19 @@ const extractBudgetPkr = (text) => {
 
   if (!matches.length) return null;
   return matches[matches.length - 1];
+};
+
+const detectBudgetMode = (text, budgetPkr, guests) => {
+  const source = String(text || '').toLowerCase();
+  if (/per\s*head|per\s*guest|\/\s*head|\/\s*guest/.test(source)) return 'per-head';
+  if (/total\s*budget|overall\s*budget|complete\s*budget|full\s*budget|wedding\s*for/.test(source)) return 'total';
+  if (!budgetPkr) return 'unknown';
+  // Lakh/crore amounts are almost always totals
+  if (budgetPkr >= 500000) return 'total';
+  // Small amounts with guests often mean per-head
+  if (guests && budgetPkr <= 20000) return 'per-head';
+  if (guests && budgetPkr > 20000) return 'total';
+  return 'ambiguous';
 };
 
 const extractGuests = (text) => {
@@ -86,140 +100,37 @@ const extractArea = (text) => {
 
 const extractEvents = (text) => {
   const source = String(text || '').toLowerCase();
-  return EVENT_KEYWORDS.filter((evt) => source.includes(evt));
+  const found = EVENT_KEYWORDS.filter((evt) => source.includes(evt));
+  // Normalize baraat -> barat
+  return [...new Set(found.map((e) => (e === 'baraat' ? 'barat' : e)))];
 };
 
-const getBudgetShape = (budgetPkr, guests) => {
+const getBudgetShape = (budgetPkr, guests, mode) => {
   if (!budgetPkr) {
     return { totalBudget: null, perHeadBudget: null, mode: 'unknown' };
   }
 
-  if (guests && budgetPkr > 20000) {
+  if (mode === 'per-head') {
+    return {
+      totalBudget: guests ? budgetPkr * guests : null,
+      perHeadBudget: budgetPkr,
+      mode: 'per-head'
+    };
+  }
+
+  if (mode === 'total' || mode === 'ambiguous') {
     return {
       totalBudget: budgetPkr,
-      perHeadBudget: Math.round(budgetPkr / guests),
-      mode: 'total'
+      perHeadBudget: guests ? Math.round(budgetPkr / guests) : null,
+      mode: mode === 'ambiguous' ? 'total-assumed' : 'total'
     };
   }
 
   return {
-    totalBudget: guests ? budgetPkr * guests : null,
-    perHeadBudget: budgetPkr,
-    mode: 'per-head'
+    totalBudget: budgetPkr,
+    perHeadBudget: guests ? Math.round(budgetPkr / guests) : null,
+    mode: 'total'
   };
-};
-
-const buildVenueRecommendations = ({ budgetPkr, guests, area, marquees = [] }) => {
-  const { perHeadBudget } = getBudgetShape(budgetPkr, guests);
-  const pool = area ? marquees.filter((m) => m.area === area) : [...marquees];
-
-  const scored = pool
-    .filter((venue) => {
-      if (!guests) return true;
-      return venue.capacity.max >= guests;
-    })
-    .map((venue) => {
-      const min = venue.pricing.perHead.min;
-      const max = venue.pricing.perHead.max;
-      const mid = Math.round((min + max) / 2);
-      const priceGap = perHeadBudget ? Math.abs(mid - perHeadBudget) : 0;
-      const fitsBudget = perHeadBudget ? min <= perHeadBudget : true;
-      const fitsCapacity = guests ? guests >= venue.capacity.min && guests <= venue.capacity.max : true;
-      const score =
-        venue.rating * 100 +
-        (venue.featured ? 20 : 0) +
-        (fitsBudget ? 15 : -10) +
-        (fitsCapacity ? 15 : 0) -
-        (perHeadBudget ? priceGap / 300 : 0);
-
-      return {
-        venue,
-        score,
-        fitsBudget,
-        priceGap,
-        perHeadMid: mid
-      };
-    })
-    .sort((a, b) => b.score - a.score);
-
-  const recommended = scored.slice(0, 3).map((x) => x.venue);
-
-  const alternatives = perHeadBudget
-    ? scored
-        .filter((x) => !x.fitsBudget && x.venue.pricing.perHead.min <= perHeadBudget * 1.25)
-        .slice(0, 2)
-        .map((x) => x.venue)
-    : scored.slice(3, 5).map((x) => x.venue);
-
-  return { recommended, alternatives };
-};
-
-const buildVendorRecommendations = (totalBudget, vendors = []) => {
-  if (!totalBudget) return [];
-
-  const all = vendors.filter((v) => v.type !== 'Venue');
-
-  const targets = [
-    { type: 'Photography', fraction: 0.12 },
-    { type: 'Decoration', fraction: 0.2 },
-    { type: 'Makeup', fraction: 0.05 }
-  ];
-
-  return targets
-    .map(({ type, fraction }) => {
-      const target = Math.round(totalBudget * fraction);
-      const options = all
-        .filter((v) => v.type === type)
-        .filter((v) => v.priceRange?.min && v.priceRange?.max)
-        .sort((a, b) => {
-          const aGap = Math.abs(((a.priceRange.min + a.priceRange.max) / 2) - target);
-          const bGap = Math.abs(((b.priceRange.min + b.priceRange.max) / 2) - target);
-          return aGap - bGap;
-        });
-
-      return options[0] || null;
-    })
-    .filter(Boolean);
-};
-
-const formatVenueBullet = (venue) => {
-  return [
-    venue.name,
-    `Area: ${venue.area}`,
-    `Capacity: ${venue.capacity.min}-${venue.capacity.max}`,
-    `Per head: ${formatPrice(venue.pricing.perHead.min)}-${formatPrice(venue.pricing.perHead.max)}`,
-    `Hall: ${formatPrice(venue.pricing.hallRental)}`
-  ].join(' | ');
-};
-
-const formatVendorBullet = (vendor) => {
-  return `${vendor.type}: ${vendor.name} | Budget: ${formatPrice(vendor.priceRange.min)}-${formatPrice(vendor.priceRange.max)}`;
-};
-
-const buildLocalFallbackReply = ({ budgetPkr, guests, area, events, venues, alternatives }) => {
-  const lines = [];
-  lines.push('Absolutely, I can help you plan this step by step.');
-
-  if (budgetPkr) lines.push(`Noted budget: ${formatPrice(budgetPkr)}${guests ? ` for ~${guests} guests` : ''}.`);
-  if (area) lines.push(`Preferred area: ${area}.`);
-  if (events.length) lines.push(`Functions mentioned: ${events.join(', ')}.`);
-
-  if (venues.length) {
-    lines.push('Top venue matches right now:');
-    venues.forEach((venue, idx) => {
-      lines.push(`${idx + 1}. ${venue.name} (${venue.area}) - ${formatPrice(venue.pricing.perHead.min)} to ${formatPrice(venue.pricing.perHead.max)} per head`);
-    });
-  }
-
-  if (alternatives.length) {
-    lines.push('If you can stretch a bit, these are strong alternatives:');
-    alternatives.forEach((venue, idx) => {
-      lines.push(`${idx + 1}. ${venue.name} (${venue.area})`);
-    });
-  }
-
-  lines.push('Share city, exact guest count, and whether this budget is total or per-head, and I will give you a detailed PKR breakdown by event (mehndi/barat/walima).');
-  return lines.join('\n');
 };
 
 const sanitizeHistory = (history) => {
@@ -272,6 +183,13 @@ const buildOpenAIResponsesInput = ({ systemPrompt, history, message }) => {
   return [systemPrompt, '', 'Conversation:', ...historyLines, '', `user: ${message}`].join('\n');
 };
 
+const mergeReplyWithVerifiedPlan = (llmReply, verifiedMarkdown, hasBudget) => {
+  if (!hasBudget || !verifiedMarkdown) return llmReply;
+  // Always append catalog numbers so the user sees ground truth even if the model softens wording
+  if (llmReply && llmReply.includes('Verified Wedify plan')) return llmReply;
+  return `${llmReply || ''}\n\n---\n\n${verifiedMarkdown}`.trim();
+};
+
 const callOpenAIResponses = async ({ apiKey, model, input }) => {
   const response = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST',
@@ -282,7 +200,8 @@ const callOpenAIResponses = async ({ apiKey, model, input }) => {
     body: JSON.stringify({
       model,
       input,
-      store: true
+      store: true,
+      temperature: 0.3
     })
   });
 
@@ -323,7 +242,7 @@ const callGeminiTextModel = async ({ model, apiKey, systemPrompt, history, messa
           parts: [{ text: systemPrompt }]
         },
         generationConfig: {
-          temperature: 0.6
+          temperature: 0.3
         },
         contents: [...historyToGeminiContents(history), { role: 'user', parts: [{ text: message }] }]
       })
@@ -355,50 +274,68 @@ export default async function handler(req, res) {
     }
 
     const combinedText = `${history.map((h) => h.content).join(' ')} ${message}`;
-    const budgetPkr = extractBudgetPkr(combinedText);
+    const budgetRaw = extractBudgetPkr(combinedText);
     const guests = extractGuests(combinedText);
     const area = extractArea(combinedText);
     const events = extractEvents(combinedText);
+    const budgetMode = detectBudgetMode(combinedText, budgetRaw, guests);
+    const budgetShape = getBudgetShape(budgetRaw, guests, budgetMode);
 
     const [marqueesRes, vendorsRes] = await Promise.all([fetchMarquees(), fetchVendors()]);
     const marquees = marqueesRes.items;
     const vendors = vendorsRes.items;
 
-    const budgetShape = getBudgetShape(budgetPkr, guests);
-    const { recommended, alternatives } = buildVenueRecommendations({
-      budgetPkr,
-      guests,
-      area,
-      marquees,
-    });
-    const vendorRecommendations = buildVendorRecommendations(budgetShape.totalBudget, vendors);
+    const eventsCount = events.length > 0 ? Math.min(4, Math.max(1, events.length)) : 3;
+
+    const verifiedPlan =
+      budgetShape.totalBudget || guests
+        ? buildWeddingPlan({
+            budgetPkr: budgetShape.totalBudget,
+            guests: guests || 500,
+            area,
+            eventsCount,
+            eventNames: events,
+            marquees,
+            vendors
+          })
+        : null;
+
+    const verifiedMarkdown = verifiedPlan ? formatVerifiedPlanMarkdown(verifiedPlan) : '';
 
     const planningContext = [
-      `Parsed inputs: budget=${budgetPkr || 'unknown'} PKR, guests=${guests || 'unknown'}, area=${area || 'any'}, events=${events.join(', ') || 'not specified'}`,
-      `Budget interpretation: mode=${budgetShape.mode}, perHead=${budgetShape.perHeadBudget || 'unknown'}, total=${budgetShape.totalBudget || 'unknown'}`,
-      'Top venue recommendations:',
-      ...(recommended.length ? recommended.map((v) => `- ${formatVenueBullet(v)}`) : ['- No exact match.']),
-      'Alternative venue suggestions:',
-      ...(alternatives.length ? alternatives.map((v) => `- ${formatVenueBullet(v)}`) : ['- None in nearby price range.']),
-      'Vendor suggestions:',
-      ...(vendorRecommendations.length ? vendorRecommendations.map((v) => `- ${formatVendorBullet(v)}`) : ['- Need total budget before vendor recommendations.'])
-    ].join('\n');
+      `Parsed inputs: budgetRaw=${budgetRaw || 'unknown'} PKR, guests=${guests || 'unknown'}, area=${area || 'any'}, events=${events.join(', ') || 'default 3'}`,
+      `Budget interpretation: mode=${budgetShape.mode}, total=${budgetShape.totalBudget ? formatPrice(budgetShape.totalBudget) : 'unknown'}, perHead=${budgetShape.perHeadBudget ? formatPrice(budgetShape.perHeadBudget) : 'unknown'}`,
+      budgetMode === 'ambiguous'
+        ? 'NOTE: Budget mode was ambiguous. Confirm with the user whether the amount is TOTAL wedding budget or PER-HEAD.'
+        : '',
+      verifiedMarkdown
+        ? `Verified plan (MUST use these numbers only):\n${verifiedMarkdown}`
+        : 'No verified plan yet. Ask for total budget (PKR) and guest count so you can build a full plan.'
+    ]
+      .filter(Boolean)
+      .join('\n\n');
 
-    const fallbackReply = buildLocalFallbackReply({
-      budgetPkr,
-      guests,
-      area,
-      events,
-      venues: recommended,
-      alternatives
-    });
+    const fallbackReply = verifiedMarkdown
+      ? `Here is a complete plan grounded in our Wedify venue and vendor catalog.\n\n${verifiedMarkdown}`
+      : [
+          'I can build a full wedding plan once I have a few details.',
+          'Please share:',
+          '1. Total wedding budget in PKR (e.g. 25 lakh)',
+          '2. Guest count',
+          '3. Preferred area (Gulberg, DHA, Canal Road, etc.)',
+          '4. Events (mehndi / barat / walima)',
+          '',
+          'I will then recommend real venues from our catalog with a full PKR breakdown. I will not invent prices.'
+        ].join('\n');
 
     const openaiKey = process.env.OPENAI_API_KEY;
     const geminiKey = process.env.GEMINI_API_KEY;
+    const hasBudget = Boolean(budgetShape.totalBudget);
 
     if (!openaiKey && !geminiKey) {
       return res.status(200).json({
         reply: fallbackReply,
+        plan: verifiedPlan,
         metadata: {
           source: 'local-fallback',
           reason: 'missing-openai-and-gemini-keys'
@@ -421,7 +358,8 @@ export default async function handler(req, res) {
       });
       if (openaiAttempt.ok) {
         return res.status(200).json({
-          reply: openaiAttempt.reply,
+          reply: mergeReplyWithVerifiedPlan(openaiAttempt.reply, verifiedMarkdown, hasBudget),
+          plan: verifiedPlan,
           metadata: {
             source: 'openai-responses',
             model: OPENAI_RESPONSES_MODEL,
@@ -434,6 +372,7 @@ export default async function handler(req, res) {
     if (!geminiKey) {
       return res.status(200).json({
         reply: fallbackReply,
+        plan: verifiedPlan,
         metadata: {
           source: 'local-fallback',
           reason: 'openai-failed-missing-gemini',
@@ -470,6 +409,7 @@ export default async function handler(req, res) {
       if (attempt.status === 429) {
         return res.status(200).json({
           reply: fallbackReply,
+          plan: verifiedPlan,
           metadata: {
             source: 'local-fallback',
             reason: 'gemini-quota-exceeded',
@@ -485,10 +425,11 @@ export default async function handler(req, res) {
       );
     }
 
-    const reply = extractGeminiText(completion) || fallbackReply;
+    const reply = mergeReplyWithVerifiedPlan(extractGeminiText(completion) || fallbackReply, verifiedMarkdown, hasBudget);
 
     return res.status(200).json({
       reply,
+      plan: verifiedPlan,
       metadata: {
         source: 'gemini',
         model: selectedModel || GEMINI_TEXT_MODEL
@@ -498,7 +439,7 @@ export default async function handler(req, res) {
     console.error('Chatbot API error:', error);
     return res.status(500).json({
       error: 'Unable to process chatbot request right now.',
-      reply: 'I am having trouble right now. Please retry in a moment, and include your city, guest count, and budget so I can give precise recommendations.'
+      reply: 'I am having trouble right now. Please retry in a moment, and include your total budget, guest count, and preferred area.'
     });
   }
 }

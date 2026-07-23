@@ -32,7 +32,7 @@ export default function Home({
   realVenuePhotos = localPhotos,
   dataSource = 'local',
 }) {
-  const { weddingDate, recentlyViewed, favorites } = useWedding();
+  const { weddingDate, coupleName, recentlyViewed, favorites } = useWedding();
   const [showDateModal, setShowDateModal] = useState(false);
   
   // Recently viewed venues
@@ -103,7 +103,12 @@ export default function Home({
             
             {weddingDate && (
               <div className="mb-6 animate-fadeIn sm:mb-8 lg:max-w-md">
-                <CountdownTimer />
+                {coupleName ? (
+                  <p className="mb-3 text-center text-sm text-white/90 lg:text-left">
+                    {coupleName}, your big day countdown
+                  </p>
+                ) : null}
+                <CountdownTimer targetDate={weddingDate} />
               </div>
             )}
             
@@ -473,10 +478,7 @@ export default function Home({
         </div>
       </section>
 
-      {/* Wedding Date Modal */}
-      {showDateModal && (
-        <WeddingDateModal onClose={() => setShowDateModal(false)} />
-      )}
+      <WeddingDateModal isOpen={showDateModal} onClose={() => setShowDateModal(false)} />
 
       <Footer />
     </>
