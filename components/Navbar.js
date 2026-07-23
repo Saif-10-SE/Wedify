@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWedding } from '@/context/WeddingContext';
 import { Search, Heart, Calendar, Menu, X, ChevronDown, Sparkles, GitCompare, ListChecks, Camera, Users, Mail } from 'lucide-react';
-import BigDayCountdownBanner from '@/components/BigDayCountdownBanner';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,8 +65,6 @@ export default function Navbar() {
         ? 'bg-white/55 backdrop-blur-xl shadow-[0_10px_30px_rgba(31,24,18,0.18)]'
         : 'bg-white/35 backdrop-blur-xl shadow-[0_8px_24px_rgba(31,24,18,0.1)]'
     }`}>
-      <BigDayCountdownBanner />
-
       <div className="max-w-7xl mx-auto px-3 sm:px-4">
         <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
           <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group min-w-0 shrink">
@@ -79,8 +76,8 @@ export default function Navbar() {
               priority
               className="h-9 sm:h-12 w-auto transition-transform group-hover:scale-[1.01]"
             />
-            <div className="hidden md:block min-w-0">
-              <p className="text-xs text-gray-700/90 -mt-1 truncate">Pakistan&apos;s first wedding planning platform</p>
+            <div className="hidden 2xl:block min-w-0">
+              <p className="text-xs text-gray-700/90 -mt-1 truncate max-w-[11rem]">Pakistan&apos;s first wedding planning platform</p>
             </div>
           </Link>
 
@@ -162,11 +159,11 @@ export default function Navbar() {
                 )}
               </Link>
 
-              {weddingDate && (
+              {weddingDate && daysLeft != null && daysLeft > 0 && (
                 <Link
                   href="/checklist"
                   className="flex items-center gap-2 rounded-lg border border-white/40 bg-white/60 px-3 py-2 text-sm text-gold-800 backdrop-blur-sm"
-                  title="Your Wedding Date"
+                  title="Days until your wedding"
                 >
                   <Calendar className="w-4 h-4" />
                   <span className="font-medium">{daysLeft}d</span>

@@ -17,7 +17,6 @@ import { useWedding } from '@/context/WeddingContext';
 import Navbar from '@/components/Navbar';
 import MarqueeCard from '@/components/MarqueeCard';
 import TestimonialCard from '@/components/TestimonialCard';
-import CountdownTimer from '@/components/CountdownTimer';
 import WeddingDateModal from '@/components/WeddingDateModal';
 import Footer from '@/components/Footer';
 import { Heart, Calendar, Calculator, MapPin, Star, ArrowRight, CheckCircle, Sparkles, ChevronRight, BarChart3 } from 'lucide-react';
@@ -32,7 +31,7 @@ export default function Home({
   realVenuePhotos = localPhotos,
   dataSource = 'local',
 }) {
-  const { weddingDate, coupleName, recentlyViewed, favorites } = useWedding();
+  const { weddingDate, recentlyViewed, favorites } = useWedding();
   const [showDateModal, setShowDateModal] = useState(false);
   
   // Recently viewed venues
@@ -100,17 +99,6 @@ export default function Home({
             <p className="mx-auto mb-6 max-w-xl font-sans text-sm font-medium leading-relaxed text-white/90 animate-slideUp sm:mb-8 sm:text-base md:text-xl lg:mx-0 lg:max-w-xl lg:text-lg">
               Discover venues, compare options, and plan your wedding effortlessly with Wedify.
             </p>
-            
-            {weddingDate && (
-              <div className="mb-6 animate-fadeIn sm:mb-8 lg:max-w-md">
-                {coupleName ? (
-                  <p className="mb-3 text-center text-sm text-white/90 lg:text-left">
-                    {coupleName}, your big day countdown
-                  </p>
-                ) : null}
-                <CountdownTimer targetDate={weddingDate} />
-              </div>
-            )}
             
             <div className="flex w-full flex-col gap-3 animate-slideUp sm:flex-row sm:gap-4 lg:justify-start">
               <Link 
