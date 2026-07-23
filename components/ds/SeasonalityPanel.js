@@ -23,10 +23,9 @@ export default function SeasonalityPanel() {
   return (
     <div>
       <InsightBanner>
-        <p className="mb-2">
-          Aggregates synthetic inquiry timestamps by month and area. Peak wedding months get higher
-          demand and spend. Forecast for the next 3 months uses a <strong>seasonal-naive</strong> model
-          scaled by recent demand level.
+        <p>
+          See which months are busiest for Lahore weddings and how average budgets change through the year.
+          We also show a simple outlook for the next 3 months so you can pick a calmer (or peak) date.
         </p>
       </InsightBanner>
 

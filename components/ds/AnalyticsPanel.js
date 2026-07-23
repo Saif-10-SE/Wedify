@@ -27,9 +27,8 @@ export default function AnalyticsPanel() {
     <div>
       <InsightBanner>
         <p>
-          Exploratory data analysis over the live marquee catalog plus synthetic inquiry history:
-          average PKR/head by area, rating-vs-price scatter, capacity bands, tier mix, and value score
-          (rating / log(price)).
+          A clear look at Lahore venues: prices by area, ratings vs cost, capacity ranges, and which
+          venues give strong value for money.
         </p>
       </InsightBanner>
 
